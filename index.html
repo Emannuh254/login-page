@@ -305,6 +305,21 @@
           pointer-events: auto !important;
         }
       }
+      .sign-in-form {
+        display: block;
+      }
+
+      .sign-up-form {
+        display: none;
+      }
+
+      .container.sign-up-mode .sign-in-form {
+        display: none;
+      }
+
+      .container.sign-up-mode .sign-up-form {
+        display: block;
+      }
 
       @media (max-width: 570px) {
         .input-field {
