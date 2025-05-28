@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home | MannuhBots</title>
+    <link rel="stylesheet" href="Css/home.css" />
+  </head>
+
+  <body>
+    <input
+      type="checkbox"
+      role="button"
+      aria-label="Display the menu"
+      class="menu"
+      id="menu-toggle"
+    />
+
+    <nav class="navbar">
+      <h1>T-Minning</h1>
+      <ul class="nav-links">
+        <li><a href="#">My Account</a></li>
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Bots</a></li>
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">Help</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">FAQ/Help</a></li>
+        <li><a href="#" id="logout">Logout</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <h2>Welcome to MannuhBots</h2>
+      <p>Your personal AI-powered bot dashboard</p>
+      <a href="#" class="btn">Explore Bots</a>
+    </header>
+
+    <script>
+      document.getElementById("logout").addEventListener("click", () => {
+        // Optional: clear auth tokens or session here
+        window.location.href = "login.html";
+      });
+    </script>
+  </body>
+</html>
