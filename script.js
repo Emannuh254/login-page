@@ -101,3 +101,15 @@ if (logout) {
     window.location.href = "login.html";
   });
 }
+// Google Sign-In response handler
+function handleCredentialResponse(response) {
+  const jwt = response.credential;
+
+  const data = parseJwt(jwt);
+  console.log("Google User:", data);
+
+  alert(`Welcome, ${data.name || "User"}!`);
+
+  // Redirect to home.html after successful sign-in
+  window.location.href = "home.html";
+}
