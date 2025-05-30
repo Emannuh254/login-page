@@ -101,3 +101,16 @@ if (logout) {
     window.location.href = "login.html";
   });
 }
+function handleCredentialResponse(response) {
+  const jwt = response.credential;
+
+  // Decode token and get user info
+  const data = parseJwt(jwt);
+  console.log("Google User:", data);
+
+  // Optionally show a welcome message
+  alert(`Welcome, ${data.name || "User"}!`);
+
+  // Redirect to home.html after successful sign-in
+  window.location.href = "home.html";
+}
