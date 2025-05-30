@@ -4,16 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SignIn & SignUp</title>
+
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
+
+    <!-- Intl Tel Input -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
     />
+
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="Css/styles.css" />
   </head>
+
   <body>
     <div class="container">
       <div class="forms-container">
@@ -23,7 +30,7 @@
             <h2 class="title">Sign In</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Username/Email" />
+              <input type="text" placeholder="Username/Email" required />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
@@ -31,6 +38,7 @@
                 type="password"
                 placeholder="Password"
                 id="signInPassword"
+                required
               />
               <i
                 class="fas fa-eye toggle-password"
@@ -39,48 +47,80 @@
             </div>
             <input type="submit" value="Login" class="btn" />
             <p class="social-text">Or Sign in with Google</p>
-            <a href="#" class="social-icon">
-              <i class="fab fa-google"></i>
-            </a>
+            <div
+              class="g_id_signin"
+              data-type="standard"
+              data-shape="rectangular"
+              data-theme="outline"
+              data-text="signin_with"
+              data-size="large"
+              data-logo_alignment="left"
+            ></div>
           </form>
 
           <!-- Sign Up Form -->
           <form class="sign-up-form">
             <h2 class="title">Sign Up</h2>
+
             <div
               class="input-field"
               style="position: relative; margin-bottom: 1.5rem"
             >
               <i class="fas fa-phone"></i>
-              <input id="phone" type="tel" placeholder="Phone Number" />
+              <input
+                id="phone"
+                type="tel"
+                placeholder="Phone Number"
+                required
+              />
               <p id="phone-error">Please enter a valid phone number!</p>
             </div>
 
             <div class="input-field">
               <i class="fas fa-envelope"></i>
-              <input type="email" placeholder="Email" />
+              <input type="email" placeholder="Email" required />
             </div>
+
             <div class="input-field">
               <i class="fas fa-lock"></i>
               <input
                 type="password"
                 placeholder="Password"
                 id="signUpPassword"
+                required
               />
               <i
                 class="fas fa-eye toggle-password"
                 data-target="signUpPassword"
               ></i>
             </div>
+
             <input type="submit" value="Sign Up" class="btn" />
             <p class="social-text">Or Sign up with Google</p>
-            <a href="#" class="social-icon">
-              <i class="fab fa-google"></i>
-            </a>
+
+            <!-- Google Sign-Up -->
+            <div
+              id="g_id_onload"
+              data-client_id="57706195065-klr8q7oot7ee889ohh40o9jp1huc7420.apps.googleusercontent.com"
+              data-context="signup"
+              data-ux_mode="popup"
+              data-callback="handleCredentialResponse"
+              data-auto_prompt="false"
+            ></div>
+            <div
+              class="g_id_signin"
+              data-type="standard"
+              data-shape="rectangular"
+              data-theme="outline"
+              data-text="signup_with"
+              data-size="large"
+              data-logo_alignment="left"
+            ></div>
           </form>
         </div>
       </div>
 
+      <!-- Panels -->
       <div class="panels-container">
         <div class="panel left-panel">
           <div class="content">
@@ -99,8 +139,9 @@
       </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="script.js"></script>
-    >
   </body>
 </html>

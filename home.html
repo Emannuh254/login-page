@@ -8,17 +8,12 @@
   </head>
 
   <body>
-    <input
-      type="checkbox"
-      role="button"
-      aria-label="Display the menu"
-      class="menu"
-      id="menu-toggle"
-    />
-
+    <div class="overlay" id="overlay"></div>
     <nav class="navbar">
       <h1>T-Minning</h1>
-      <ul class="nav-links">
+      <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+      <!-- Hamburger icon -->
+      <ul class="nav-links" id="nav-links">
         <li><a href="#">My Account</a></li>
         <li><a href="#">Profile</a></li>
         <li><a href="#">Bots</a></li>
@@ -36,12 +31,23 @@
       <p>Your personal AI-powered bot dashboard</p>
       <a href="#" class="btn">Explore Bots</a>
     </header>
-
     <script>
-      document.getElementById("logout").addEventListener("click", () => {
-        // Optional: clear auth tokens or session here
-        window.location.href = "login.html";
+      const menuToggle = document.querySelector(".menu-toggle");
+      const navLinks = document.querySelector(".nav-links");
+      const overlay = document.querySelector(".overlay");
+
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("show");
+        overlay.classList.toggle("active");
+      });
+
+      // Optional: close the menu if overlay is clicked
+      overlay.addEventListener("click", () => {
+        navLinks.classList.remove("show");
+        overlay.classList.remove("active");
       });
     </script>
+
+    <script src="script.js"></script>
   </body>
 </html>
