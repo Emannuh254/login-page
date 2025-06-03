@@ -125,8 +125,6 @@ body {
   transform: translateY(-2px);
   background: linear-gradient(-45deg, #04befe 0%, #4481eb 100%);
 }
-
-/* Responsive navbar */
 @media (max-width: 768px) {
   .menu-toggle {
     display: block;
@@ -135,7 +133,9 @@ body {
   .nav-links {
     flex-direction: column;
     align-items: flex-start;
-    background: rgba(6, 149, 227, 0.95);
+    background: rgba(255, 255, 255, 0.1); /* glassy effect */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     position: absolute;
     top: 100%;
     left: 0;
@@ -144,18 +144,11 @@ body {
     max-height: 0;
     padding: 0 2rem;
     border-radius: 0 0 15px 15px;
+    transition: max-height 0.3s ease, padding 0.3s ease;
   }
 
   .nav-links.show {
     max-height: 500px;
     padding: 1rem 2rem;
-  }
-
-  .hero h2 {
-    font-size: 2rem;
-  }
-
-  .hero p {
-    font-size: 1rem;
   }
 }

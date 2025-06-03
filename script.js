@@ -40,7 +40,7 @@ if (phoneInput && phoneError) {
 
   phoneInput.addEventListener("input", () => {
     const value = phoneInput.value;
-    const isValid = /^[\d+]*$/.test(value); // only digits and '+'
+    const isValid = /^[\d+]*$/.test(value);
 
     if (!isValid) {
       phoneError.style.display = "block";
@@ -57,11 +57,12 @@ if (phoneInput && phoneError) {
 // Google Sign-In response handler
 function handleCredentialResponse(response) {
   const jwt = response.credential;
-
   const data = parseJwt(jwt);
   console.log("Google User:", data);
 
   alert(`Welcome, ${data.name || "User"}!`);
+  localStorage.setItem("authToken", jwt);
+  window.location.href = "home.html";
 }
 
 // Decode JWT
@@ -81,7 +82,6 @@ function parseJwt(token) {
 const menuToggle = document.getElementById("menu-toggle");
 const navLinks = document.getElementById("nav-links");
 const overlay = document.getElementById("overlay");
-const logout = document.getElementById("logout");
 
 if (menuToggle && navLinks && overlay) {
   menuToggle.addEventListener("click", () => {
@@ -95,21 +95,12 @@ if (menuToggle && navLinks && overlay) {
   });
 }
 
+// Logout Handler
+const logout = document.getElementById("logout");
 if (logout) {
-  logout.addEventListener("click", () => {
-    // Clear session or token here if needed
-    window.location.href = "login.html";
+  logout.addEventListener("click", function (e) {
+    e.preventDefault();
+    localStorage.removeItem("authToken");
+    window.location.href = "index.html"; // Adjust as needed
   });
-}
-// Google Sign-In response handler
-function handleCredentialResponse(response) {
-  const jwt = response.credential;
-
-  const data = parseJwt(jwt);
-  console.log("Google User:", data);
-
-  alert(`Welcome, ${data.name || "User"}!`);
-
-  // Redirect to home.html after successful sign-in
-  window.location.href = "home.html";
 }
