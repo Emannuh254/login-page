@@ -1,0 +1,36 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #f0f2f5;
+}
+
+h1 {
+  text-align: center;
+}
+
+.bot-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.bot-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+  padding: 20px;
+  width: 250px;
+  text-align: center;
+}
+
+.bot-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.bot-card button {
+  margin: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+}

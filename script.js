@@ -104,3 +104,4 @@ if (logout) {
     window.location.href = "index.html"; // Adjust as needed
   });
 }
+///bots
