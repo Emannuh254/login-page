@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <h1>My Account</h1>
+    </nav>
+
+    <!-- Account Content -->
+    <section class="hero">
+      <h2>Your Balance</h2>
+      <h3 id="balance">Ksh 0.00</h3>
+
+      <div style="margin-top: 2rem">
+        <h3>Deposit via M-Pesa</h3>
+        <img
+          src="images/mpesa-logo.png"
+          alt="M-Pesa"
+          style="height: 50px; margin: 10px 0"
+        />
+        <p>
+          <strong>TILL Number:</strong> <span style="color: #f0f">523698</span>
+        </p>
+
+        <!-- Quick-select deposit cards -->
+        <div
+          style="
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+            justify-content: center;
+          "
+        >
+          <button class="btn deposit-btn" data-amount="200">Ksh 200</button>
+          <button class="btn deposit-btn" data-amount="500">Ksh 500</button>
+          <button class="btn deposit-btn" data-amount="1000">Ksh 1000</button>
+        </div>
+
+        <!-- Custom deposit input -->
+        <input
+          type="number"
+          id="custom-deposit"
+          placeholder="Enter amount (min 200)"
+          class="btn"
+          style="background: white; color: black; margin-top: 10px"
+        />
+        <button class="btn" onclick="deposit()">Deposit</button>
+      </div>
+
+      <div style="margin-top: 3rem">
+        <h3>Withdraw</h3>
+        <input
+          type="number"
+          id="withdraw-amount"
+          placeholder="Enter amount to withdraw (min 200)"
+          class="btn"
+          style="background: white; color: black"
+        />
+        <button class="btn" onclick="withdraw()">Withdraw</button>
+      </div>
+
+      <div style="margin-top: 3rem">
+        <h3>Previous Transactions</h3>
+        <ul
+          id="transactions"
+          style="
+            text-align: left;
+            max-width: 600px;
+            margin: auto;
+            list-style: disc;
+          "
+        >
+          <!-- Transactions will appear here -->
+        </ul>
+      </div>
+    </section>
+
+    <script src="script.js"></script>
+  </body>
+</html>
