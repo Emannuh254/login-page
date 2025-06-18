@@ -1,56 +1,136 @@
+/* Base Reset and Theme */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background: #f2f2f2;
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(to bottom right, #0a0e23, #152c5b);
+  color: white;
+  min-height: 100vh;
   padding: 20px;
+  animation: fadeIn 0.8s ease;
 }
-.bot-card {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  margin: 20px auto;
-  max-width: 300px;
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+h1 {
   text-align: center;
-  transition: all 0.4s ease;
+  color: #5197f2;
+  margin-bottom: 30px;
+  font-size: 2rem;
 }
-.bot-card.expired {
-  background-color: #ffe5e5;
-  opacity: 0.5;
+
+/* Bot Container */
+#botContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
-.bot-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 10px;
+
+/* Bot Card */
+.bot-card {
+  background: rgba(26, 31, 56, 0.95);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 12px rgba(81, 151, 242, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.buy-btn,
-.claim-btn {
-  margin-top: 10px;
-  padding: 10px;
-  width: 100%;
+
+.bot-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 18px rgba(81, 151, 242, 0.25);
+}
+
+.bot-card h2 {
+  color: #ffffff;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+.bot-card p {
+  font-size: 0.95rem;
+  color: #d0d0d0;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+/* Buttons */
+.bot-card button {
+  background: #5197f2;
   border: none;
-  border-radius: 5px;
+  color: white;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  border-radius: 8px;
   cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.bot-card button:hover {
+  background: #3c7edc;
+  transform: translateY(-1px);
+}
+
+.bot-card button:active {
+  background: #2e6cc4;
+  transform: scale(0.97);
+}
+
+/* Responsive */
+@media screen and (max-width: 480px) {
+  body {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .bot-card {
+    padding: 15px;
+  }
+
+  .bot-card button {
+    width: 100%;
+  }
+}
+.bot-card img.bot-image {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  object-fit: cover;
+  max-height: 180px;
+}
+
+.bot-card .expired-label {
+  color: #f27474;
+  background: rgba(255, 0, 0, 0.1);
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-top: 10px;
   font-weight: bold;
 }
-.buy-btn {
-  background: #28a745;
-  color: white;
-}
-.claim-btn {
-  background: #007bff;
-  color: white;
-}
-.claim-btn:disabled {
-  background: #cccccc;
+
+.bot-card .buy-btn:disabled {
+  background: gray;
   cursor: not-allowed;
 }
-.earnings {
-  margin-top: 10px;
-  font-size: 14px;
-}
-.expired-label {
-  color: red;
-  font-weight: bold;
-  margin-top: 10px;
+
+.bot-card .claim-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
