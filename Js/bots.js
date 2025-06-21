@@ -10,13 +10,32 @@ const bots = [
 
 const container = document.getElementById("botContainer");
 
+// Helper: Toggle Modal visibility
+function toggleModal(show) {
+  const modal = document.getElementById("paymentModal");
+  const overlay = document.getElementById("modalOverlay");
+  modal.classList.toggle("show", show);
+  overlay.classList.toggle("show", show);
+}
+
+// Modal Buttons
+document.querySelector(".confirm-pay").addEventListener("click", () => {
+  toggleModal(false);
+});
+document.querySelector(".cancel-pay").addEventListener("click", () => {
+  toggleModal(false);
+});
+
 bots.forEach((bot, index) => {
   const totalIn30Days = bot.daily * 30;
+
   const card = document.createElement("div");
   card.className = "bot-card";
 
   card.innerHTML = `
-    <img src="images/pic${index + 1}.jpg" alt="${bot.price} Bot" />
+    <img src="images/pic${index + 1}.jpg" alt="${
+    bot.price
+  } Bot" class="bot-image" />
     <h2>${bot.price.toLocaleString()} Ksh Bot</h2>
     <p>Earns: ${bot.daily.toLocaleString()} Ksh/day</p>
     <p><strong>Total in 30 Days: ${totalIn30Days.toLocaleString()} Ksh</strong></p>
@@ -36,43 +55,48 @@ bots.forEach((bot, index) => {
   let daysLeft = 30;
   let totalEarnings = 0;
   let claimedToday = false;
+  let intervalStarted = false;
+
+  function handleClaim() {
+    if (claimedToday || daysLeft <= 0) return;
+
+    totalEarnings += bot.daily;
+    earningsSpan.textContent = totalEarnings.toLocaleString();
+    daysLeft--;
+    daysLeftSpan.textContent = daysLeft;
+
+    claimedToday = true;
+    claimBtn.disabled = true;
+
+    if (daysLeft <= 0) {
+      card.classList.add("expired");
+      claimBtn.disabled = true;
+      const expiredLabel = document.createElement("p");
+      expiredLabel.className = "expired-label";
+      expiredLabel.textContent = "Bot Expired";
+      card.appendChild(expiredLabel);
+    }
+  }
+
+  claimBtn.addEventListener("click", handleClaim);
 
   buyBtn.addEventListener("click", () => {
-    buyBtn.disabled = true;
+    if (intervalStarted) return;
 
-    // Daily claim reset every 50 seconds (simulate 24h)
+    toggleModal(true);
+
+    buyBtn.disabled = true;
+    claimBtn.disabled = false;
+    intervalStarted = true;
+
     const interval = setInterval(() => {
       if (daysLeft <= 0) {
         clearInterval(interval);
         claimBtn.disabled = true;
         return;
       }
-
       claimedToday = false;
       claimBtn.disabled = false;
     }, 50000);
-
-    claimBtn.addEventListener("click", () => {
-      if (claimedToday || daysLeft <= 0) return;
-
-      totalEarnings += bot.daily;
-      earningsSpan.textContent = totalEarnings.toLocaleString();
-      daysLeft--;
-      daysLeftSpan.textContent = daysLeft;
-
-      claimedToday = true;
-      claimBtn.disabled = true;
-
-      if (daysLeft <= 0) {
-        claimBtn.disabled = true;
-        card.classList.add("expired");
-        const expiredLabel = document.createElement("p");
-        expiredLabel.className = "expired-label";
-        expiredLabel.textContent = "Bot Expired";
-        card.appendChild(expiredLabel);
-      }
-    });
-
-    claimBtn.disabled = false;
   });
 });
