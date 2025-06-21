@@ -1,154 +1,149 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
-
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 body {
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(-45deg, #4481eb 0%, #04befe 100%);
-  color: #fff;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* Overlay */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-  backdrop-filter: blur(6px);
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 8;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease;
-}
-
-.overlay.active {
-  opacity: 1;
-  visibility: visible;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #000000;
+  color: #e0e0ff;
 }
 
 /* Navbar */
 .navbar {
+  background-color: #12002e;
+  color: white;
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 1rem 2rem;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  position: relative;
-  z-index: 10;
 }
 
 .navbar h1 {
-  font-size: 1.8rem;
-  color: #fff;
-  font-weight: 600;
+  color: #100c13;
 }
 
-/* Hamburger menu */
 .menu-toggle {
   display: none;
   font-size: 2rem;
-  color: white;
-  cursor: pointer;
 }
 
-/* Nav links */
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 1.5rem;
-  transition: max-height 0.3s ease, padding 0.3s ease;
-  z-index: 10;
+  gap: 1.2rem;
 }
 
 .nav-links a {
+  color: #c77dff;
   text-decoration: none;
-  color: white;
-  font-weight: 500;
-  transition: color 0.3s;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
 }
 
+.nav-links a.active,
 .nav-links a:hover {
-  color: #d0eaff;
-}
-
-/* Hero section */
-.hero {
-  text-align: center;
-  padding: 5rem 2rem;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 2rem auto;
-  max-width: 900px;
-  border-radius: 20px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  z-index: 1;
-  position: relative;
-}
-
-.hero h2 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  font-weight: 700;
-}
-
-.hero p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-  color: #eef;
-}
-
-.btn {
-  background: linear-gradient(-45deg, #4481eb 0%, #04befe 100%);
-  border: none;
-  border-radius: 49px;
+  background-color: #000000;
   color: white;
+}
+
+/* Overlay for mobile */
+.overlay {
+  display: none;
+}
+
+/* Layout */
+.container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* Cards */
+.card {
+  background-color: #1a001f;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 0 15px #c77dff33;
+  text-align: center;
+}
+
+/* Profile */
+.profile-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid #12ce3e;
+  margin-bottom: 1rem;
+  object-fit: cover;
+}
+
+.username {
+  color: #5fe84d;
   font-weight: 600;
-  font-size: 1rem;
-  padding: 0.8rem 2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Buttons */
+.btn {
+  background-color: #000000;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.3s ease, background 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
+  transition: 0.3s;
 }
 
 .btn:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(-45deg, #04befe 0%, #4481eb 100%);
+  background-color: #aa4de8;
 }
+
+/* Charts */
+.chart-card {
+  background-color: #050107;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+  box-shadow: 0 0 10px #aa4de8;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #0f001c;
+  color: #777;
+  margin-top: 2rem;
+}
+
+/* Responsive nav for mobile */
 @media (max-width: 768px) {
   .menu-toggle {
     display: block;
   }
 
   .nav-links {
+    position: fixed;
+    right: -100%;
+    top: 60px;
     flex-direction: column;
-    align-items: flex-start;
-    background: rgba(255, 255, 255, 0.1); /* glassy effect */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    overflow: hidden;
-    max-height: 0;
-    padding: 0 2rem;
-    border-radius: 0 0 15px 15px;
-    transition: max-height 0.3s ease, padding 0.3s ease;
+    background-color: #1a001f;
+    width: 200px;
+    height: 100vh;
+    transition: right 0.3s ease;
+    padding-top: 2rem;
   }
 
   .nav-links.show {
-    max-height: 500px;
-    padding: 1rem 2rem;
+    right: 0;
   }
+}
+.card,
+.chart-card {
+  border: 1px solid rgba(199, 125, 255, 0.15); /* Subtle neon outline */
 }
