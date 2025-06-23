@@ -16,12 +16,14 @@ document.addEventListener("DOMContentLoaded", () => {
     container.classList.remove("sign-up-mode");
     signUpForm.classList.remove("active");
     signInForm.classList.add("active");
+    triggerAnimation();
   });
 
   switchToSignUpBtn?.addEventListener("click", () => {
     container.classList.add("sign-up-mode");
     signInForm.classList.remove("active");
     signUpForm.classList.add("active");
+    triggerAnimation();
   });
 
   // Toggle Password Visibility
@@ -42,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const phoneError = document.getElementById("phone-error");
   let iti;
 
-  if (phoneInput && phoneError) {
+  if (phoneInput && phoneError && window.intlTelInput) {
     iti = window.intlTelInput(phoneInput, {
       initialCountry: "ke",
       preferredCountries: ["ke", "ng", "us", "gb"],
@@ -119,8 +121,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // GOOGLE SIGN-IN BUTTON INIT
-  if (window.google && google.accounts && google.accounts.id) {
-    // Replace with your actual Google OAuth Client ID (use yours below)
+  if (window.google?.accounts?.id) {
+    // Replace with your actual Google OAuth Client ID
     const clientId =
       "37850694475-0dlp5pc22vrpvhn2t70ij4cjprvlsqhr.apps.googleusercontent.com";
 
@@ -140,5 +142,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // google.accounts.id.prompt(); // Optional: for One Tap
+  }
+
+  // Animated title letters
+  const letters = document.querySelectorAll(".letter");
+
+  function triggerAnimation() {
+    letters.forEach((letter) => {
+      letter.style.animation = "none";
+      letter.offsetHeight; // trigger reflow
+      letter.style.animation = null;
+    });
   }
 });

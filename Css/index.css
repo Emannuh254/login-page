@@ -221,39 +221,138 @@ body {
   box-shadow: 0 0 20px #9f54ff, 0 0 30px #2effbf;
 }
 
-/* Panels container */
-.panels-container {
+/* Panels container (with animated title) */
+
+/* .panels-container {
   width: 50%;
   background: #111;
   border-radius: 0 12px 12px 0;
   display: flex;
-  flex-direction: column;
   justify-content: center;
+  align-items: center;
   padding: 2rem 1.5rem;
   color: #ccc;
   text-align: center;
   box-shadow: 0 0 15px #6e1cffaa;
   transition: box-shadow 0.3s ease;
+  user-select: none;
+  cursor: default;
 }
 
 .panels-container:hover {
   box-shadow: 0 0 25px #2effbf, 0 0 35px #6e1cffaa;
-}
+} */
 
-/* Panel text */
-.panel h3 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
+/* Animated title */
+.animated-title {
+  font-size: 3rem;
+  font-weight: 900;
+  font-family: "Poppins", sans-serif;
   color: #9f54ff;
-  text-shadow: 0 0 6px #9f54ff;
+  text-shadow: 0 0 8px #9f54ff;
+  display: flex;
+  gap: 0.1em;
 }
 
-.panel p {
-  font-size: 1rem;
-  margin-bottom: 2rem;
-  max-width: 300px;
-  color: #a9f4d4;
-  text-shadow: 0 0 6px #2effbf;
+.letter {
+  display: inline-block;
+  cursor: default;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: transform 0.3s ease;
+}
+
+/* Base jump animation for letters */
+@keyframes jump {
+  0%,
+  100% {
+    transform: translateY(0);
+    color: #9f54ff;
+    text-shadow: 0 0 8px #9f54ff;
+  }
+  50% {
+    transform: translateY(-15px);
+    color: #2effbf;
+    text-shadow: 0 0 15px #2effbf, 0 0 25px #2effbf;
+  }
+}
+
+/* Animate letters one by one with staggered delay for sign-up */
+.container.sign-up-mode .letter {
+  animation-name: jump;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+}
+
+.container.sign-up-mode .letter:nth-child(1) {
+  animation-delay: 0s;
+}
+.container.sign-up-mode .letter:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.container.sign-up-mode .letter:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.container.sign-up-mode .letter:nth-child(4) {
+  animation-delay: 0.3s;
+}
+.container.sign-up-mode .letter:nth-child(5) {
+  animation-delay: 0.4s;
+}
+.container.sign-up-mode .letter:nth-child(6) {
+  animation-delay: 0.5s;
+}
+.container.sign-up-mode .letter:nth-child(7) {
+  animation-delay: 0.6s;
+}
+.container.sign-up-mode .letter:nth-child(8) {
+  animation-delay: 0.7s;
+}
+.container.sign-up-mode .letter:nth-child(9) {
+  animation-delay: 0.8s;
+}
+.container.sign-up-mode .letter:nth-child(10) {
+  animation-delay: 0.9s;
+}
+
+/* Animate letters on sign-in mode differently */
+.container:not(.sign-up-mode) .letter {
+  animation-name: jump;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  color: #2effbf;
+  text-shadow: 0 0 15px #2effbf, 0 0 25px #2effbf;
+}
+
+.container:not(.sign-up-mode) .letter:nth-child(1) {
+  animation-delay: 0s;
+}
+.container:not(.sign-up-mode) .letter:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.container:not(.sign-up-mode) .letter:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.container:not(.sign-up-mode) .letter:nth-child(4) {
+  animation-delay: 0.3s;
+}
+.container:not(.sign-up-mode) .letter:nth-child(5) {
+  animation-delay: 0.4s;
+}
+.container:not(.sign-up-mode) .letter:nth-child(6) {
+  animation-delay: 0.5s;
+}
+.container:not(.sign-up-mode) .letter:nth-child(7) {
+  animation-delay: 0.6s;
+}
+.container:not(.sign-up-mode) .letter:nth-child(8) {
+  animation-delay: 0.7s;
+}
+.container:not(.sign-up-mode) .letter:nth-child(9) {
+  animation-delay: 0.8s;
+}
+.container:not(.sign-up-mode) .letter:nth-child(10) {
+  animation-delay: 0.9s;
 }
 
 /* Phone input error */
@@ -307,16 +406,16 @@ body {
   .sign-up-form {
     position: relative !important;
     transform: none !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    width: 100%;
+    width: 100% !important;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
   }
-}
 
-@media (max-width: 570px) {
-  .input-field {
-    height: 50px;
-    padding: 0 15px;
+  .sign-in-form.active,
+  .sign-up-form.active {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .btn,
@@ -328,6 +427,7 @@ body {
     font-size: 1.5rem;
   }
 }
+
 /* Glowing typed text and placeholder */
 .input-field input {
   background: none;
@@ -335,7 +435,7 @@ body {
   border: none;
   flex: 1;
   font-size: 1.1rem;
-  color: #05d213; /* neon purple text */
+  color: #05d213; /* neon green text */
   font-weight: 500;
   caret-color: #9f54ff; /* purple caret */
 
@@ -348,6 +448,8 @@ body {
   color: #7b3effaa; /* lighter neon purple */
   text-shadow: 0 0 3px #7b3effaa, 0 0 6px #7b3effaa;
 }
+
+/* Google sign-in button styling */
 .g_id_signin {
   width: 100% !important; /* take full width */
   max-width: 320px;
