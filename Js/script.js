@@ -117,4 +117,28 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     return JSON.parse(jsonPayload);
   }
+
+  // GOOGLE SIGN-IN BUTTON INIT
+  if (window.google && google.accounts && google.accounts.id) {
+    // Replace with your actual Google OAuth Client ID (use yours below)
+    const clientId =
+      "37850694475-0dlp5pc22vrpvhn2t70ij4cjprvlsqhr.apps.googleusercontent.com";
+
+    google.accounts.id.initialize({
+      client_id: clientId,
+      callback: window.handleCredentialResponse,
+    });
+
+    document.querySelectorAll(".g_id_signin").forEach((btn) => {
+      google.accounts.id.renderButton(btn, {
+        theme: btn.getAttribute("data-theme") || "outline",
+        size: btn.getAttribute("data-size") || "large",
+        text: btn.getAttribute("data-text") || "signin_with",
+        shape: btn.getAttribute("data-shape") || "rectangular",
+        logo_alignment: btn.getAttribute("data-logo_alignment") || "left",
+      });
+    });
+
+    // google.accounts.id.prompt(); // Optional: for One Tap
+  }
 });

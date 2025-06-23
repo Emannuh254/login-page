@@ -348,3 +348,21 @@ body {
   color: #7b3effaa; /* lighter neon purple */
   text-shadow: 0 0 3px #7b3effaa, 0 0 6px #7b3effaa;
 }
+.g_id_signin {
+  width: 100% !important; /* take full width */
+  max-width: 320px;
+  margin: 0.75rem 0;
+  filter: drop-shadow(0 0 5px #6e1cff88);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Override Google button inside for neon effect */
+.g_id_signin > div {
+  border-radius: 12px !important;
+}
+
+/* Optional: on hover glow */
+.g_id_signin:hover {
+  filter: drop-shadow(0 0 15px #2effbfcc);
+}
