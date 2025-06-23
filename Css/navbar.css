@@ -1,0 +1,202 @@
+/* Import Poppins font (if not already in your main style.css) */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+/* --- Base Styles (if not already in your main style.css) --- */
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #000;
+  color: #ccc;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Navbar Specific Styles --- */
+.navbar {
+  position: fixed; /* Stays in place when scrolling */
+  top: 0;
+  right: -300px; /* Hidden off-screen by default */
+  width: 280px; /* Width of the sidebar */
+  height: 100%;
+  background-color: #111; /* Dark background */
+  box-shadow: -5px 0 20px #6e1cff80, -10px 0 40px #1effa080; /* Neon shadow */
+  color: #ddd;
+  padding: 20px;
+  transition: right 0.4s ease-in-out; /* Smooth slide-in/out */
+  z-index: 1000; /* Ensures it's on top of other content */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content vertically */
+}
+
+/* State when navbar is active (shown) */
+.navbar.active {
+  right: 0; /* Slides into view */
+}
+
+.navbar-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #333; /* Separator */
+  margin-bottom: 20px;
+}
+
+.navbar h1 {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #9f54ff; /* Primary neon color */
+  text-shadow: 0 0 8px #9f54ff, 0 0 15px #2effbf; /* Combined glow */
+  margin: 0;
+  padding: 0;
+}
+
+.menu-toggle {
+  font-size: 1.8rem;
+  color: #2effbf; /* Accent neon color */
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+  z-index: 1001; /* Ensure toggle is clickable even with overlay */
+}
+
+.menu-toggle:hover {
+  color: #9f54ff;
+  transform: scale(1.1);
+}
+
+.nav-links {
+  list-style: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between links */
+  padding-top: 10px; /* Space from header */
+}
+
+.nav-links li {
+  width: 100%;
+}
+
+.nav-links a {
+  display: block; /* Make the whole area clickable */
+  color: #ccc;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 12px 15px; /* Padding for click area */
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+  text-align: left; /* Align text to left within padding */
+}
+
+.nav-links a:hover {
+  background-color: #222;
+  color: #2effbf; /* Hover color */
+  text-shadow: 0 0 8px #2effbf, 0 0 15px #9f54ff; /* Neon hover glow */
+}
+
+/* Logout button specific styling */
+#logout {
+  color: #e63946; /* Red for logout */
+  font-weight: 600;
+}
+
+#logout:hover {
+  background-color: #3d1c20; /* Darker red background on hover */
+  color: #ff6b6b; /* Lighter red on hover */
+  text-shadow: 0 0 8px #e63946, 0 0 15px #ff6b6b;
+}
+
+/* --- Overlay Styles --- */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent dark overlay */
+  z-index: 999; /* Below navbar, above content */
+  opacity: 0; /* Hidden by default */
+  visibility: hidden; /* Ensures it doesn't block clicks when hidden */
+  transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+}
+
+.overlay.active {
+  opacity: 1; /* Visible when active */
+  visibility: visible;
+}
+
+/* --- Responsive Adjustments --- */
+
+/* Desktop view: Navbar always visible, no toggle needed */
+@media (min-width: 992px) {
+  .navbar {
+    position: fixed; /* Keeps it fixed on the right */
+    right: 0; /* Always visible on desktop */
+    width: 250px; /* Slightly narrower on desktop if preferred */
+    /* Remove shadow for a cleaner look if desired, or make it subtle */
+    /* box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5); */
+    box-shadow: 0 0 0 transparent; /* Remove shadow for always-on desktop */
+    border-left: 1px solid #333; /* A subtle border instead of glow */
+    background-color: #0d0d0d; /* Slightly darker background */
+  }
+
+  .navbar-header {
+    justify-content: flex-start; /* Align title to left */
+  }
+
+  .navbar h1 {
+    font-size: 1.8rem; /* Slightly smaller title for desktop */
+    text-shadow: none; /* Remove text glow for desktop */
+    color: #9f54ff; /* Keep brand color */
+  }
+
+  .menu-toggle {
+    display: none; /* Hide hamburger icon on desktop */
+  }
+
+  .nav-links {
+    flex-direction: column; /* Keep column layout */
+    gap: 10px; /* Adjust spacing */
+    padding-top: 0; /* No extra padding */
+  }
+
+  .nav-links a {
+    font-size: 1rem; /* Slightly smaller font */
+    padding: 10px 15px;
+    color: #bbb; /* Less bright default link color */
+  }
+
+  .nav-links a:hover {
+    background-color: #1a1a1a; /* Subtle hover */
+    color: #2effbf;
+    text-shadow: none; /* Remove hover glow for desktop */
+  }
+
+  /* Adjust main content to not be hidden by navbar */
+  body {
+    padding-right: 250px; /* Push content to the left of the navbar */
+  }
+
+  .overlay {
+    display: none; /* No overlay on desktop */
+  }
+}
+
+/* Adjustments for tablets/larger phones (vertical orientation) */
+@media (min-width: 600px) and (max-width: 991px) {
+  .navbar {
+    width: 250px; /* Slightly narrower sidebar on tablets */
+  }
+
+  .navbar h1 {
+    font-size: 1.8rem;
+  }
+
+  .nav-links a {
+    font-size: 1rem;
+  }
+}

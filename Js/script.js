@@ -297,9 +297,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize Google Sign-In buttons
   // Only try to initialize if the Google global object exists
   if (window.google && window.google.accounts && window.google.accounts.id) {
-    // Replace with your actual Google OAuth Client ID
+    // Use your actual Google OAuth Client ID
     const clientId =
-      "37850694475-0dlp5pc22vrpvhn2t70ij4cjprvlsqhr.apps.googleusercontent.com"; // Your Client ID
+      "57706195065-klr8q7oot7ee889ohh40o9jp1huc7420.apps.googleusercontent.com";
 
     google.accounts.id.initialize({
       client_id: clientId,
@@ -319,4 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Optional: for One Tap prompt
     // google.accounts.id.prompt();
   }
+
+  // Optional: for One Tap prompt
+  // google.accounts.id.prompt();
 });
