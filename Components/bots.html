@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bots</title>
+    <link href="/Css/bots.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1 id="heading">Bots Available</h1>
+
+    <div class="marquee-container">
+      <span class="marquee-text">Start mining today</span>
+    </div>
+
+    <!-- Dashboard -->
+    <section id="dashboard" class="dashboard bot-card">
+      <h2>My Bot Summary</h2>
+      <p>Current Balance: <strong id="balance" class="zero">Ksh 0</strong></p>
+      <p>Total Bots Activated: <span id="bot-count">0</span></p>
+      <p>Total Claimed Earnings: <span id="total-claimed">0</span> Ksh</p>
+    </section>
+
+    <!-- Bot Cards -->
+    <div id="botContainer"></div>
+
+    <!-- Modal -->
+    <div class="modal" id="paymentModal">
+      <div class="modal-content">
+        <h3>Confirm Bot Purchase</h3>
+        <p>Pay via M-Pesa Till Number:</p>
+        <p class="till-number">523698</p>
+        <button class="btn confirm-pay">Confirm Payment</button>
+        <button class="btn cancel-pay">Cancel</button>
+      </div>
+    </div>
+    <div class="overlay" id="modalOverlay"></div>
+
+    <script src="/Js/bots.js"></script>
+    <footer>FlipMarket 2025. All rights reserved.</footer>
+  </body>
+</html>

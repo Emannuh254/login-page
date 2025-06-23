@@ -3,7 +3,6 @@
   margin: 0;
   padding: 0;
 }
-
 body {
   font-family: "Segoe UI", sans-serif;
   background-color: #000000;
@@ -22,7 +21,6 @@ body {
 .chart-card {
   border: 1px solid rgba(199, 125, 255, 0.15); /* Subtle neon outline */
 }
-
 .card,
 .chart-card {
   background-color: #000; /* Pure black card */
@@ -41,7 +39,7 @@ body {
 
 /* Navbar */
 .navbar {
-  background-color: #12002e;
+  background-color: #000000;
   color: white;
   padding: 1rem 2rem;
   display: flex;
@@ -50,7 +48,7 @@ body {
 }
 
 .navbar h1 {
-  color: #100c13;
+  color: #ffffff;
 }
 
 .menu-toggle {
@@ -66,6 +64,7 @@ body {
 
 .nav-links a {
   color: #c77dff;
+  background-color: #000;
   text-decoration: none;
   padding: 0.3rem 0.6rem;
   border-radius: 6px;
@@ -134,7 +133,7 @@ body {
 
 /* Charts */
 .chart-card {
-  background-color: #050107;
+  background-color: #000000;
   padding: 1rem;
   border-radius: 12px;
   margin-top: 1rem;
@@ -146,15 +145,12 @@ footer {
   text-align: center;
   padding: 1rem;
   background-color: #0f001c;
-  color: #777;
+  color: #ebe9e9;
   margin-top: 2rem;
 }
 
 /* Responsive nav for mobile */
-@media (max-width: 768px) {
-  .menu-toggle {
-    display: block;
-  }
+
 
   .nav-links {
     position: fixed;

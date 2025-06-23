@@ -33,7 +33,7 @@ bots.forEach((bot, index) => {
   card.className = "bot-card";
 
   card.innerHTML = `
-    <img src="images/pic${index + 1}.jpg" alt="${
+    <img src="/images/pic${index + 1}.jpg" alt="${
     bot.price
   } Bot" class="bot-image" />
     <h2>${bot.price.toLocaleString()} Ksh Bot</h2>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FlipMarket | Home</title>
+    <link rel="stylesheet" href="/Css/home.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="overlay" id="overlay"></div>
+
+    <nav class="navbar">
+      <h1 class="heading">Flipmarket</h1>
+      <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#">Bots</a></li>
+        <li><a href="#">Referrals</a></li>
+        <li><a href="#">Help</a></li>
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">Logout</a></li>
+      </ul>
+    </nav>
+
+    <main class="container">
+      <section class="card profile-card">
+        <img src="/images/user.png" alt="Default User" class="profile-img" />
+        <h2>Emmanuel Mutugi</h2>
+        <p class="username">@mannuh</p>
+        <p>Email: emmanuel@example.com</p>
+      </section>
+
+      <section class="card referrals-card">
+        <h2>Your Referrals</h2>
+        <p>Referrals: <strong>15 users</strong></p>
+        <p>Total Earned: <strong>Ksh 4,500</strong></p>
+        <button class="btn">Share Link</button>
+      </section>
+
+      <section class="card charts-section">
+        <div class="chart-card">
+          <h3>Bots Usage</h3>
+          <canvas id="usageChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>User Reviews</h3>
+          <canvas id="reviewsChart"></canvas>
+        </div>
+      </section>
+    </main>
+
+    <footer>© 2025 FlipMarket</footer>
+    <script src="/Js/home.js"></script>
+  </body>
+</html>
