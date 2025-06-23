@@ -1,37 +1,43 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Elements
-  const signUpBtn = document.getElementById("sign-up-btn");
-  const signInBtn = document.getElementById("sign-in-btn");
   const container = document.querySelector(".container");
-  const signInForm = document.querySelector(".sign-in-form");
   const signUpForm = document.querySelector(".sign-up-form");
+  const signInForm = document.querySelector(".sign-in-form");
 
-  // Toggle between forms by adding/removing CSS classes
-  signUpBtn?.addEventListener("click", () => {
-    container.classList.add("sign-up-mode");
-  });
+  // Show sign-up form by default
+  container.classList.add("sign-up-mode");
+  signUpForm.classList.add("active");
+  signInForm.classList.remove("active");
 
-  signInBtn?.addEventListener("click", () => {
+  // Dynamic form switch buttons (inside forms)
+  const switchToSignInBtn = document.querySelector(".switch-to-signin");
+  const switchToSignUpBtn = document.querySelector(".switch-to-signup");
+
+  switchToSignInBtn?.addEventListener("click", () => {
     container.classList.remove("sign-up-mode");
+    signUpForm.classList.remove("active");
+    signInForm.classList.add("active");
   });
 
-  // Password visibility toggle for all toggles
+  switchToSignUpBtn?.addEventListener("click", () => {
+    container.classList.add("sign-up-mode");
+    signInForm.classList.remove("active");
+    signUpForm.classList.add("active");
+  });
+
+  // Toggle Password Visibility
   document.querySelectorAll(".toggle-password").forEach((toggle) => {
     toggle.addEventListener("click", () => {
       const input = document.getElementById(toggle.dataset.target);
       if (!input) return;
 
-      if (input.type === "password") {
-        input.type = "text";
-        toggle.classList.replace("fa-eye", "fa-eye-slash");
-      } else {
-        input.type = "password";
-        toggle.classList.replace("fa-eye-slash", "fa-eye");
-      }
+      const isPassword = input.type === "password";
+      input.type = isPassword ? "text" : "password";
+      toggle.classList.toggle("fa-eye");
+      toggle.classList.toggle("fa-eye-slash");
     });
   });
 
-  // Intl Tel Input setup and basic input validation (phone number)
+  // Intl Tel Input setup
   const phoneInput = document.getElementById("phone");
   const phoneError = document.getElementById("phone-error");
   let iti;
@@ -50,15 +56,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Simple email validation regex
+  // Validation helpers
   const isEmailValid = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
-  // Password strength (min 6 chars + digit)
   const isPasswordStrong = (password) =>
     password.length >= 6 && /\d/.test(password);
 
-  // Sign Up form validation
+  // Sign Up Form Validation
   signUpForm?.addEventListener("submit", (e) => {
     const email = signUpForm.querySelector('input[type="email"]')?.value || "";
     const password = document.getElementById("signUpPassword")?.value || "";
@@ -84,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     else alert("Account created successfully!");
   });
 
-  // Sign In form validation
+  // Sign In Form Validation
   signInForm?.addEventListener("submit", (e) => {
     const password = document.getElementById("signInPassword")?.value || "";
     if (password.length < 6) {
@@ -93,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Google Sign-In handler (if used)
+  // Google Sign-In Response Handler
   window.handleCredentialResponse = (response) => {
     const jwt = response.credential;
     const data = parseJwt(jwt);

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SignIn & SignUp</title>
 
     <!-- Font Awesome -->
@@ -18,48 +18,57 @@
     />
 
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="/Css/index.css" />
+    <link rel="stylesheet" href="Css/index.css" />
+    <style>
+      @media (min-width: 1024px) {
+        .container {
+          max-width: 800px;
+        }
+
+        .forms-container,
+        .panels-container {
+          gap: 2rem;
+        }
+      }
+
+      .panels-container {
+        margin-top: 1.5rem;
+        opacity: 1;
+        transition: opacity 0.5s ease;
+      }
+
+      @media (max-width: 768px) {
+        .sign-in-form,
+        .sign-up-form {
+          display: none;
+        }
+
+        .sign-in-form.active,
+        .sign-up-form.active {
+          display: block;
+        }
+
+        .panels-container {
+          display: block;
+          opacity: 0;
+          animation: fadeIn 0.6s ease forwards;
+        }
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
   </head>
 
   <body>
     <div class="container">
       <div class="forms-container">
         <div class="signin-signup">
-          <!-- Sign In Form -->
-          <form class="sign-in-form active">
-            <h2 class="title">Sign In</h2>
-            <div class="input-field">
-              <i class="fas fa-user"></i>
-              <input type="text" placeholder="Username/Email" required />
-            </div>
-            <div class="input-field">
-              <i class="fas fa-lock"></i>
-              <input
-                type="password"
-                placeholder="Password"
-                id="signInPassword"
-                required
-              />
-              <i
-                class="fas fa-eye toggle-password"
-                data-target="signInPassword"
-              ></i>
-            </div>
-            <input type="submit" value="Login" class="btn" />
-            <p class="social-text">Or Sign in with Google</p>
-            <div
-              class="g_id_signin"
-              data-type="standard"
-              data-shape="rectangular"
-              data-theme="outline"
-              data-text="signin_with"
-              data-size="large"
-              data-logo_alignment="left"
-            ></div>
-          </form>
-
           <!-- Sign Up Form -->
-          <form class="sign-up-form">
+          <form class="sign-up-form active">
             <h2 class="title">Sign Up</h2>
             <div class="input-field">
               <i class="fas fa-phone"></i>
@@ -91,14 +100,6 @@
             <input type="submit" value="Sign Up" class="btn" />
             <p class="social-text">Or Sign up with Google</p>
             <div
-              id="g_id_onload"
-              data-client_id="57706195065-klr8q7oot7ee889ohh40o9jp1huc7420.apps.googleusercontent.com"
-              data-context="signup"
-              data-ux_mode="popup"
-              data-callback="handleCredentialResponse"
-              data-auto_prompt="false"
-            ></div>
-            <div
               class="g_id_signin"
               data-type="standard"
               data-shape="rectangular"
@@ -107,6 +108,47 @@
               data-size="large"
               data-logo_alignment="left"
             ></div>
+            <p class="social-text">Already have an account?</p>
+            <button type="button" class="btn transparent switch-to-signin">
+              Sign In
+            </button>
+          </form>
+
+          <!-- Sign In Form -->
+          <form class="sign-in-form">
+            <h2 class="title">Sign In</h2>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" placeholder="Username/Email" required />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input
+                type="password"
+                placeholder="Password"
+                id="signInPassword"
+                required
+              />
+              <i
+                class="fas fa-eye toggle-password"
+                data-target="signInPassword"
+              ></i>
+            </div>
+            <input type="submit" value="Login" class="btn" />
+            <p class="social-text">Or Sign in with Google</p>
+            <div
+              class="g_id_signin"
+              data-type="standard"
+              data-shape="rectangular"
+              data-theme="outline"
+              data-text="signin_with"
+              data-size="large"
+              data-logo_alignment="left"
+            ></div>
+            <p class="social-text">Don't have an account?</p>
+            <button type="button" class="btn transparent switch-to-signup">
+              Sign Up
+            </button>
           </form>
         </div>
       </div>
@@ -116,12 +158,10 @@
         <div class="panel left-panel">
           <h3>New here?</h3>
           <p>Join us and discover amazing features!</p>
-          <button class="btn transparent" id="sign-up-btn">Sign Up</button>
         </div>
         <div class="panel right-panel">
           <h3>One of us?</h3>
           <p>Welcome back! Sign in to continue.</p>
-          <button class="btn transparent" id="sign-in-btn">Sign In</button>
         </div>
       </div>
     </div>
@@ -129,6 +169,6 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="/Js/script.js"></script>
+    <script src="Js/script.js"></script>
   </body>
 </html>
