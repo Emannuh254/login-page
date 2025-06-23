@@ -1,4 +1,4 @@
-// Toggle sign-in/sign-up mode
+// ===== Toggle Sign In / Sign Up Mode =====
 const signUpBtn = document.getElementById("sign-up-btn");
 const signInBtn = document.getElementById("sign-in-btn");
 const container = document.querySelector(".container");
@@ -11,7 +11,7 @@ signInBtn?.addEventListener("click", () => {
   container?.classList.remove("sign-up-mode");
 });
 
-// Toggle password visibility
+// ===== Toggle Password Visibility =====
 document.querySelectorAll(".toggle-password").forEach((toggle) => {
   toggle.addEventListener("click", () => {
     const targetId = toggle.getAttribute("data-target");
@@ -26,12 +26,14 @@ document.querySelectorAll(".toggle-password").forEach((toggle) => {
   });
 });
 
-// Initialize international phone input
+// ===== Initialize Intl Tel Input =====
 const phoneInput = document.querySelector("#phone");
 const phoneError = document.getElementById("phone-error");
 
+let iti; // Store instance globally for later validation
+
 if (phoneInput && phoneError) {
-  const iti = window.intlTelInput(phoneInput, {
+  iti = window.intlTelInput(phoneInput, {
     initialCountry: "ke",
     preferredCountries: ["ke", "ng", "us", "gb"],
     utilsScript:
@@ -54,7 +56,67 @@ if (phoneInput && phoneError) {
   });
 }
 
-// Google Sign-In response handler
+// ===== Validation Helpers =====
+function isEmailValid(email) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+
+function isPasswordStrong(password) {
+  return password.length >= 6 && /\d/.test(password);
+}
+
+// ===== Sign Up Form Validation =====
+const signUpForm = document.querySelector(".sign-up-form");
+
+signUpForm?.addEventListener("submit", function (e) {
+  const phone = document.getElementById("phone");
+  const email = signUpForm.querySelector('input[type="email"]');
+  const password = document.getElementById("signUpPassword");
+
+  let hasError = false;
+
+  // Phone validity check
+  if (iti && !iti.isValidNumber()) {
+    phoneError.textContent = "Please enter a valid phone number!";
+    phoneError.style.display = "block";
+    phoneError.style.opacity = "1";
+    hasError = true;
+  }
+
+  // Email format check
+  if (!isEmailValid(email.value)) {
+    alert("Please enter a valid email address.");
+    hasError = true;
+  }
+
+  // Password strength check
+  if (!isPasswordStrong(password.value)) {
+    alert("Password must be at least 6 characters and include a number.");
+    hasError = true;
+  }
+
+  if (hasError) {
+    e.preventDefault(); // Stop form from submitting
+  } else {
+    // Valid data - connect to backend here later
+    alert("Account created successfully!");
+  }
+});
+
+// ===== Sign In Validation (optional) =====
+const signInForm = document.querySelector(".sign-in-form");
+
+signInForm?.addEventListener("submit", function (e) {
+  const password = document.getElementById("signInPassword");
+
+  if (password.value.length < 6) {
+    alert("Password must be at least 6 characters.");
+    e.preventDefault();
+  }
+});
+
+// ===== Google Sign-In Token Handler =====
 function handleCredentialResponse(response) {
   const jwt = response.credential;
   const data = parseJwt(jwt);
@@ -62,10 +124,9 @@ function handleCredentialResponse(response) {
 
   alert(`Welcome, ${data.name || "User"}!`);
   localStorage.setItem("authToken", jwt);
-  window.location.href = "home.html";
+  window.location.href = "/Components/home.html"; // Redirect after login
 }
 
-// Decode JWT
 function parseJwt(token) {
   const base64Url = token.split(".")[1];
   const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -78,7 +139,7 @@ function parseJwt(token) {
   return JSON.parse(jsonPayload);
 }
 
-// Homepage Menu Toggle
+// ===== Menu Toggle (Optional for Mobile Nav) =====
 const menuToggle = document.getElementById("menu-toggle");
 const navLinks = document.getElementById("nav-links");
 const overlay = document.getElementById("overlay");
@@ -95,13 +156,12 @@ if (menuToggle && navLinks && overlay) {
   });
 }
 
-// Logout Handler
+// ===== Logout Handler =====
 const logout = document.getElementById("logout");
 if (logout) {
   logout.addEventListener("click", function (e) {
     e.preventDefault();
     localStorage.removeItem("authToken");
-    window.location.href = "index.html"; // Adjust as needed
+    window.location.href = "index.html"; // Adjust this route
   });
 }
-///bots
