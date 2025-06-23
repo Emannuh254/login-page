@@ -1,34 +1,37 @@
-// ===== DOM Ready =====
 document.addEventListener("DOMContentLoaded", () => {
-  // ===== Toggle Sign In / Sign Up Mode =====
+  // Elements
   const signUpBtn = document.getElementById("sign-up-btn");
   const signInBtn = document.getElementById("sign-in-btn");
   const container = document.querySelector(".container");
+  const signInForm = document.querySelector(".sign-in-form");
+  const signUpForm = document.querySelector(".sign-up-form");
 
+  // Toggle between forms by adding/removing CSS classes
   signUpBtn?.addEventListener("click", () => {
-    container?.classList.add("sign-up-mode");
+    container.classList.add("sign-up-mode");
   });
 
   signInBtn?.addEventListener("click", () => {
-    container?.classList.remove("sign-up-mode");
+    container.classList.remove("sign-up-mode");
   });
 
-  // ===== Toggle Password Visibility =====
+  // Password visibility toggle for all toggles
   document.querySelectorAll(".toggle-password").forEach((toggle) => {
     toggle.addEventListener("click", () => {
-      const targetId = toggle.dataset.target;
-      const input = document.getElementById(targetId);
+      const input = document.getElementById(toggle.dataset.target);
+      if (!input) return;
 
-      if (input) {
-        const isPassword = input.type === "password";
-        input.type = isPassword ? "text" : "password";
-        toggle.classList.toggle("fa-eye");
-        toggle.classList.toggle("fa-eye-slash");
+      if (input.type === "password") {
+        input.type = "text";
+        toggle.classList.replace("fa-eye", "fa-eye-slash");
+      } else {
+        input.type = "password";
+        toggle.classList.replace("fa-eye-slash", "fa-eye");
       }
     });
   });
 
-  // ===== Intl Tel Input Initialization =====
+  // Intl Tel Input setup and basic input validation (phone number)
   const phoneInput = document.getElementById("phone");
   const phoneError = document.getElementById("phone-error");
   let iti;
@@ -44,37 +47,35 @@ document.addEventListener("DOMContentLoaded", () => {
     phoneInput.addEventListener("input", () => {
       const isValid = /^[\d+]*$/.test(phoneInput.value);
       phoneError.style.display = isValid ? "none" : "block";
-      phoneError.style.opacity = isValid ? "0" : "1";
     });
   }
 
-  // ===== Validation Helpers =====
-  const isEmailValid = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  // Simple email validation regex
+  const isEmailValid = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
+  // Password strength (min 6 chars + digit)
   const isPasswordStrong = (password) =>
     password.length >= 6 && /\d/.test(password);
 
-  // ===== Sign Up Form Validation =====
-  const signUpForm = document.querySelector(".sign-up-form");
-
+  // Sign Up form validation
   signUpForm?.addEventListener("submit", (e) => {
-    const email = signUpForm.querySelector('input[type="email"]');
-    const password = document.getElementById("signUpPassword");
+    const email = signUpForm.querySelector('input[type="email"]')?.value || "";
+    const password = document.getElementById("signUpPassword")?.value || "";
     let hasError = false;
 
     if (iti && !iti.isValidNumber()) {
       phoneError.textContent = "Please enter a valid phone number!";
       phoneError.style.display = "block";
-      phoneError.style.opacity = "1";
       hasError = true;
     }
 
-    if (!isEmailValid(email.value)) {
+    if (!isEmailValid(email)) {
       alert("Please enter a valid email address.");
       hasError = true;
     }
 
-    if (!isPasswordStrong(password.value)) {
+    if (!isPasswordStrong(password)) {
       alert("Password must be at least 6 characters and include a number.");
       hasError = true;
     }
@@ -83,22 +84,19 @@ document.addEventListener("DOMContentLoaded", () => {
     else alert("Account created successfully!");
   });
 
-  // ===== Sign In Form Validation =====
-  const signInForm = document.querySelector(".sign-in-form");
-
+  // Sign In form validation
   signInForm?.addEventListener("submit", (e) => {
-    const password = document.getElementById("signInPassword");
-    if (password.value.length < 6) {
+    const password = document.getElementById("signInPassword")?.value || "";
+    if (password.length < 6) {
       alert("Password must be at least 6 characters.");
       e.preventDefault();
     }
   });
 
-  // ===== Google Sign-In Token Handler =====
+  // Google Sign-In handler (if used)
   window.handleCredentialResponse = (response) => {
     const jwt = response.credential;
     const data = parseJwt(jwt);
-
     alert(`Welcome, ${data.name || "User"}!`);
     localStorage.setItem("authToken", jwt);
     window.location.href = "/Components/home.html";
@@ -114,29 +112,4 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     return JSON.parse(jsonPayload);
   }
-
-  // ===== Mobile Menu Toggle =====
-  const menuToggle = document.getElementById("menu-toggle");
-  const navLinks = document.getElementById("nav-links");
-  const overlay = document.getElementById("overlay");
-
-  if (menuToggle && navLinks && overlay) {
-    menuToggle.addEventListener("click", () => {
-      navLinks.classList.toggle("show");
-      overlay.classList.toggle("active");
-    });
-
-    overlay.addEventListener("click", () => {
-      navLinks.classList.remove("show");
-      overlay.classList.remove("active");
-    });
-  }
-
-  // ===== Logout =====
-  const logout = document.getElementById("logout");
-  logout?.addEventListener("click", (e) => {
-    e.preventDefault();
-    localStorage.removeItem("authToken");
-    window.location.href = "/Components/index.html";
-  });
 });
