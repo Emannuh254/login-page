@@ -1,461 +1,255 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
-
-/* Reset */
+/* ====== Base styles & reset ====== */
 *,
 *::before,
 *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
-/* Base Styles */
 html,
 body {
   height: 100%;
   font-family: "Poppins", sans-serif;
-  background-color: #000;
-  color: #ccc;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px; /* Overall padding for the viewport */
-}
-
-.container {
-  background-color: #111;
-  border-radius: 12px;
-  box-shadow: 0 0 20px #6e1cff80, 0 0 40px #1effa080;
+  background-color: #0a0a0a;
   color: #ddd;
   display: flex;
-  flex-direction: column; /* Default to column for mobile/stacked layout */
-  width: 100%;
-  max-width: 420px; /* Max width for mobile */
-  margin: 1rem auto;
-  transition: max-width 0.3s ease;
-  overflow: hidden; /* Ensures forms slide in/out cleanly without showing scrollbars */
-  min-height: auto; /* Allow height to adjust for mobile */
-  padding: 1.5rem; /* Internal padding for container on mobile */
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
 
-/* Desktop Layout: Side-by-Side */
-@media (min-width: 600px) {
-  .container {
-    flex-direction: row; /* Row for desktop */
-    max-width: 900px; /* Wider for desktop */
-    min-height: 500px; /* Explicit height for desktop layout */
-    padding: 0; /* Remove overall padding; children will handle it */
-  }
-
-  .forms-container {
-    flex: 1; /* Takes equal space */
-    padding: 2rem; /* Padding applied directly to forms-container */
-    border-right: 1px solid #333;
-    min-height: 100%; /* Ensure it fills container height */
-    /* Adjust top for forms based on combined height of title, social, and separator */
-    top: 150px; /* Example adjustment, may need fine-tuning */
-  }
-
-  .panels-container {
-    flex: 1; /* Takes equal space */
-    padding: 2rem; /* Padding applied directly to panels-container */
-    border-radius: 0 12px 12px 0; /* Adjust border-radius for right panel */
-    margin-top: 0; /* No top margin on desktop */
-    min-height: 100%; /* Ensure it fills container height */
-  }
-}
-
-/* Forms Container and General Layout */
-.forms-container {
-  display: flex;
-  flex-direction: column; /* Stacks children: title, social section, forms */
-  align-items: center; /* Centers children horizontally */
-  justify-content: flex-start; /* Aligns content to the top */
-  padding: 1rem 0; /* Top/bottom padding for content inside forms-container */
-  text-align: center;
-  position: relative; /* Crucial for absolute positioning of forms inside */
-  /* Min-height for mobile: Ensure enough space for title + social + forms */
-  min-height: 550px; /* Increased to provide ample space */
-}
-
-/* FlipMarket Animated Title */
+/* ====== Animated Title ====== */
 .animated-title {
-  font-size: 3rem; /* Default for desktop */
+  position: fixed;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  font-size: 3rem;
   font-weight: 900;
   color: #9f54ff;
-  text-shadow: 0 0 8px #9f54ff;
-  display: flex;
-  justify-content: center;
-  gap: 0.1em;
-  flex-wrap: wrap; /* Allows wrapping on small screens */
-  margin-bottom: 2rem; /* Space below the title */
-  line-height: 1.2;
-  position: relative;
-  z-index: 2; /* Make sure it's above the forms */
-  pointer-events: none; /* Allows clicks to pass through to forms below if overlapping */
+  text-shadow: 0 0 1px #9f54ff, 0 0 1px #2effbf, 0 0 1px #9f54ff,
+    0 0 4px #2effbf;
+  z-index: 1000;
+  animation: bounceIn 1.2s ease forwards;
 }
 
-/* Individual letter animation for glowing/moving effect */
 .letter {
   display: inline-block;
+  animation: flipBounce 2.5s ease-in-out infinite;
+  transform-origin: center;
   cursor: default;
-  animation: neonGlow 1.5s ease-in-out infinite alternate,
-    letterBounce 3s ease-in-out infinite; /* Combined animations */
-  animation-delay: calc(var(--index) * 0.1s); /* Stagger delay */
-  transform-origin: center bottom; /* For bounce effect */
-  transition: transform 0.3s ease;
+  user-select: none;
+  transition: color 0.3s ease;
 }
 
-/* Animation Keyframes */
-@keyframes neonGlow {
-  0%,
-  100% {
-    text-shadow: 0 0 5px #9f54ff, 0 0 10px #9f54ff, 0 0 20px #9f54ff,
-      0 0 40px #2effbf, 0 0 80px #2effbf;
-    color: #fff;
+.letter:nth-child(odd) {
+  animation-delay: 0.1s;
+}
+
+.letter:nth-child(even) {
+  animation-delay: 0.3s;
+}
+
+.letter:hover {
+  color: #2effbf;
+  text-shadow: 0 0 15px #2effbf, 0 0 25px #2effbf;
+}
+
+/* ===== Animations ===== */
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -100px) scale(0.5);
   }
-  50% {
-    text-shadow: 0 0 2px #9f54ff, 0 0 5px #9f54ff, 0 0 10px #9f54ff,
-      0 0 20px #2effbf, 0 0 40px #2effbf;
-    color: #eee;
+  60% {
+    opacity: 1;
+    transform: translate(-50%, 20px) scale(1.05);
+  }
+  100% {
+    transform: translateX(-50%) scale(1);
   }
 }
 
-@keyframes letterBounce {
+@keyframes flipBounce {
   0%,
   100% {
-    transform: translateY(0);
+    transform: translateX(0) rotateY(0deg);
   }
   25% {
-    transform: translateY(-5px) scale(1.05);
+    transform: translateX(-2px) rotateY(15deg);
   }
   50% {
-    transform: translateY(0);
+    transform: translateX(2px) rotateY(-15deg);
   }
   75% {
-    transform: translateY(-3px) scale(1.02);
+    transform: translateX(-1px) rotateY(10deg);
   }
 }
 
-/* Social Media Sign-in Section */
-.social-signin-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 300px;
-  margin-bottom: 1rem;
+/* ====== Container for forms ====== */
+.auth-container {
+  background-color: #121212;
+  padding: 40px 50px 60px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #6e1cffcc, 0 0 50px #2effbfcc;
+  width: 360px;
+  max-width: 95vw;
+  text-align: center;
   position: relative;
-  z-index: 2; /* Make sure social icons are above forms */
+  margin-top: 120px; /* avoid overlap with fixed title */
 }
 
-.social-text {
-  font-size: 0.9rem;
-  color: #bbb;
-  margin-bottom: 15px;
+/* ====== Title inside container ====== */
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #9f54ff;
+  margin-bottom: 30px;
+  user-select: none;
 }
 
-.social-media {
-  display: flex;
-  justify-content: center;
-  gap: 15px; /* Space between social icons */
-  width: 100%;
-}
-
-.social-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50px; /* Adjust for icon size */
-  height: 50px;
-  border: 1px solid #444;
-  border-radius: 50%;
-  color: #aaa;
-  font-size: 1.2rem;
-  transition: border-color 0.3s ease, color 0.3s ease;
-  cursor: pointer;
-}
-
-.social-icon:hover {
-  border-color: #6e1cff;
-  color: #6e1cff;
-}
-
-/* "OR" separator */
-.or-separator {
-  margin: 1.5rem 0;
-  color: #888;
-  font-weight: 500;
-  font-size: 0.9rem;
-  position: relative; /* Ensure it stays above forms */
-  z-index: 2;
-}
-
-/* Sign-in and Sign-up Forms */
-.sign-in-form,
-.sign-up-form {
-  width: 100%;
-  max-width: 350px; /* Max width for forms themselves */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: opacity 0.4s ease, transform 0.5s ease; /* Transition for both opacity and transform */
-  opacity: 0;
-  pointer-events: none; /* Prevents interaction when hidden */
-  position: absolute; /* Positions forms over each other */
-  /* This 'top' value is crucial. It needs to be adjusted based on the combined
-     height of .animated-title, .social-signin-section, and .or-separator,
-     plus any margins/paddings between them. */
-  top: 190px; /* Initial value, fine-tune as needed */
-  left: 50%;
-  transform: translateX(calc(-50% + 100%)); /* Start off-screen to the right */
-  z-index: 1; /* Below title and social section */
-}
-
-.sign-in-form.active {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(-50%); /* Slide to center */
-}
-
-.sign-up-form.active {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(-50%); /* Slide to center */
-}
-
-/* When one form is active, the other is pushed off-screen */
-.sign-in-form:not(.active) {
-  transform: translateX(calc(-50% + 100%)); /* Push right when inactive */
-}
-.sign-up-form:not(.active) {
-  transform: translateX(calc(-50% - 100%)); /* Push left when inactive */
-}
-
-/* Input Fields Styling */
-.input-field {
-  width: 100%;
-  background-color: #222;
-  margin: 12px 0 6px;
-  height: 55px;
-  border-radius: 55px;
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
-  box-shadow: inset 0 0 8px #6e1cffaa, inset 0 0 15px #1effa0aa;
-  transition: box-shadow 0.3s ease;
-  position: relative; /* For error message and toggle-password positioning */
-  overflow: visible;
-}
-
-.input-field:hover,
-.input-field:focus-within {
-  box-shadow: inset 0 0 12px #9f54ff, inset 0 0 20px #2effbf;
-}
-
-.input-field i {
-  color: #6e1cff;
-  margin-right: 15px;
-  font-size: 1.1rem;
-  filter: drop-shadow(0 0 5px #6e1cff);
-  transition: color 0.3s ease;
-  cursor: pointer;
-}
-
-.input-field:hover i {
+.title span {
   color: #2effbf;
-  filter: drop-shadow(0 0 8px #2effbf);
 }
 
-.input-field input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #eee;
-  caret-color: #9f54ff;
-  text-shadow: 0 0 5px #02b308, 0 0 10px #07c320, 0 0 20px #08c628;
-  padding-top: 15px; /* To leave space for error message */
+/* ====== Toggle buttons ====== */
+.form-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
-.input-field input::placeholder {
-  color: #7b3effaa;
-  text-shadow: 0 0 3px #7b3effaa, 0 0 6px #7b3effaa;
-}
-
-/* Password Toggle Icon */
-.toggle-password {
-  position: absolute;
-  right: 20px;
-  color: #888;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: color 0.2s ease;
-}
-
-.toggle-password:hover {
-  color: #6e1cff;
-}
-
-/* Buttons */
-.btn {
-  width: 150px;
-  height: 49px;
-  background: linear-gradient(135deg, #6e1cff, #2effbf);
-  border: none;
-  border-radius: 49px;
-  color: #fff;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  margin: 20px 0;
-  box-shadow: 0 0 10px #6e1cffaa;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 20px #9f54ff, 0 0 30px #2effbf, 0 0 40px #2effbf;
-}
-
-.btn.transparent {
+.form-toggle button {
   background: transparent;
   border: 2px solid #6e1cff;
   color: #6e1cff;
-  width: 130px;
-  height: 41px;
-  font-size: 0.9rem;
-  box-shadow: 0 0 8px #6e1cffaa;
-  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 600;
+  padding: 10px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.btn.transparent:hover {
-  background-color: #6e1cff;
+.form-toggle button.active,
+.form-toggle button:hover {
+  background: #6e1cff;
   color: #000;
-  box-shadow: 0 0 20px #9f54ff, 0 0 30px #2effbf;
+  box-shadow: 0 0 15px #6e1cff, 0 0 30px #2effbf;
 }
 
-/* Panels container */
-.panels-container {
-  display: flex;
-  flex-direction: column; /* Default to column for mobile */
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background-color: #111;
-  padding: 1.5rem; /* Internal padding for panels-container on mobile */
-  border-radius: 12px; /* Default for mobile */
-  margin-top: 1.5rem; /* Space from forms-container for mobile */
-}
-
-/* Error Messages - Positioned Inside Input Field */
-.error-message {
-  color: #e63946;
-  font-size: 0.75rem;
-  font-weight: 500;
-  font-family: "Poppins", sans-serif;
-  position: absolute;
-  top: -10px;
-  left: 20px;
-  right: 20px;
-  text-align: left;
-  background-color: #111;
-  padding: 2px 8px;
-  border-radius: 5px;
-  z-index: 1;
-  white-space: nowrap;
+/* ====== Forms ====== */
+.auth-form {
+  opacity: 0;
+  pointer-events: none;
+  max-height: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.4s ease;
   overflow: hidden;
-  text-overflow: ellipsis;
-  display: none; /* Controlled by JS */
-  user-select: none;
-  align-self: flex-start;
-  transform: none;
-}
-
-/* Toast Container */
-.toast-container {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 
-/* Toast Message Style */
-.toast {
-  background: #2e2e2edd;
-  color: #eee;
-  padding: 12px 20px;
+.auth-form.active {
+  opacity: 1;
+  pointer-events: auto;
+  max-height: 1000px; /* large enough to fit content */
+  transform: translateY(0);
+}
+
+.auth-form input {
+  background: #1a1a1a;
+  border: none;
   border-radius: 8px;
-  box-shadow: 0 0 15px #6e1cffbb;
-  font-weight: 600;
-  min-width: 250px;
-  max-width: 320px;
-  opacity: 0;
-  transform: translateX(100%);
-  animation: slideIn 0.4s forwards;
+  padding: 12px 15px;
+  color: #1dce09;
+  font-size: 1rem;
+  outline: none;
+  box-shadow: inset 0 0 8px #6e1cff99;
+  transition: box-shadow 0.3s ease;
+}
+
+.auth-form input:focus {
+  box-shadow: inset 0 0 12px #2effbfcc, 0 0 8px #2effbfcc;
+}
+
+.auth-form button {
+  background-color: #6e1cff;
+  color: #000;
+  font-weight: 700;
+  padding: 12px 0;
+  border-radius: 10px;
+  border: none;
   cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 0 20px #6e1cffaa;
+}
+
+.auth-form button:hover {
+  background-color: #2effbf;
+  color: #000;
+  box-shadow: 0 0 30px #2effbfcc;
+}
+
+/* ====== Welcome back / info text ====== */
+.auth-form h3 {
+  margin-top: 25px;
+  font-weight: 600;
+  color: #9f54ff;
   user-select: none;
 }
 
-.toast.success {
-  border-left: 5px solid #2effbf;
+.auth-form p {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  user-select: none;
 }
 
-.toast.error {
-  border-left: 5px solid #e63946;
+/* ====== Social Sign In Section ====== */
+.social-signin-section {
+  margin-top: 40px;
 }
 
-@keyframes slideIn {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.social-text {
+  color: #bbb;
+  font-weight: 600;
+  margin-bottom: 15px;
+  user-select: none;
 }
 
-/* Responsive Adjustments (for smaller screens like Android phones) */
-@media (max-width: 870px) {
-  .container {
-    padding: 1rem; /* Slightly reduced padding on very small screens */
-  }
+#google-signin-button {
+  width: 280px;
+  max-width: 90vw;
+  margin: 0 auto;
+  border-radius: 50px !important;
+  overflow: hidden;
+  box-shadow: inset 0 0 12px #9f54ff, inset 0 0 20px #2effbf;
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+}
 
-  .forms-container {
-    padding-top: 1rem;
-    min-height: 550px; /* Keep enough height for mobile */
+#google-signin-button:hover {
+  box-shadow: inset 0 0 20px #9f54ff, inset 0 0 30px #2effbf;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 400px) {
+  .auth-container {
+    padding: 30px 20px 50px;
+    width: 100%;
   }
 
   .animated-title {
-    font-size: 2rem; /* Smaller font for mobile */
-    margin-bottom: 1rem;
+    font-size: 2rem;
   }
 
-  .social-signin-section {
-    max-width: 250px; /* Adjust for smaller screens */
-  }
-
-  .social-text {
-    font-size: 0.85rem;
-  }
-
-  .panels-container {
-    margin-top: 1rem;
-    padding: 1rem;
-  }
-
-  .btn {
-    width: 100%; /* Full width buttons on mobile */
-  }
-
-  /* Adjust form positioning on mobile to align with new min-height and keep consistent */
-  .sign-in-form,
-  .sign-up-form {
-    top: 170px; /* Fine-tuned for mobile elements above forms */
+  #google-signin-button {
+    width: 100%;
   }
 }
