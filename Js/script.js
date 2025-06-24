@@ -93,8 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast("Logged in successfully!", "success");
     signInForm.reset();
     setTimeout(() => {
-      window.location.href = "/login-page/Components/splash.html";
-    }, 1500); // delay to let toast show before redirect
+      window.location.href =
+        "https://emannuh254.github.io/login-page/Components/splash.html";
+    }, 500); // delay to let toast show before redirect
   });
 
   function parseJwt(token) {
