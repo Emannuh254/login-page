@@ -3,38 +3,132 @@
   margin: 0;
   padding: 0;
 }
+
 body {
   font-family: "Segoe UI", sans-serif;
   background-color: #000000;
   color: #e0e0ff;
 }
-.profile-img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 3px solid #c77dff;
-  margin-bottom: 1rem;
-  object-fit: cover;
-  box-shadow: 0 0 15px rgba(199, 125, 255, 0.6);
+
+/* Container grid */
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
 }
+
+/* General card style for all cards inside container */
 .card,
 .chart-card {
-  border: 1px solid rgba(199, 125, 255, 0.15); /* Subtle neon outline */
-}
-.card,
-.chart-card {
-  background-color: #000; /* Pure black card */
-  border-radius: 12px;
-  padding: 1.5rem;
+  background-color: #0a001a; /* Deep black-purple */
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
   text-align: center;
-  box-shadow: 0 0 25px rgba(199, 125, 255, 0.35); /* Neon glow */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(159, 84, 255, 0.4); /* Neon purple border */
+  box-shadow: 0 0 8px 2px rgba(159, 84, 255, 0.3),
+    0 0 20px 6px rgba(159, 84, 255, 0.4), 0 0 40px 12px rgba(159, 84, 255, 0.2);
+  transition: box-shadow 0.4s ease, transform 0.3s ease;
+  backdrop-filter: saturate(180%) blur(10px);
+  color: #e0d9ff; /* Light purple-ish text */
+  font-weight: 600;
 }
 
 .card:hover,
 .chart-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 40px rgba(199, 125, 255, 0.55);
+  transform: translateY(-8px);
+  box-shadow: 0 0 15px 4px rgba(159, 84, 255, 0.6),
+    0 0 30px 10px rgba(159, 84, 255, 0.7), 0 0 60px 20px rgba(159, 84, 255, 0.5);
+}
+
+/* Profile Card specifics */
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.profile-img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 3px solid #9f54ff; /* Neon purple border */
+  box-shadow: 0 0 18px 3px rgba(159, 84, 255, 0.6);
+  object-fit: cover;
+}
+
+/* Username styling */
+.username {
+  color: #c8aaff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Referral Card specific */
+.referrals-card p strong {
+  color: #b487ff;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.referrals-card .btn {
+  background-color: transparent;
+  border: 2px solid #9f54ff;
+  color: #c8aaff;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+.referrals-card .btn:hover {
+  background-color: #9f54ff;
+  color: #0a001a;
+}
+
+/* Chart Cards */
+.chart-card {
+  background-color: #110026;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 0 12px 4px rgba(159, 84, 255, 0.5),
+    inset 0 0 6px rgba(159, 84, 255, 0.3);
+  color: #d0c8ff;
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+/* Headings inside cards */
+.card h2,
+.chart-card h3 {
+  color: #d7caff;
+  margin-bottom: 0.8rem;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(159, 84, 255, 0.7);
+}
+
+/* Button style for any other buttons */
+.btn {
+  background-color: #3e18c9;
+  color: #eee;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 0 12px #9f54ff;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #7f54ff;
+  box-shadow: 0 0 20px #bf80ff;
 }
 
 /* Navbar */
@@ -81,65 +175,6 @@ body {
   display: none;
 }
 
-/* Layout */
-.container {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-}
-
-/* Cards */
-.card {
-  background-color: #1a001f;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 0 15px #c77dff33;
-  text-align: center;
-}
-
-/* Profile */
-.profile-img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 3px solid #12ce3e;
-  margin-bottom: 1rem;
-  object-fit: cover;
-}
-
-.username {
-  color: #5fe84d;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-/* Buttons */
-.btn {
-  background-color: #000000;
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn:hover {
-  background-color: #aa4de8;
-}
-
-/* Charts */
-.chart-card {
-  background-color: #000000;
-  padding: 1rem;
-  border-radius: 12px;
-  margin-top: 1rem;
-  box-shadow: 0 0 10px #aa4de8;
-}
-
 /* Footer */
 footer {
   text-align: center;
@@ -150,7 +185,6 @@ footer {
 }
 
 /* Responsive nav for mobile */
-
 .nav-links {
   position: fixed;
   right: -100%;
@@ -165,9 +199,4 @@ footer {
 
 .nav-links.show {
   right: 0;
-}
-
-.card,
-.chart-card {
-  border: 1px solid rgba(199, 125, 255, 0.15); /* Subtle neon outline */
 }
