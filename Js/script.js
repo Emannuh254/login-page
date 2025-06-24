@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast("Logged in successfully!", "success");
     signInForm.reset();
     setTimeout(() => {
-      window.location.href = "splash.html";
+      window.location.href = "/Components/home.html";
     }, 1500); // delay to let toast show before redirect
   });
 
