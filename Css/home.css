@@ -151,23 +151,22 @@ footer {
 
 /* Responsive nav for mobile */
 
-
-  .nav-links {
-    position: fixed;
-    right: -100%;
-    top: 60px;
-    flex-direction: column;
-    background-color: #1a001f;
-    width: 200px;
-    height: 100vh;
-    transition: right 0.3s ease;
-    padding-top: 2rem;
-  }
-
-  .nav-links.show {
-    right: 0;
-  }
+.nav-links {
+  position: fixed;
+  right: -100%;
+  top: 60px;
+  flex-direction: column;
+  background-color: #1a001f;
+  width: 200px;
+  height: 100vh;
+  transition: right 0.3s ease;
+  padding-top: 2rem;
 }
+
+.nav-links.show {
+  right: 0;
+}
+
 .card,
 .chart-card {
   border: 1px solid rgba(199, 125, 255, 0.15); /* Subtle neon outline */
