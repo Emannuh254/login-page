@@ -88,6 +88,29 @@ body {
     transform: translateX(-1px) rotateY(10deg);
   }
 }
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  color: #9f54ff;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+.toggle-password:hover {
+  color: #2effbf;
+}
 
 /* ====== Container for forms ====== */
 .auth-container {
