@@ -124,6 +124,11 @@ document.addEventListener("DOMContentLoaded", () => {
         2500
       );
       localStorage.setItem("authToken", jwt);
+      // Redirect after toast duration
+      setTimeout(() => {
+        window.location.href =
+          "https://emannuh254.github.io/login-page/Components/splash.html";
+      }, 2600);
     } else {
       showToast("Google sign-in failed. Please try again.", "error", 2500);
     }
