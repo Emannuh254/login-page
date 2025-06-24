@@ -8,11 +8,22 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
-    <div id="navbar-placeholder"></div>
-
     <!-- rest of page content -->
 
     <div class="overlay" id="overlay"></div>
+
+    <nav class="navbar">
+      <h1 class="heading">Flipmarket</h1>
+      <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#">Bots</a></li>
+        <li><a href="#">Referrals</a></li>
+        <li><a href="#">Help</a></li>
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">Logout</a></li>
+      </ul>
+    </nav>
 
     <main class="container">
       <section class="card profile-card">
@@ -43,50 +54,5 @@
 
     <footer>© 2025 FlipMarket</footer>
     <script src="../Js/home.js"></script>
-    <script>
-      // Load the navbar HTML dynamically into placeholder
-      fetch("/Components/navbar.html") // Adjust path if needed
-        .then((response) => response.text())
-        .then((html) => {
-          document.getElementById("navbar-placeholder").innerHTML = html;
-
-          // Set up the navbar toggle logic
-          const hamburgerBtn = document.getElementById("hamburger-btn");
-          const navbar = document.getElementById("navbar");
-          const overlay = document.getElementById("overlay");
-          const navLinks = navbar.querySelectorAll("ul.nav-links li a");
-
-          function closeNavbar() {
-            navbar.classList.remove("active");
-            overlay.classList.remove("active");
-            hamburgerBtn.setAttribute("aria-expanded", "false");
-            navbar.setAttribute("aria-hidden", "true");
-          }
-
-          function openNavbar() {
-            navbar.classList.add("active");
-            overlay.classList.add("active");
-            hamburgerBtn.setAttribute("aria-expanded", "true");
-            navbar.setAttribute("aria-hidden", "false");
-          }
-
-          hamburgerBtn.addEventListener("click", () => {
-            if (navbar.classList.contains("active")) {
-              closeNavbar();
-            } else {
-              openNavbar();
-            }
-          });
-
-          overlay.addEventListener("click", closeNavbar);
-
-          navLinks.forEach((link) => {
-            link.addEventListener("click", closeNavbar);
-          });
-        })
-        .catch((err) => {
-          console.error("Error loading navbar:", err);
-        });
-    </script>
   </body>
 </html>
