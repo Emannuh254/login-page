@@ -7,12 +7,10 @@
     <link rel="stylesheet" href="../Css/account.css" />
   </head>
   <body>
-    <div class="container">
-      <!-- Navbar -->
-      <nav class="navbar">
-        <h1>My Account</h1>
-      </nav>
+    <!-- Injected Navbar -->
+    <div id="navbar-container"></div>
 
+    <div class="container">
       <section class="hero">
         <!-- Balance -->
         <h3>Your Balance</h3>
@@ -34,14 +32,12 @@
             <span style="color: #f0f">523698</span>
           </p>
 
-          <!-- Quick deposit buttons -->
           <div class="btn-group">
             <button class="btn deposit-btn" data-amount="200">Ksh 200</button>
             <button class="btn deposit-btn" data-amount="500">Ksh 500</button>
             <button class="btn deposit-btn" data-amount="1000">Ksh 1000</button>
           </div>
 
-          <!-- Custom input -->
           <input
             type="number"
             id="custom-deposit"
@@ -79,6 +75,35 @@
       </section>
     </div>
 
-    <script src="Js/account.js"></script>
+    <!-- Local logic -->
+    <script src="/account.js"></script>
+
+    <!-- Load shared navbar -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        fetch("navbar.html") // adjust path if needed
+          .then((response) => {
+            if (!response.ok) throw new Error("Failed to load navbar");
+            return response.text();
+          })
+          .then((html) => {
+            const container = document.getElementById("navbar-container");
+            container.innerHTML = html;
+
+            container.querySelectorAll("script").forEach((oldScript) => {
+              const newScript = document.createElement("script");
+              if (oldScript.src) {
+                newScript.src = oldScript.src;
+              } else {
+                newScript.textContent = oldScript.textContent;
+              }
+              document.body.appendChild(newScript);
+            });
+          })
+          .catch((error) => {
+            console.error("Navbar loading error:", error);
+          });
+      });
+    </script>
   </body>
 </html>

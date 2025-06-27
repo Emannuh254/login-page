@@ -3,28 +3,347 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bots</title>
-    <link href="../Css/bots.css" rel="stylesheet" />
+    <title>FlipMarket | Bots</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #000;
+        color: #eee;
+        overflow-x: hidden;
+      }
+
+      #brand-bar {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 11001;
+        user-select: none;
+      }
+
+      #brand-bar h1 {
+        color: #9f54ff;
+        font-size: 1.8rem;
+        margin: 0;
+      }
+
+      #hamburger-btn {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #9f54ff;
+        background: transparent;
+        border: none;
+        padding: 5px;
+        z-index: 11001;
+      }
+
+      #hamburger-btn:hover {
+        color: #2effbf;
+      }
+
+      #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 10500;
+      }
+
+      #overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .navbar {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80vw;
+        max-width: 320px;
+        background: #000;
+        padding: 20px;
+        z-index: 11000;
+        transition: right 0.35s ease;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .navbar.active {
+        right: 0;
+      }
+
+      ul.nav-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      ul.nav-links li a {
+        color: #ddd;
+        text-decoration: none;
+        font-weight: 600;
+        padding: 10px 15px;
+        border-radius: 8px;
+        background: #000;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        display: block;
+      }
+
+      ul.nav-links li a:hover,
+      ul.nav-links li a.active {
+        background-color: #2effbf;
+        color: #000;
+      }
+
+      h1#heading {
+        margin-top: 100px;
+        text-align: center;
+        color: #9f54ff;
+        font-size: 2rem;
+      }
+
+      .marquee-container {
+        background: #111;
+        padding: 10px 0;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .marquee-text {
+        color: #2effbf;
+        font-weight: bold;
+        font-size: 1rem;
+      }
+
+      .bot-card {
+        background: #111;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 20px;
+        box-shadow: 0 0 10px rgba(159, 84, 255, 0.3);
+        text-align: center;
+      }
+
+      .bot-image {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        border-radius: 10px;
+        margin-bottom: 15px;
+      }
+
+      .buy-btn,
+      .claim-btn,
+      .btn {
+        margin-top: 10px;
+        background-color: #9f54ff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .claim-btn[disabled] {
+        background-color: #444;
+        cursor: not-allowed;
+      }
+
+      #dashboard {
+        margin: 20px;
+        background: #111;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(46, 255, 191, 0.3);
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px;
+        color: #aaa;
+      }
+
+      /* Modal */
+      .modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        background: #111;
+        padding: 20px;
+        border-radius: 10px;
+        z-index: 12000;
+        transition: transform 0.3s ease;
+        box-shadow: 0 0 10px #9f54ff;
+        text-align: center;
+        width: 90%;
+        max-width: 400px;
+      }
+
+      .modal.active {
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      .till-number {
+        color: #2effbf;
+        font-weight: bold;
+        font-size: 1.3rem;
+      }
+
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.7);
+        width: 100vw;
+        height: 100vh;
+        z-index: 11000;
+        display: none;
+      }
+
+      .overlay.active {
+        display: block;
+      }
+    </style>
   </head>
   <body>
+    <!-- ✅ Navbar -->
+    <div id="brand-bar">
+      <h1>Flipmarket</h1>
+    </div>
+
+    <button id="hamburger-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="navbar">
+      &#9776;
+    </button>
+
+    <div id="overlay"></div>
+
+    <nav class="navbar" id="navbar" aria-hidden="true">
+      <ul class="nav-links">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="/Components/account.html">My Account</a></li>
+        <li><a href="/Components/bots.html" class="active">Bots</a></li>
+        <li><a href="/Components/">Settings</a></li>
+        <li><a href="/Components/Refferals.html">Referrals</a></li>
+        <li><a href="/Components/about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="faq.html">FAQ/Help</a></li>
+        <li><a href="https://emannuh254.github.io/login-page/index.html" id="logout">Logout</a></li>
+      </ul>
+    </nav>
+
+    <!-- ✅ Page Heading -->
     <h1 id="heading">Bots Available</h1>
 
+    <!-- 💬 Marquee -->
     <div class="marquee-container">
       <span class="marquee-text">Start mining today</span>
     </div>
 
-    <!-- Dashboard -->
-    <section id="dashboard" class="dashboard bot-card">
+    <!-- 📊 Dashboard -->
+    <section id="dashboard">
       <h2>My Bot Summary</h2>
       <p>Current Balance: <strong id="balance" class="zero">Ksh 0</strong></p>
       <p>Total Bots Activated: <span id="bot-count">0</span></p>
       <p>Total Claimed Earnings: <span id="total-claimed">0</span> Ksh</p>
     </section>
 
-    <!-- Bot Cards -->
-    <div id="botContainer"></div>
+    <!-- 🤖 Bot Cards -->
+    <div id="botContainer">
+      <!-- Repeat your bots here... -->
+      <!-- Example bot -->
+      <div class="bot-card">
+        <img src="/images/pic1.jpg" alt="1000 Bot" class="bot-image" />
+        <h2>1,000 Ksh Bot</h2>
+        <p>Earns: 70 Ksh/day</p>
+        <p><strong>Total in 30 Days: 2,100 Ksh</strong></p>
+        <p>Expires in: <span class="days-left">30</span> days</p>
+        <button class="buy-btn">Buy Bot</button>
+        <button class="claim-btn" disabled>Claim Earnings</button>
+        <p class="earnings">Total Claimed: <span class="total-earned">0</span> Ksh</p>
+      </div>
+      <div class="bot-card">
+        <img src="/images/pic2.jpg" alt="2000 Bot" class="bot-image" />
+        <h2>2,000 Ksh Bot</h2>
+        <p>Earns: 140 Ksh/day</p>
+        <p><strong>Total in 30 Days: 4,200 Ksh</strong></p>
+        <p>Expires in: <span class="days-left">30</span> days</p>
+        <button class="buy-btn">Buy Bot</button>
+        <button class="claim-btn" disabled>Claim Earnings</button>
+        <p class="earnings">Total Claimed: <span class="total-earned">0</span> Ksh</p>
+      </div>
+  
+      <div class="bot-card">
+        <img src="/images/pic3.jpg" alt="4000 Bot" class="bot-image" />
+        <h2>4,000 Ksh Bot</h2>
+        <p>Earns: 280 Ksh/day</p>
+        <p><strong>Total in 30 Days: 8,400 Ksh</strong></p>
+        <p>Expires in: <span class="days-left">30</span> days</p>
+        <button class="buy-btn">Buy Bot</button>
+        <button class="claim-btn" disabled>Claim Earnings</button>
+        <p class="earnings">Total Claimed: <span class="total-earned">0</span> Ksh</p>
+      </div>
+  
+      <div class="bot-card">
+        <img src="/images/pic4.jpg" alt="7000 Bot" class="bot-image" />
+        <h2>7,000 Ksh Bot</h2>
+        <p>Earns: 490 Ksh/day</p>
+        <p><strong>Total in 30 Days: 14,700 Ksh</strong></p>
+        <p>Expires in: <span class="days-left">30</span> days</p>
+        <button class="buy-btn">Buy Bot</button>
+        <button class="claim-btn" disabled>Claim Earnings</button>
+        <p class="earnings">Total Claimed: <span class="total-earned">0</span> Ksh</p>
+      </div>
+  
+      <div class="bot-card">
+        <img src="/images/pic5.jpg" alt="10000 Bot" class="bot-image" />
+        <h2>10,000 Ksh Bot</h2>
+        <p>Earns: 700 Ksh/day</p>
+        <p><strong>Total in 30 Days: 21,000 Ksh</strong></p>
+        <p>Expires in: <span class="days-left">30</span> days</p>
+        <button class="buy-btn">Buy Bot</button>
+        <button class="claim-btn" disabled>Claim Earnings</button>
+        <p class="earnings">Total Claimed: <span class="total-earned">0</span> Ksh</p>
+      </div>
+  
+      <div class="bot-card">
+        <img src="/images/pic6.jpg" alt="15000 Bot" class="bot-image" />
+        <h2>15,000 Ksh Bot</h2>
+        <p>Earns: 1,050 Ksh/day</p>
+        <p><strong>Total in 30 Days: 31,500 Ksh</strong></p>
+        <p>Expires in: <span class="days-left">30</span> days</p>
+        <button class="buy-btn">Buy Bot</button>
+        <button class="claim-btn" disabled>Claim Earnings</button>
+        <p class="earnings">Total Claimed: <span class="total-earned">0</span> Ksh</p>
+      </div>
+  
+      <div class="bot-card">
+        <img src="/images/pic7.jpg" alt="30000 Bot" class="bot-image" />
+        <h2>30,000 Ksh Bot</h2>
+        <p>Earns: 2,100 Ksh/day</p>
+        <p><strong>Total in 30 Days: 63,000 Ksh</strong></p>
+        <p>Expires in: <span class="days-left">30</span> days</p>
+        <button class="buy-btn">Buy Bot</button>
+        <button class="claim-btn" disabled>Claim Earnings</button>
+        <p class="earnings">Total Claimed: <span class="total-earned">0</span> Ksh</p>
+      </div>
+    </div>
+      <!-- Add other bot cards similarly -->
+    </div>
 
-    <!-- Modal -->
+    <!-- 💰 Payment Modal -->
     <div class="modal" id="paymentModal">
       <div class="modal-content">
         <h3>Confirm Bot Purchase</h3>
@@ -34,10 +353,45 @@
         <button class="btn cancel-pay">Cancel</button>
       </div>
     </div>
+
     <div class="overlay" id="modalOverlay"></div>
 
-    <script src="/Js/bots.js"></script>
-    <script src="/Js/redirector.js"></script>
+    <!-- ✅ Footer -->
     <footer>FlipMarket 2025. All rights reserved.</footer>
+
+    <!-- ✅ Script -->
+    <script>
+      const hamburgerBtn = document.getElementById("hamburger-btn");
+      const navbar = document.getElementById("navbar");
+      const overlay = document.getElementById("overlay");
+      const navLinks = navbar.querySelectorAll("ul.nav-links li a");
+
+      function closeNavbar() {
+        navbar.classList.remove("active");
+        overlay.classList.remove("active");
+        hamburgerBtn.setAttribute("aria-expanded", "false");
+        navbar.setAttribute("aria-hidden", "true");
+      }
+
+      function openNavbar() {
+        navbar.classList.add("active");
+        overlay.classList.add("active");
+        hamburgerBtn.setAttribute("aria-expanded", "true");
+        navbar.setAttribute("aria-hidden", "false");
+      }
+
+      hamburgerBtn.addEventListener("click", () => {
+        if (navbar.classList.contains("active")) {
+          closeNavbar();
+        } else {
+          openNavbar();
+        }
+      });
+
+      overlay.addEventListener("click", closeNavbar);
+      navLinks.forEach((link) => {
+        link.addEventListener("click", closeNavbar);
+      });
+    </script>
   </body>
 </html>

@@ -4,27 +4,243 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>FlipMarket | Home</title>
-    <link rel="stylesheet" href="../Css/home.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #000;
+        color: #eee;
+        overflow-x: hidden;
+      }
+
+      #brand-bar {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 11001;
+        user-select: none;
+      }
+
+      #brand-bar h1 {
+        color: #9f54ff;
+        font-size: 1.8rem;
+        margin: 0;
+        transition: color 0.3s ease, text-shadow 0.3s ease;
+      }
+
+      #hamburger-btn {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #9f54ff;
+        background: transparent;
+        border: none;
+        padding: 5px;
+        line-height: 1;
+        transition: color 0.3s ease;
+        z-index: 11001;
+      }
+
+      #hamburger-btn:hover {
+        color: #2effbf;
+      }
+
+      #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 10500;
+      }
+
+      #overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .navbar {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 50vw;
+        max-width: 320px;
+        background-color: #000;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        z-index: 11000;
+        transition: right 0.35s ease;
+      }
+
+      .navbar.active {
+        right: 0;
+      }
+
+      ul.nav-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      ul.nav-links li a {
+        color: #ddd;
+        text-decoration: none;
+        font-weight: 600;
+        padding: 10px 15px;
+        border-radius: 8px;
+        background: #000;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        display: block;
+        opacity: 0;
+        transform: translateX(20px);
+        pointer-events: none;
+      }
+
+      ul.nav-links li a:hover,
+      ul.nav-links li a.active {
+        background-color: #2effbf;
+        color: #000;
+      }
+
+      .navbar.active ul.nav-links li a {
+        animation: slideFadeIn 0.3s forwards;
+      }
+
+      ul.nav-links li:nth-child(1) a {
+        animation-delay: 0.3s;
+      }
+      ul.nav-links li:nth-child(2) a {
+        animation-delay: 0.4s;
+      }
+      ul.nav-links li:nth-child(3) a {
+        animation-delay: 0.5s;
+      }
+      ul.nav-links li:nth-child(4) a {
+        animation-delay: 0.6s;
+      }
+      ul.nav-links li:nth-child(5) a {
+        animation-delay: 0.7s;
+      }
+      ul.nav-links li:nth-child(6) a {
+        animation-delay: 0.8s;
+      }
+      ul.nav-links li:nth-child(7) a {
+        animation-delay: 0.9s;
+      }
+      ul.nav-links li:nth-child(8) a {
+        animation-delay: 1s;
+      }
+      ul.nav-links li:nth-child(9) a {
+        animation-delay: 1.1s;
+      }
+
+      @keyframes slideFadeIn {
+        to {
+          opacity: 1;
+          transform: translateX(0);
+          pointer-events: auto;
+        }
+      }
+
+      .container {
+        padding-top: 80px;
+        padding-inline: 20px;
+      }
+
+      .card {
+        background: #111;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 0 10px rgba(159, 84, 255, 0.3);
+      }
+
+      .profile-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 10px;
+      }
+
+      .btn {
+        background: #9f54ff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .chart-card {
+        margin-top: 20px;
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 14px;
+        color: #aaa;
+      }
+
+      @media (max-width: 400px) {
+        .navbar {
+          width: 80vw;
+        }
+      }
+    </style>
   </head>
   <body>
-    <!-- rest of page content -->
+    <!-- ✅ Navbar -->
+    <div id="brand-bar">
+      <h1>Flipmarket</h1>
+    </div>
 
-    <div class="overlay" id="overlay"></div>
+    <button
+      id="hamburger-btn"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      aria-controls="navbar"
+    >
+      &#9776;
+    </button>
 
-    <nav class="navbar">
-      <h1 class="heading">Flipmarket</h1>
-      <div class="menu-toggle" id="menu-toggle">&#9776;</div>
-      <ul class="nav-links" id="nav-links">
-        <li><a href="#" class="active">Home</a></li>
-        <li><a href="#">Bots</a></li>
-        <li><a href="#">Referrals</a></li>
-        <li><a href="#">Help</a></li>
-        <li><a href="#">Settings</a></li>
-        <li><a href="#">Logout</a></li>
+    <div id="overlay"></div>
+
+    <nav class="navbar" id="navbar" aria-hidden="true">
+      <ul class="nav-links">
+        <li><a href="home.html" class="active">Home</a></li>
+        <li><a href="/Components/account.html">My Account</a></li>
+        <li><a href="/Components/bots.html">Bots</a></li>
+        <li><a href="/Components/">Settings</a></li>
+        <li><a href="/Components/Refferals.html">Referrals</a></li>
+        <li><a href="/Components/about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="faq.html">FAQ/Help</a></li>
+        <li>
+          <a
+            href="https://emannuh254.github.io/login-page/index.html"
+            id="logout"
+            >Logout</a
+          >
+        </li>
       </ul>
     </nav>
 
+    <!-- ✅ Main Content -->
     <main class="container">
       <section class="card profile-card">
         <img src="/images/user.png" alt="Default User" class="profile-img" />
@@ -53,6 +269,92 @@
     </main>
 
     <footer>© 2025 FlipMarket</footer>
-    <script src="../Js/home.js"></script>
+
+    <!-- ✅ JavaScript -->
+    <script>
+      const hamburgerBtn = document.getElementById("hamburger-btn");
+      const navbar = document.getElementById("navbar");
+      const overlay = document.getElementById("overlay");
+      const navLinks = navbar.querySelectorAll("ul.nav-links li a");
+
+      function closeNavbar() {
+        navbar.classList.remove("active");
+        overlay.classList.remove("active");
+        hamburgerBtn.setAttribute("aria-expanded", "false");
+        navbar.setAttribute("aria-hidden", "true");
+      }
+
+      function openNavbar() {
+        navbar.classList.add("active");
+        overlay.classList.add("active");
+        hamburgerBtn.setAttribute("aria-expanded", "true");
+        navbar.setAttribute("aria-hidden", "false");
+      }
+
+      hamburgerBtn.addEventListener("click", () => {
+        navbar.classList.contains("active") ? closeNavbar() : openNavbar();
+      });
+
+      overlay.addEventListener("click", closeNavbar);
+      navLinks.forEach((link) => link.addEventListener("click", closeNavbar));
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const usageChartCanvas = document.getElementById("usageChart");
+        const reviewsChartCanvas = document.getElementById("reviewsChart");
+
+        if (usageChartCanvas && reviewsChartCanvas) {
+          const usageCtx = usageChartCanvas.getContext("2d");
+          const reviewsCtx = reviewsChartCanvas.getContext("2d");
+
+          new Chart(usageCtx, {
+            type: "line",
+            data: {
+              labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+              datasets: [
+                {
+                  label: "Active Bots",
+                  data: [5, 10, 7, 12, 15, 18, 22],
+                  borderColor: "#c77dff",
+                  backgroundColor: "rgba(199,125,255,0.2)",
+                  tension: 0.3,
+                  pointBackgroundColor: "#aa4de8",
+                },
+              ],
+            },
+            options: {
+              plugins: { legend: { labels: { color: "#c77dff" } } },
+              scales: {
+                x: { ticks: { color: "#e0e0ff" }, grid: { color: "#31003f" } },
+                y: { ticks: { color: "#e0e0ff" }, grid: { color: "#31003f" } },
+              },
+            },
+          });
+
+          new Chart(reviewsCtx, {
+            type: "bar",
+            data: {
+              labels: ["Positive", "Neutral", "Negative"],
+              datasets: [
+                {
+                  data: [85, 10, 5],
+                  backgroundColor: ["#aa4de8", "#888", "#ff6f6f"],
+                },
+              ],
+            },
+            options: {
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { ticks: { color: "#e0e0ff" }, grid: { color: "#31003f" } },
+                y: {
+                  ticks: { color: "#e0e0ff" },
+                  grid: { color: "#31003f" },
+                  max: 100,
+                },
+              },
+            },
+          });
+        }
+      });
+    </script>
   </body>
 </html>

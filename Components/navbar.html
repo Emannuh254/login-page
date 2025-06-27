@@ -1,248 +1,247 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Flipmarket Navbar Left Brand Right Hamburger</title>
-    <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #000;
-        color: #eee;
-        overflow-x: hidden;
-      }
+<!-- ✅ Style -->
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #000;
+    color: #eee;
+    overflow-x: hidden;
+  }
 
-      /* Brand fixed top-left */
-      #brand-bar {
-        position: fixed;
-        top: 15px;
-        left: 15px;
-        z-index: 11001;
-        user-select: none;
-      }
+  #brand-bar {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 11001;
+    user-select: none;
+  }
 
-      #brand-bar h1 {
-        color: #9f54ff;
-        font-size: 1.8rem;
-        margin: 0;
-        transition: color 0.3s ease, text-shadow 0.3s ease;
-      }
+  #brand-bar h1 {
+    color: #9f54ff;
+    font-size: 1.8rem;
+    margin: 0;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+  }
 
-      /* Hamburger fixed top-right */
-      #hamburger-btn {
-        position: fixed;
-        top: 15px;
-        right: 15px;
-        font-size: 2rem;
-        cursor: pointer;
-        color: #9f54ff;
-        background: transparent;
-        border: none;
-        padding: 0;
-        margin: 0;
-        line-height: 1;
-        transition: color 0.3s ease;
-        z-index: 11001;
-      }
-      #hamburger-btn:hover {
-        color: #2effbf;
-      }
-      #hamburger-btn:focus {
-        outline: none;
-      }
+  #hamburger-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #9f54ff;
+    background: transparent;
+    border: none;
+    padding: 5px;
+    margin: 0;
+    line-height: 1;
+    transition: color 0.3s ease;
+    z-index: 11001;
+  }
+  #hamburger-btn:hover {
+    color: #2effbf;
+  }
+  #hamburger-btn:focus {
+    outline: none;
+  }
 
-      /* Overlay behind navbar */
-      #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-        z-index: 10500;
-      }
-      #overlay.active {
-        opacity: 1;
-        pointer-events: auto;
-      }
+  #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10500;
+  }
+  #overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
 
-      /* Navbar container (hidden right by default) */
-      .navbar {
-        position: fixed;
-        top: 0;
-        right: -50vw;
-        width: 50vw;
-        max-width: 320px;
-        height: 100vh;
-        background-color: #121212;
-        box-shadow: -3px 0 10px rgba(46, 255, 191, 0.3);
-        padding: 20px;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        z-index: 11000;
-        transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-      .navbar.active {
-        right: 0;
-      }
+  .navbar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 50vw;
+    max-width: 320px;
+    height: 0px;
+    background-color: transparent;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    z-index: 11000;
+    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .navbar.active {
+    right: 0;
+  }
 
-      /* Nav links list */
-      ul.nav-links {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
+  ul.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
 
-      ul.nav-links li a {
-        color: #ddd;
-        text-decoration: none;
-        font-weight: 600;
-        padding: 10px 15px;
-        border-radius: 8px;
-        background: #000000;
-        transition: background-color 0.3s ease, color 0.3s ease;
-        display: block;
-        opacity: 0;
-        transform: translateX(20px);
-        pointer-events: none; /* disable until animated in */
-      }
-      ul.nav-links li a:hover,
-      ul.nav-links li a.active {
-        background-color: #2effbf;
-        color: #000;
-      }
+  ul.nav-links li a {
+    color: #ddd;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background: #000000;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: block;
+    opacity: 0;
+    transform: translateX(20px);
+    pointer-events: none;
+  }
+  ul.nav-links li a:hover,
+  ul.nav-links li a.active {
+    background-color: #2effbf;
+    color: #000;
+  }
 
-      /* Animate nav links fade and slide in staggered */
-      .navbar.active ul.nav-links li a {
-        animation: slideFadeIn 0.3s forwards;
-      }
-      ul.nav-links li:nth-child(1) a {
-        animation-delay: 0.1s;
-      }
-      ul.nav-links li:nth-child(2) a {
-        animation-delay: 0.25s;
-      }
-      ul.nav-links li:nth-child(3) a {
-        animation-delay: 0.4s;
-      }
-      ul.nav-links li:nth-child(4) a {
-        animation-delay: 0.55s;
-      }
-      ul.nav-links li:nth-child(5) a {
-        animation-delay: 0.7s;
-      }
-      ul.nav-links li:nth-child(6) a {
-        animation-delay: 0.85s;
-      }
-      ul.nav-links li:nth-child(7) a {
-        animation-delay: 1s;
-      }
-      ul.nav-links li:nth-child(8) a {
-        animation-delay: 1.15s;
-      }
-      ul.nav-links li:nth-child(9) a {
-        animation-delay: 1.3s;
-      }
+  .navbar.active ul.nav-links li a {
+    animation: slideFadeIn 0.3s forwards;
+  }
+  ul.nav-links li:nth-child(1) a {
+    animation-delay: 0.3s;
+  }
+  ul.nav-links li:nth-child(2) a {
+    animation-delay: 0.25s;
+  }
+  ul.nav-links li:nth-child(3) a {
+    animation-delay: 0.4s;
+  }
+  ul.nav-links li:nth-child(4) a {
+    animation-delay: 0.55s;
+  }
+  ul.nav-links li:nth-child(5) a {
+    animation-delay: 0.7s;
+  }
+  ul.nav-links li:nth-child(6) a {
+    animation-delay: 0.85s;
+  }
+  ul.nav-links li:nth-child(7) a {
+    animation-delay: 1s;
+  }
+  ul.nav-links li:nth-child(8) a {
+    animation-delay: 1.15s;
+  }
+  ul.nav-links li:nth-child(9) a {
+    animation-delay: 1.3s;
+  }
 
-      @keyframes slideFadeIn {
-        to {
-          opacity: 1;
-          transform: translateX(0);
-          pointer-events: auto;
-        }
-      }
+  @keyframes slideFadeIn {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+  }
 
-      /* Responsive */
-      @media (max-width: 400px) {
-        .navbar {
-          width: 80vw;
-          max-width: none;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Brand always visible top-left -->
-    <div id="brand-bar" aria-label="Site brand">
-      <h1>Flipmarket</h1>
-    </div>
+  @media (max-width: 400px) {
+    .navbar {
+      width: 55vw;
+      max-width: none;
+    }
+  }
+</style>
 
-    <!-- Hamburger always visible top-right -->
-    <button
-      id="hamburger-btn"
-      aria-label="Toggle menu"
-      aria-expanded="false"
-      aria-controls="navbar"
-    >
-      &#9776;
-    </button>
+<!-- ✅ Navbar Markup -->
+<div id="brand-bar" aria-label="Site brand">
+  <h1>Flipmarket</h1>
+</div>
 
-    <!-- Overlay -->
-    <div id="overlay"></div>
+<button
+  id="hamburger-btn"
+  aria-label="Toggle menu"
+  aria-expanded="false"
+  aria-controls="navbar"
+>
+  &#9776;
+</button>
 
-    <!-- Navbar -->
-    <nav class="navbar" id="navbar" aria-hidden="true">
-      <ul class="nav-links">
-        <li><a href="home.html" class="active">Home</a></li>
-        <li><a href="/Components/account.html">My Account</a></li>
-        <li><a href="/Components/bots.html">Bots</a></li>
-        <li><a href="/Components/">Settings</a></li>
-        <li><a href="/Components/Refferals.html">Referrals</a></li>
-        <li><a href="/Components/about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="faq.html">FAQ/Help</a></li>
-        <li>
-          <a
-            href="https://emannuh254.github.io/login-page/index.html"
-            id="logout"
-            >Logout</a
-          >
-        </li>
-      </ul>
-    </nav>
+<div id="overlay"></div>
 
-    <script>
-      const hamburgerBtn = document.getElementById("hamburger-btn");
-      const navbar = document.getElementById("navbar");
-      const overlay = document.getElementById("overlay");
-      const navLinks = navbar.querySelectorAll("ul.nav-links li a");
+<nav class="navbar" id="navbar" aria-hidden="true">
+  <ul class="nav-links">
+    <li><a href="home.html" class="active">Home</a></li>
+    <li><a href="/Components/account.html">My Account</a></li>
+    <li><a href="/Components/bots.html">Bots</a></li>
+    <li><a href="/Components/">Settings</a></li>
+    <li><a href="/Components/Refferals.html">Referrals</a></li>
+    <li><a href="/Components/about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="faq.html">FAQ/Help</a></li>
+    <li>
+      <a href="https://emannuh254.github.io/login-page/index.html" id="logout"
+        >Logout</a
+      >
+    </li>
+  </ul>
+</nav>
 
-      function closeNavbar() {
-        navbar.classList.remove("active");
-        overlay.classList.remove("active");
-        hamburgerBtn.setAttribute("aria-expanded", "false");
-        navbar.setAttribute("aria-hidden", "true");
-      }
+<!-- ✅ Script -->
+<script>
+  const hamburgerBtn = document.getElementById("hamburger-btn");
+  const navbar = document.getElementById("navbar");
+  const overlay = document.getElementById("overlay");
+  const navLinks = navbar.querySelectorAll("ul.nav-links li a");
 
-      function openNavbar() {
-        navbar.classList.add("active");
-        overlay.classList.add("active");
-        hamburgerBtn.setAttribute("aria-expanded", "true");
-        navbar.setAttribute("aria-hidden", "false");
-      }
+  function closeNavbar() {
+    navbar.classList.remove("active");
+    overlay.classList.remove("active");
+    hamburgerBtn.setAttribute("aria-expanded", "false");
+    navbar.setAttribute("aria-hidden", "true");
+  }
 
-      hamburgerBtn.addEventListener("click", () => {
-        if (navbar.classList.contains("active")) {
-          closeNavbar();
-        } else {
-          openNavbar();
-        }
-      });
+  function openNavbar() {
+    navbar.classList.add("active");
+    overlay.classList.add("active");
+    hamburgerBtn.setAttribute("aria-expanded", "true");
+    navbar.setAttribute("aria-hidden", "false");
+  }
 
-      overlay.addEventListener("click", closeNavbar);
+  hamburgerBtn.addEventListener("click", () => {
+    if (navbar.classList.contains("active")) {
+      closeNavbar();
+      hamburgerBtn.style.display = "block";
+    } else {
+      openNavbar();
+      hamburgerBtn.style.display = "none";
+    }
+  });
 
-      navLinks.forEach((link) => {
-        link.addEventListener("click", closeNavbar);
-      });
-    </script>
-  </body>
-</html>
+  overlay.addEventListener("click", () => {
+    closeNavbar();
+    hamburgerBtn.style.display = "block";
+  });
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      closeNavbar();
+      hamburgerBtn.style.display = "block";
+    });
+  });
+
+  function fixHamburgerPosition() {
+    const hamburger = document.getElementById("hamburger-btn");
+    hamburger.style.position = "fixed";
+    hamburger.style.top = "15px";
+    hamburger.style.right = "15px";
+    hamburger.style.zIndex = "11001";
+  }
+
+  window.addEventListener("DOMContentLoaded", fixHamburgerPosition);
+  window.addEventListener("resize", fixHamburgerPosition);
+</script>

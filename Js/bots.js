@@ -97,6 +97,6 @@ bots.forEach((bot, index) => {
       }
       claimedToday = false;
       claimBtn.disabled = false;
-    }, 50000);
+    }, 500);
   });
 });

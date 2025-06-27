@@ -1,46 +1,33 @@
-/* ====== BASE & THEME ====== */
 body {
   margin: 0;
   font-family: "Segoe UI", sans-serif;
   background-color: #0d0d1f;
   color: #e0e0ff;
+  padding-top: 70px;
   overflow-x: hidden;
 }
 
+/* Headings */
 h1,
 h2 {
   color: #c77dff;
   text-align: center;
-  user-select: none;
 }
 
-/* HEADER & MARQUEE */
-#heading {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 0.3rem;
-}
-
+/* Marquee */
 .marquee-container {
   overflow: hidden;
   white-space: nowrap;
-  width: 100%;
-  box-sizing: border-box;
-  height: 2rem;
   background: transparent;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
-
 .marquee-text {
   display: inline-block;
   padding-left: 100%;
   color: #a56cff;
   font-weight: 600;
-  font-size: 1.2rem;
   animation: marquee 8s linear infinite;
-  user-select: none;
 }
-
 @keyframes marquee {
   0% {
     transform: translateX(0);
@@ -50,64 +37,52 @@ h2 {
   }
 }
 
-/* DASHBOARD CARD */
+/* Dashboard */
 #dashboard {
   background-color: #1e1e35;
   max-width: 360px;
-  margin: 0 auto 3rem;
-  padding: 1.5rem 2rem;
+  margin: 0 auto 2rem;
+  padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 0 16px rgba(199, 125, 255, 0.1);
   text-align: center;
+  box-shadow: 0 0 16px rgba(199, 125, 255, 0.2);
 }
-
-#dashboard p {
-  font-size: 1.1rem;
-  margin: 0.6rem 0;
-}
-
 #balance.zero {
   color: #ff5555;
-  font-weight: 700;
+  font-weight: bold;
 }
 
-/* BOT CARDS GRID */
+/* Bot Grid */
 #botContainer {
   display: flex;
-  gap: 2rem;
   flex-wrap: wrap;
+  gap: 1.5rem;
   justify-content: center;
   padding: 0 1rem;
 }
-
-/* BOT CARD */
 .bot-card {
   background-color: black;
+  color: white;
   padding: 1.5rem;
   border-radius: 12px;
-  flex: 1 1 280px;
   max-width: 320px;
-  color: #fff;
+  flex: 1 1 280px;
   text-align: center;
-  box-shadow: 0 0 16px rgba(199, 125, 255, 0.2);
+  box-shadow: 0 0 20px rgba(199, 125, 255, 0.3);
   transition: 0.3s;
-  position: relative;
 }
-
 .bot-card:hover {
   box-shadow: 0 0 30px #c77dff;
   transform: translateY(-6px);
 }
 
-/* Bot images */
+/* Images */
 .bot-image {
   width: 100%;
-  border-radius: 10px;
-  margin-bottom: 15px;
+  height: 200px;
   object-fit: cover;
-  max-height: 240px;
-  min-height: 200px;
-  box-shadow: 0 0 14px rgba(199, 125, 255, 0.2);
+  border-radius: 10px;
+  margin-bottom: 1rem;
 }
 
 /* Buttons */
@@ -116,66 +91,40 @@ button {
   border: none;
   color: white;
   padding: 10px 16px;
-  font-size: 0.95rem;
+  font-size: 1rem;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
   margin-top: 10px;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
-
 button:hover {
   background: #aa4de8;
   transform: translateY(-2px);
 }
-
 button:disabled {
   background: #5a3a7a;
   color: #aaa;
   cursor: not-allowed;
-  opacity: 0.7;
 }
 
-/* Expired label */
-.expired-label {
-  color: #ff6f6f;
-  background: rgba(255, 0, 0, 0.1);
-  padding: 6px 10px;
-  border-radius: 8px;
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-/* FOOTER */
-footer {
-  text-align: center;
-  padding: 1.5rem 1rem;
-  background-color: #121230;
-  color: #888;
-  font-size: 0.95rem;
-  border-top: 1px solid #2a2a55;
-}
-
-/* MODAL AND OVERLAY */
+/* Modal */
 .modal,
 .overlay {
   display: none;
 }
-
 .modal.show,
 .overlay.show {
   display: block;
 }
-
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(10, 10, 30, 0.8);
+  background: rgba(0, 0, 0, 0.7);
   z-index: 999;
 }
-
 .modal {
   position: fixed;
   top: 50%;
@@ -186,58 +135,62 @@ footer {
   border-radius: 12px;
   width: 90%;
   max-width: 400px;
-  box-shadow: 0 0 30px #c77dffaa;
-  color: #e0e0ff;
   z-index: 1000;
-  box-sizing: border-box;
+  box-shadow: 0 0 30px #c77dffaa;
   text-align: center;
 }
-
 .modal h3 {
   margin-bottom: 1rem;
   color: #c77dff;
 }
-
-.modal .till-number {
+.till-number {
   font-size: 1.2rem;
   margin: 1rem 0;
-  font-weight: bold;
   color: #a56cff;
+  font-weight: bold;
 }
 
-.modal .btn {
-  background: #c77dff;
-  border: none;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin: 0 0.5rem;
-  transition: background 0.3s ease;
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  background: #121230;
+  color: #888;
+  font-size: 0.95rem;
 }
 
-.modal .btn:hover {
-  background: #aa4de8;
-}
-
-/* RESPONSIVE */
+/* Responsive */
 @media screen and (max-width: 480px) {
+  .bot-card,
   #dashboard {
     max-width: 100%;
-    padding: 1rem 1.5rem;
-  }
-
-  .bot-card {
     padding: 1rem;
-    max-width: 100%;
   }
-
   .bot-image {
-    max-height: 180px;
-    min-height: 160px;
+    height: 180px;
   }
-
   button {
     width: 100%;
+  }
+  .chart-section {
+    background: #1e1e35;
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 500px;
+    box-shadow: 0 0 16px rgba(199, 125, 255, 0.2);
+    text-align: center;
+  }
+
+  .chart-section h2 {
+    color: #c77dff;
+    margin-bottom: 1.5rem;
+  }
+
+  canvas {
+    max-width: 100%;
+    background: #0d0d1f;
+    border-radius: 8px;
+    padding: 0.5rem;
   }
 }
