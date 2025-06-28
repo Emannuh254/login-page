@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const letters = document.querySelectorAll(".animated-title .letter");
   const emailSignUpInput = signUpForm?.querySelector('input[type="email"]');
   const signUpPasswordInput = document.getElementById("signUpPassword");
+  const emailSignInInput = signInForm?.querySelector('input[type="email"]');
   const signInPasswordInput = document.getElementById("signInPassword");
   const toastContainer = document.getElementById("toast-container");
   const activeToasts = new Set();
@@ -61,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     triggerTitleAnimation();
   });
 
+  // ✅ Signup
   signUpForm?.addEventListener("submit", (e) => {
     e.preventDefault();
     if (!emailSignUpInput || !signUpPasswordInput) return;
@@ -77,27 +79,66 @@ document.addEventListener("DOMContentLoaded", () => {
       signUpPasswordInput.focus();
       return;
     }
-    showToast("Account created successfully!", "success");
-    signUpForm.reset();
-    document.getElementById("show-login").click();
+
+    fetch("https://notes-sniy.onrender.com/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: emailSignUpInput.value,
+        password: signUpPasswordInput.value,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message) {
+          showToast("Account created successfully!", "success");
+          signUpForm.reset();
+          document.getElementById("show-login").click();
+        } else {
+          showToast("Signup failed. Try again.", "error");
+        }
+      })
+      .catch(() => showToast("Server error. Try again later.", "error"));
   });
 
+  // ✅ Signin
   signInForm?.addEventListener("submit", (e) => {
     e.preventDefault();
-    if (!signInPasswordInput) return;
-    if (signInPasswordInput.value.length < 6) {
-      showToast("Password must be at least 6 characters.", "error");
-      signInPasswordInput.focus();
+    if (!emailSignInInput || !signInPasswordInput) return;
+
+    if (!isEmailValid(emailSignInInput.value)) {
+      showToast("Please enter a valid email.", "error");
       return;
     }
-    showToast("Logged in successfully!", "success");
-    signInForm.reset();
-    setTimeout(() => {
-      window.location.href =
-        "https://emannuh254.github.io/login-page/Components/splash.html";
-    }, 500); // delay to let toast show before redirect
+    if (signInPasswordInput.value.length < 6) {
+      showToast("Password must be at least 6 characters.", "error");
+      return;
+    }
+
+    fetch("https://notes-sniy.onrender.com/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: emailSignInInput.value,
+        password: signInPasswordInput.value,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message) {
+          showToast("Logged in successfully!", "success");
+          setTimeout(() => {
+            window.location.href =
+              "https://emannuh254.github.io/login-page/Components/splash.html";
+          }, 1000);
+        } else {
+          showToast("Login failed: " + data.error, "error");
+        }
+      })
+      .catch(() => showToast("Server error. Try again later.", "error"));
   });
 
+  // ✅ JWT Parser
   function parseJwt(token) {
     try {
       const base64Url = token.split(".")[1];
@@ -114,26 +155,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // ✅ Google Sign-In Handler
   window.handleCredentialResponse = (response) => {
     const jwt = response.credential;
     const data = parseJwt(jwt);
-    if (data) {
-      showToast(
-        `Welcome, ${data.name || "User"}! You are signed in.`,
-        "success",
-        2500
-      );
-      localStorage.setItem("authToken", jwt);
-      // Redirect after toast duration
-      setTimeout(() => {
-        window.location.href =
-          "https://emannuh254.github.io/login-page/Components/splash.html";
-      }, 2600);
+
+    if (data && data.email && data.name) {
+      fetch("https://notes-sniy.onrender.com/google-signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: data.email, name: data.name }),
+      })
+        .then((res) => res.json())
+        .then((result) => {
+          showToast(`Welcome, ${data.name}!`, "success", 2500);
+          localStorage.setItem("authToken", jwt);
+          setTimeout(() => {
+            window.location.href =
+              "https://emannuh254.github.io/login-page/Components/splash.html";
+          }, 2600);
+        })
+        .catch((err) => {
+          console.error("Error storing Google user:", err);
+          showToast("Google sign-in failed. Try again.", "error", 2500);
+        });
     } else {
       showToast("Google sign-in failed. Please try again.", "error", 2500);
     }
   };
 
+  // ✅ Google Sign-In Button Init
   function initGoogleSignIn() {
     if (
       window.google?.accounts?.id &&
@@ -166,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, 100);
 
-  // Toggle password visibility
+  // ✅ Password Toggle
   document.querySelectorAll(".toggle-password").forEach((icon) => {
     icon.addEventListener("click", () => {
       const input = document.getElementById(icon.dataset.target);
@@ -178,4 +229,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-const bcrypt = require("bcrypt");
