@@ -17,16 +17,14 @@
         overflow: hidden;
         padding: 20px;
       }
-
       #terminal {
         font-size: 1.4rem;
         line-height: 1.6;
         white-space: pre-wrap;
-        max-width: 600px;
+        max-width: 800px; /* Allow wider lines for ASCII art */
         width: 100%;
         text-shadow: 0 0 10px #2effbf;
       }
-
       .cursor {
         display: inline-block;
         width: 10px;
@@ -36,7 +34,6 @@
         vertical-align: bottom;
         height: 1.2em;
       }
-
       @keyframes blink {
         0%,
         100% {
@@ -57,14 +54,29 @@
       const cursor = document.querySelector(".cursor");
       const lines = [
         "> Access granted...",
-        "> Fetching modules...",
+        "> Establishing secure connection to FlipMarket Network...",
+        "> Authenticating user credentials...",
+        "> Deploying mining bots across network nodes...",
+        "> Mining Crypto Shards...",
+        "> Tracking market volatility...",
+        "> Running algorithmic trading simulations...",
+        "> Displaying trading graphs...",
+        "> Market Trends Visualization:",
+        ">   /\\         /\\   /\\         ",
+        ">  /  \\ /\\  /\\/  \\/\\/  \\ /\\    ",
+        "> /    \\  \\/    \\    \\  /  \\   ",
+        ">/      \\/      \\   /\\/    \\ / ",
+        "> Reading blockchain ledger entries...",
+        "> Optimizing hash rates for maximum efficiency...",
+        "> Synchronizing neural trade analysis...",
+        "> Initiating blockchain consensus...",
         "> Booting FlipMarket Dashboard...",
       ];
 
       let currentLine = 0;
       let currentChar = 0;
-      const typingSpeed = 50; // ms per character
-      const linePause = 800; // pause between lines
+      const typingSpeed = 2; // milliseconds per character
+      const linePause = 5; // pause after each line
 
       function typeLine() {
         if (currentChar < lines[currentLine].length) {
@@ -78,16 +90,15 @@
           if (currentLine < lines.length) {
             setTimeout(typeLine, linePause);
           } else {
+            // All lines typed, hide cursor and redirect after a delay
             cursor.style.display = "none";
-            // After typing all lines, wait a sec then redirect
             setTimeout(() => {
-              window.location.href = "../Components/home.html";
+              window.location.href = "./home.html";
             }, 1000);
           }
         }
       }
-
-      // Start typing
+      // Start the typing animation when the script loads
       typeLine();
     </script>
     <script src="/Js/redirector.js"></script>

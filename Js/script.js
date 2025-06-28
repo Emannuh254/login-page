@@ -178,3 +178,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+const bcrypt = require("bcrypt");
