@@ -27,8 +27,7 @@
       </div>
       <!-- Login Form -->
       <form id="login-form" class="auth-form active">
-        <input type="email" placeholder="Email" required />
-
+        <input type="email" id="signInEmail" placeholder="Email" required />
         <div class="input-wrapper">
           <input
             type="password"
@@ -41,7 +40,6 @@
             data-target="signInPassword"
           ></i>
         </div>
-
         <button type="submit">Log In</button>
         <h3>Welcome Back!</h3>
         <p>To keep connected with us please login with your personal info</p>
@@ -49,9 +47,8 @@
 
       <!-- Sign Up Form -->
       <form id="signup-form" class="auth-form">
-        <input type="text" placeholder="Full Name" required />
-        <input type="email" placeholder="Email" required />
-
+        <input type="text" id="signUpName" placeholder="Full Name" required />
+        <input type="email" id="signUpEmail" placeholder="Email" required />
         <div class="input-wrapper">
           <input
             type="password"
@@ -64,7 +61,6 @@
             data-target="signUpPassword"
           ></i>
         </div>
-
         <button type="submit">Sign Up</button>
         <p>
           Join FlipMarket and unlock exclusive deals! Register now for free.

@@ -2,9 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const signUpForm = document.getElementById("signup-form");
   const signInForm = document.getElementById("login-form");
   const letters = document.querySelectorAll(".animated-title .letter");
-  const emailSignUpInput = signUpForm?.querySelector('input[type="email"]');
+
+  const nameInput = document.getElementById("signUpName");
+  const emailSignUpInput = document.getElementById("signUpEmail");
   const signUpPasswordInput = document.getElementById("signUpPassword");
-  const emailSignInInput = signInForm?.querySelector('input[type="email"]');
+  const emailSignInInput = document.getElementById("signInEmail");
   const signInPasswordInput = document.getElementById("signInPassword");
   const toastContainer = document.getElementById("toast-container");
   const activeToasts = new Set();
@@ -62,10 +64,11 @@ document.addEventListener("DOMContentLoaded", () => {
     triggerTitleAnimation();
   });
 
-  // ✅ Signup
+  // ✅ Handle Signup
   signUpForm?.addEventListener("submit", (e) => {
     e.preventDefault();
-    if (!emailSignUpInput || !signUpPasswordInput) return;
+    if (!emailSignUpInput || !signUpPasswordInput || !nameInput) return;
+
     if (!isEmailValid(emailSignUpInput.value)) {
       showToast("Please enter a valid email address.", "error");
       emailSignUpInput.focus();
@@ -84,6 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        name: nameInput.value,
         email: emailSignUpInput.value,
         password: signUpPasswordInput.value,
       }),
@@ -101,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch(() => showToast("Server error. Try again later.", "error"));
   });
 
-  // ✅ Signin
+  // ✅ Handle Signin
   signInForm?.addEventListener("submit", (e) => {
     e.preventDefault();
     if (!emailSignInInput || !signInPasswordInput) return;
