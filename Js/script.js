@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .finally(hideLoader);
   });
 
-  signInForm?.addEventListener("submit", (e) => {
+  signInForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     if (!isEmailValid(emailSignInInput.value))
@@ -156,27 +156,51 @@ document.addEventListener("DOMContentLoaded", () => {
       return showToast("Password too short.", "error");
 
     showLoader();
-    fetch("https://notes-sniy.onrender.com/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: emailSignInInput.value.trim(),
-        password: signInPasswordInput.value,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) return showToast(data.error, "error");
-        localStorage.setItem("authToken", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
+
+    // New: Check if email exists before login
+    try {
+      const checkEmailRes = await fetch(
+        `https://notes-sniy.onrender.com/check-email?email=${encodeURIComponent(
+          emailSignInInput.value.trim()
+        )}`
+      );
+      const checkEmailData = await checkEmailRes.json();
+
+      if (!checkEmailData.exists) {
+        hideLoader();
+        return showToast(
+          "Email not registered. Please sign up first.",
+          "error"
+        );
+      }
+
+      // If exists, proceed with login
+      const loginRes = await fetch("https://notes-sniy.onrender.com/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: emailSignInInput.value.trim(),
+          password: signInPasswordInput.value,
+        }),
+      });
+
+      const loginData = await loginRes.json();
+      if (loginData.error) {
+        showToast(loginData.error, "error");
+      } else {
+        localStorage.setItem("authToken", loginData.token);
+        localStorage.setItem("user", JSON.stringify(loginData.user));
         showToast("Logged in successfully!", "success");
         setTimeout(() => {
           window.location.href =
             "https://emannuh254.github.io/login-page/Components/splash.html";
         }, 300);
-      })
-      .catch(() => showToast("Server error. Try again.", "error"))
-      .finally(hideLoader);
+      }
+    } catch {
+      showToast("Server error. Try again.", "error");
+    } finally {
+      hideLoader();
+    }
   });
 
   forgotForm?.addEventListener("submit", (e) => {
