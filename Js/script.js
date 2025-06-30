@@ -11,6 +11,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const toastContainer = document.getElementById("toast-container");
   const activeToasts = new Set();
 
+  const loginToggleBtn = document.getElementById("show-login");
+  const signupToggleBtn = document.getElementById("show-signup");
+
   function showToast(message, type = "success", duration = 3000) {
     if (!toastContainer) return;
     const toastId = `${message}-${type}`;
@@ -52,15 +55,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  document.getElementById("show-login").addEventListener("click", () => {
+  // ✅ Toggle to Login Form
+  loginToggleBtn.addEventListener("click", () => {
     signInForm.classList.add("active");
     signUpForm.classList.remove("active");
+
+    loginToggleBtn.classList.add("active");
+    signupToggleBtn.classList.remove("active");
+
     triggerTitleAnimation();
   });
 
-  document.getElementById("show-signup").addEventListener("click", () => {
+  // ✅ Toggle to Signup Form
+  signupToggleBtn.addEventListener("click", () => {
     signUpForm.classList.add("active");
     signInForm.classList.remove("active");
+
+    signupToggleBtn.classList.add("active");
+    loginToggleBtn.classList.remove("active");
+
     triggerTitleAnimation();
   });
 
@@ -69,11 +82,24 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     if (!emailSignUpInput || !signUpPasswordInput || !nameInput) return;
 
+    const nameValue = nameInput.value.trim();
+    const nameParts = nameValue.split(/\s+/);
+
+    if (nameParts.length < 2) {
+      showToast(
+        "Please enter at least two names (e.g., Emmanuel Mutugi).",
+        "error"
+      );
+      nameInput.focus();
+      return;
+    }
+
     if (!isEmailValid(emailSignUpInput.value)) {
       showToast("Please enter a valid email address.", "error");
       emailSignUpInput.focus();
       return;
     }
+
     if (!isPasswordStrong(signUpPasswordInput.value)) {
       showToast(
         "Password must be at least 6 characters and include a number.",
@@ -87,17 +113,19 @@ document.addEventListener("DOMContentLoaded", () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name: nameInput.value,
-        email: emailSignUpInput.value,
+        name: nameValue,
+        email: emailSignUpInput.value.trim(),
         password: signUpPasswordInput.value,
       }),
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.message) {
+        if (data.message === "Email already exists") {
+          showToast("An account with this email already exists.", "error");
+        } else if (data.message === "User created") {
           showToast("Account created successfully!", "success");
           signUpForm.reset();
-          document.getElementById("show-login").click();
+          loginToggleBtn.click();
         } else {
           showToast("Signup failed. Try again.", "error");
         }
@@ -114,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showToast("Please enter a valid email.", "error");
       return;
     }
+
     if (signInPasswordInput.value.length < 6) {
       showToast("Password must be at least 6 characters.", "error");
       return;
@@ -177,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
           setTimeout(() => {
             window.location.href =
               "https://emannuh254.github.io/login-page/Components/splash.html";
-          }, 2600);
+          }, 600);
         })
         .catch((err) => {
           console.error("Error storing Google user:", err);

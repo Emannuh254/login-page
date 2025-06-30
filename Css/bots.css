@@ -1,3 +1,4 @@
+/* === Base Styling === */
 body {
   margin: 0;
   font-family: "Segoe UI", sans-serif;
@@ -6,15 +7,12 @@ body {
   padding-top: 70px;
   overflow-x: hidden;
 }
-
-/* Headings */
-h1,
-h2 {
+h1, h2 {
   color: #c77dff;
   text-align: center;
 }
 
-/* Marquee */
+/* === Marquee === */
 .marquee-container {
   overflow: hidden;
   white-space: nowrap;
@@ -29,15 +27,11 @@ h2 {
   animation: marquee 8s linear infinite;
 }
 @keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
 }
 
-/* Dashboard */
+/* === Dashboard === */
 #dashboard {
   background-color: #1e1e35;
   max-width: 360px;
@@ -52,7 +46,7 @@ h2 {
   font-weight: bold;
 }
 
-/* Bot Grid */
+/* === Bot Cards === */
 #botContainer {
   display: flex;
   flex-wrap: wrap;
@@ -75,8 +69,6 @@ h2 {
   box-shadow: 0 0 30px #c77dff;
   transform: translateY(-6px);
 }
-
-/* Images */
 .bot-image {
   width: 100%;
   height: 200px;
@@ -85,7 +77,7 @@ h2 {
   margin-bottom: 1rem;
 }
 
-/* Buttons */
+/* === Buttons === */
 button {
   background: #c77dff;
   border: none;
@@ -107,28 +99,22 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* Modal */
+/* === Modal === */
 .modal,
-.overlay {
-  display: none;
-}
+.overlay { display: none; }
 .modal.show,
-.overlay.show {
-  display: block;
-}
+.overlay.show { display: block; }
+
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
   background: rgba(0, 0, 0, 0.7);
   z-index: 999;
 }
 .modal {
   position: fixed;
-  top: 50%;
-  left: 50%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   background-color: #1e1e35;
   padding: 2rem;
@@ -150,7 +136,7 @@ button:disabled {
   font-weight: bold;
 }
 
-/* Footer */
+/* === Footer === */
 footer {
   text-align: center;
   padding: 1.5rem 1rem;
@@ -159,38 +145,122 @@ footer {
   font-size: 0.95rem;
 }
 
-/* Responsive */
+/* === Chart Section === */
+.chart-section {
+  background: #1e1e35;
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 500px;
+  box-shadow: 0 0 16px rgba(199, 125, 255, 0.2);
+  text-align: center;
+}
+.chart-section h2 {
+  color: #c77dff;
+  margin-bottom: 1.5rem;
+}
+canvas {
+  max-width: 100%;
+  background: #0d0d1f;
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+/* === Navbar Styling (outside media query!) === */
+#brand-bar {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 11001;
+  user-select: none;
+}
+#brand-bar h1 {
+  color: #9f54ff;
+  font-size: 1.8rem;
+  margin: 0;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+#hamburger-btn {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #9f54ff;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  transition: color 0.3s ease;
+  z-index: 11001;
+}
+#hamburger-btn:hover { color: #2effbf; }
+#hamburger-btn:focus { outline: none; }
+
+#navbar {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 280px;
+  height: 100vh;
+  background-color: #121230;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  z-index: 11000;
+  transition: right 0.3s ease;
+}
+#navbar.active { right: 0; }
+
+ul.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+ul.nav-links li a {
+  color: #ddd;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 15px;
+  border-radius: 8px;
+  background: #000;
+  display: block;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+ul.nav-links li a:hover,
+ul.nav-links li a.active {
+  background-color: #2effbf;
+  color: #000;
+}
+
+#overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 10500;
+}
+#overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* === Responsive Tweaks === */
 @media screen and (max-width: 480px) {
   .bot-card,
   #dashboard {
     max-width: 100%;
     padding: 1rem;
   }
-  .bot-image {
-    height: 180px;
-  }
-  button {
-    width: 100%;
-  }
-  .chart-section {
-    background: #1e1e35;
-    border-radius: 12px;
-    padding: 2rem;
-    margin: 2rem auto;
-    max-width: 500px;
-    box-shadow: 0 0 16px rgba(199, 125, 255, 0.2);
-    text-align: center;
-  }
-
-  .chart-section h2 {
-    color: #c77dff;
-    margin-bottom: 1.5rem;
-  }
-
-  canvas {
-    max-width: 100%;
-    background: #0d0d1f;
-    border-radius: 8px;
-    padding: 0.5rem;
-  }
+  .bot-image { height: 180px; }
+  button { width: 100%; }
 }
