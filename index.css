@@ -6,44 +6,6 @@
   margin: 0;
   padding: 0;
 }
-#loader-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.dot-loader {
-  display: flex;
-  gap: 12px;
-}
-
-.dot-loader span {
-  width: 14px;
-  height: 14px;
-  background: #2effbf;
-  border-radius: 50%;
-  box-shadow: 0 0 10px #2effbf, 0 0 20px #2effbf;
-  animation: pulse 0.6s infinite alternate;
-}
-
-.dot-loader span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.dot-loader span:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes pulse {
-  to {
-    transform: scale(1.5);
-    opacity: 0.6;
-  }
-}
 
 html,
 body {
@@ -193,11 +155,12 @@ body {
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 0 15px #6e1cff, 0 0 30px #2effbf;
 }
 
 .form-toggle button.active,
 .form-toggle button:hover {
-  background: #6e1cff;
+  background: #1cff27;
   color: #000;
   box-shadow: 0 0 15px #6e1cff, 0 0 30px #2effbf;
 }
@@ -213,6 +176,50 @@ body {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+/* Glowing Loader */
+#loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dot-loader {
+  display: flex;
+  gap: 10px;
+}
+
+.dot-loader span {
+  width: 16px;
+  height: 16px;
+  background: #00ffff;
+  border-radius: 50%;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.dot-loader span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.dot-loader span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+    box-shadow: 0 0 10px #00ffff;
+  }
+  to {
+    transform: translateY(-20px);
+    box-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+  }
 }
 
 .auth-form.active {
@@ -370,33 +377,5 @@ body {
 
   #google-signin-button {
     width: 100%;
-  }#loader-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 20000;
-}
-
-.loader-spinner {
-  width: 60px;
-  height: 60px;
-  border: 6px solid #9f54ff;
-  border-top: 6px solid #2effbf;
-  border-radius: 50%;
-  animation: spin 1.1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
   }
-}
-
-
 }

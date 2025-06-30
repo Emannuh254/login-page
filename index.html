@@ -12,14 +12,10 @@
     />
   </head>
   <body>
-<!-- Glowing Loader Overlay -->
-<div id="loader-overlay">
-  <div class="dot-loader">
-    <span></span><span></span><span></span>
-  </div>
-</div>
-
-
+    <!-- Glowing Loader Overlay -->
+    <div id="loader-overlay">
+      <div class="dot-loader"><span></span><span></span><span></span></div>
+    </div>
 
     <div class="auth-container">
       <h1 class="animated-title">
@@ -48,6 +44,9 @@
             class="fas fa-eye toggle-password"
             data-target="signInPassword"
           ></i>
+          <p style="text-align: right; font-size: 0.9rem">
+            <a href="#" id="forgot-password-link">Forgot Password?</a>
+          </p>
         </div>
         <button type="submit">Log In</button>
         <h3>Welcome Back!</h3>
@@ -74,6 +73,16 @@
         <p>
           Join FlipMarket and unlock exclusive deals! Register now for free.
         </p>
+      </form>
+      <form id="forgot-password-form" class="auth-form" style="display: none">
+        <input
+          type="email"
+          id="forgotEmail"
+          placeholder="Enter your email"
+          required
+        />
+        <button type="submit">Reset Password</button>
+        <p>We'll send you a reset link if this email exists.</p>
       </form>
 
       <div class="social-signin-section">
