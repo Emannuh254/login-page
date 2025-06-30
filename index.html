@@ -18,6 +18,7 @@
     </div>
 
     <div class="auth-container">
+      <!-- Animated Title -->
       <h1 class="animated-title">
         <span class="letter">F</span><span class="letter">l</span
         ><span class="letter">i</span><span class="letter">p</span>
@@ -26,10 +27,12 @@
         <span class="letter">e</span><span class="letter">t</span>
       </h1>
 
+      <!-- Toggle Buttons -->
       <div class="form-toggle">
         <button id="show-login" class="active">Login</button>
         <button id="show-signup">Sign Up</button>
       </div>
+
       <!-- Login Form -->
       <form id="login-form" class="auth-form active">
         <input type="email" id="signInEmail" placeholder="Email" required />
@@ -48,9 +51,18 @@
             <a href="#" id="forgot-password-link">Forgot Password?</a>
           </p>
         </div>
+
         <button type="submit">Log In</button>
         <h3>Welcome Back!</h3>
         <p>To keep connected with us please login with your personal info</p>
+
+        <!-- Google Sign-In -->
+        <div class="social-signin-section">
+          <p class="social-text">Sign in with Google</p>
+          <div class="google-wrapper">
+            <div id="google-signin-button"></div>
+          </div>
+        </div>
       </form>
 
       <!-- Sign Up Form -->
@@ -74,6 +86,8 @@
           Join FlipMarket and unlock exclusive deals! Register now for free.
         </p>
       </form>
+
+      <!-- Forgot Password Form -->
       <form id="forgot-password-form" class="auth-form">
         <input
           type="email"
@@ -81,25 +95,20 @@
           placeholder="Enter your email"
           required
         />
-
-
-      <div class="social-signin-section">
-        <p class="social-text">Sign in with Google</p>
-        <div id="google-signin-button"></div>
-      </div>
-
-      <p>
-        Don't have an account?
-        <a href="#" id="signup-link">Sign Up</a>
-      </p>
-
-
-      <div id="toast-container"></div>
+        <button type="submit">Reset Password</button>
+        <p>
+          Don't have an account?
+          <a href="#" id="signup-link">Sign Up</a>
+        </p>
+      </form>
     </div>
 
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Scripts -->
     <script src="Js/script.js"></script>
     <script src="Js/redirector.js"></script>
-
     <script src="https://accounts.google.com/gsi/client" async defer></script>
   </body>
 </html>

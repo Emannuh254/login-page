@@ -260,7 +260,7 @@
 
       <section class="card referrals-card">
         <h2>Your Referrals</h2>
-        <p>Referrals: <strong>15 users</strong></p>
+        <p>Referrals: <strong> 10 users</strong></p>
         <p>Total Earned: <strong>Ksh 4,500</strong></p>
         <button class="btn">Share Link</button>
       </section>
@@ -283,111 +283,131 @@
     <!-- ✅ JavaScript -->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        // ✅ Handle user info from localStorage
-        const user = JSON.parse(localStorage.getItem("user"));
-        if (user) {
-          const name = user.name || "Guest";
-          const email = user.email || "unknown";
+  // ✅ Handle user info from localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log("USER OBJECT:", user); // for debugging
 
-          document.getElementById("user-name").textContent = name;
-          document.getElementById("user-email").textContent = email;
+  if (user && (user.name || user.email)) {
+    const name = (user.name ?? "Unnamed").trim();
+    const email = (user.email ?? "unknown").trim();
 
-          const username = "@" + (name.split(" ")[0] || "user").toLowerCase();
-          document.getElementById("user-username").textContent = username;
-        } else {
-          // No user found, redirect
-          window.location.href = "https://emannuh254.github.io/login-page/index.html";
-        }
+    document.getElementById("user-name").textContent = name;
+    document.getElementById("user-email").textContent = email;
 
-        // ✅ Handle logout
-        const logoutBtn = document.getElementById("logout");
-        logoutBtn?.addEventListener("click", (e) => {
-          e.preventDefault();
-          localStorage.removeItem("user");
-          localStorage.removeItem("authToken");
-          window.location.href = "https://emannuh254.github.io/login-page/index.html";
-        });
+    const username =
+      "@" + (name.split(" ")[0] || "user").toLowerCase().replace(/[^a-z0-9]/gi, "");
+    document.getElementById("user-username").textContent = username;
+  } else {
+    // No user found, redirect
+    window.location.href =
+      "https://emannuh254.github.io/login-page/index.html";
+  }
 
-        // ✅ Charts
-        const usageChartCanvas = document.getElementById("usageChart");
-        const reviewsChartCanvas = document.getElementById("reviewsChart");
+  // ✅ Handle logout
+  const logoutBtn = document.getElementById("logout");
+  logoutBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    localStorage.removeItem("user");
+    localStorage.removeItem("authToken");
+    window.location.href =
+      "https://emannuh254.github.io/login-page/index.html";
+  });
 
-        if (usageChartCanvas && reviewsChartCanvas) {
-          const usageCtx = usageChartCanvas.getContext("2d");
-          const reviewsCtx = reviewsChartCanvas.getContext("2d");
+  // ✅ Charts
+  const usageChartCanvas = document.getElementById("usageChart");
+  const reviewsChartCanvas = document.getElementById("reviewsChart");
 
-          new Chart(usageCtx, {
-            type: "line",
-            data: {
-              labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-              datasets: [{
-                label: "Active Bots",
-                data: [5, 10, 7, 12, 15, 18, 22],
-                borderColor: "#c77dff",
-                backgroundColor: "rgba(199,125,255,0.2)",
-                tension: 0.3,
-                pointBackgroundColor: "#aa4de8",
-              }],
-            },
-            options: {
-              plugins: { legend: { labels: { color: "#c77dff" } } },
-              scales: {
-                x: { ticks: { color: "#e0e0ff" }, grid: { color: "#31003f" } },
-                y: { ticks: { color: "#e0e0ff" }, grid: { color: "#31003f" } },
-              },
-            },
-          });
+  if (usageChartCanvas && reviewsChartCanvas) {
+    const usageCtx = usageChartCanvas.getContext("2d");
+    const reviewsCtx = reviewsChartCanvas.getContext("2d");
 
-          new Chart(reviewsCtx, {
-            type: "bar",
-            data: {
-              labels: ["Positive", "Neutral", "Negative"],
-              datasets: [{
-                data: [85, 10, 5],
-                backgroundColor: ["#aa4de8", "#888", "#ff6f6f"],
-              }],
-            },
-            options: {
-              plugins: { legend: { display: false } },
-              scales: {
-                x: { ticks: { color: "#e0e0ff" }, grid: { color: "#31003f" } },
-                y: {
-                  ticks: { color: "#e0e0ff" },
-                  grid: { color: "#31003f" },
-                  max: 100,
-                },
-              },
-            },
-          });
-        }
+    new Chart(usageCtx, {
+      type: "line",
+      data: {
+        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        datasets: [
+          {
+            label: "Active Bots",
+            data: [5, 10, 7, 12, 15, 18, 22],
+            borderColor: "#c77dff",
+            backgroundColor: "rgba(199,125,255,0.2)",
+            tension: 0.3,
+            pointBackgroundColor: "#aa4de8",
+          },
+        ],
+      },
+      options: {
+        plugins: { legend: { labels: { color: "#c77dff" } } },
+        scales: {
+          x: {
+            ticks: { color: "#e0e0ff" },
+            grid: { color: "#31003f" },
+          },
+          y: {
+            ticks: { color: "#e0e0ff" },
+            grid: { color: "#31003f" },
+          },
+        },
+      },
+    });
 
-        // ✅ Hamburger menu
-        const hamburgerBtn = document.getElementById("hamburger-btn");
-        const navbar = document.getElementById("navbar");
-        const overlay = document.getElementById("overlay");
-        const navLinks = navbar.querySelectorAll("ul.nav-links li a");
+    new Chart(reviewsCtx, {
+      type: "bar",
+      data: {
+        labels: ["Positive", "Neutral", "Negative"],
+        datasets: [
+          {
+            data: [85, 10, 5],
+            backgroundColor: ["#aa4de8", "#888", "#ff6f6f"],
+          },
+        ],
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          x: {
+            ticks: { color: "#e0e0ff" },
+            grid: { color: "#31003f" },
+          },
+          y: {
+            ticks: { color: "#e0e0ff" },
+            grid: { color: "#31003f" },
+            max: 100,
+          },
+        },
+      },
+    });
+  }
 
-        function closeNavbar() {
-          navbar.classList.remove("active");
-          overlay.classList.remove("active");
-          hamburgerBtn.setAttribute("aria-expanded", "false");
-          navbar.setAttribute("aria-hidden", "true");
-        }
+  // ✅ Hamburger menu
+  const hamburgerBtn = document.getElementById("hamburger-btn");
+  const navbar = document.getElementById("navbar");
+  const overlay = document.getElementById("overlay");
+  const navLinks = navbar.querySelectorAll("ul.nav-links li a");
 
-        function openNavbar() {
-          navbar.classList.add("active");
-          overlay.classList.add("active");
-          hamburgerBtn.setAttribute("aria-expanded", "true");
-          navbar.setAttribute("aria-hidden", "false");
-        }
+  function closeNavbar() {
+    navbar.classList.remove("active");
+    overlay.classList.remove("active");
+    hamburgerBtn.setAttribute("aria-expanded", "false");
+    navbar.setAttribute("aria-hidden", "true");
+  }
 
-        hamburgerBtn.addEventListener("click", () => {
-          navbar.classList.contains("active") ? closeNavbar() : openNavbar();
-        });
+  function openNavbar() {
+    navbar.classList.add("active");
+    overlay.classList.add("active");
+    hamburgerBtn.setAttribute("aria-expanded", "true");
+    navbar.setAttribute("aria-hidden", "false");
+  }
 
-        overlay.addEventListener("click", closeNavbar);
-        navLinks.forEach((link) => link.addEventListener("click", closeNavbar));
-      });
+  hamburgerBtn.addEventListener("click", () => {
+    navbar.classList.contains("active") ? closeNavbar() : openNavbar();
+  });
+
+  overlay.addEventListener("click", closeNavbar);
+  navLinks.forEach((link) => link.addEventListener("click", closeNavbar));
+ });
+
+
     </script>
     <script src="../Js/flipmarket.js"></script>
   </body>

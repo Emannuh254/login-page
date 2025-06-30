@@ -273,6 +273,15 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     }
   }
+  google.accounts.id.renderButton(
+    document.getElementById("google-signin-button"),
+    {
+      theme: "outline",
+      size: "large",
+      shape: "pill",
+      logo_alignment: "left",
+    }
+  );
 
   const googleApiInterval = setInterval(() => {
     if (window.google?.accounts?.id) {
