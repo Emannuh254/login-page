@@ -64,27 +64,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   loginToggleBtn?.addEventListener("click", () => {
-    signInForm.style.display = "block";
-    signUpForm.style.display = "none";
-    forgotForm.style.display = "none";
+    signInForm.classList.add("active");
+    signUpForm.classList.remove("active");
+    forgotForm.classList.remove("active");
+
     loginToggleBtn.classList.add("active");
     signupToggleBtn.classList.remove("active");
     triggerTitleAnimation();
   });
 
   signupToggleBtn?.addEventListener("click", () => {
-    signUpForm.style.display = "block";
-    signInForm.style.display = "none";
-    forgotForm.style.display = "none";
+    signUpForm.classList.add("active");
+    signInForm.classList.remove("active");
+    forgotForm.classList.remove("active");
+
     signupToggleBtn.classList.add("active");
     loginToggleBtn.classList.remove("active");
     triggerTitleAnimation();
   });
 
   forgotLink?.addEventListener("click", () => {
-    forgotForm.style.display = "block";
-    signInForm.style.display = "none";
-    signUpForm.style.display = "none";
+    forgotForm.classList.add("active");
+    signInForm.classList.remove("active");
+    signUpForm.classList.remove("active");
+
+    signupToggleBtn.classList.remove("active");
+    loginToggleBtn.classList.remove("active");
     triggerTitleAnimation();
   });
 
