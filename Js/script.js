@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  loginToggleBtn.addEventListener("click", () => {
+  loginToggleBtn?.addEventListener("click", () => {
     signInForm.classList.add("active");
     signUpForm.classList.remove("active");
     loginToggleBtn.classList.add("active");
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     triggerTitleAnimation();
   });
 
-  signupToggleBtn.addEventListener("click", () => {
+  signupToggleBtn?.addEventListener("click", () => {
     signUpForm.classList.add("active");
     signInForm.classList.remove("active");
     signupToggleBtn.classList.add("active");
@@ -79,10 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nameParts = nameValue.split(/\s+/);
 
     if (nameParts.length < 2) {
-      showToast(
-        "Please enter at least two names (e.g., Emmanuel Mutugi).",
-        "error"
-      );
+      showToast("Please enter at least two names (e.g., Emmanuel Mutugi).", "error");
       nameInput.focus();
       return;
     }
@@ -94,10 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!isPasswordStrong(signUpPasswordInput.value)) {
-      showToast(
-        "Password must be at least 6 characters and include a number.",
-        "error"
-      );
+      showToast("Password must be at least 6 characters and include a number.", "error");
       signUpPasswordInput.focus();
       return;
     }
@@ -113,19 +107,16 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.message === "Email already exists") {
-          showToast("An account with this email already exists.", "error");
-        } else if (data.message === "User created") {
+        if (data.error) {
+          showToast(data.error, "error");
+        } else if (data.message && data.message.includes("successful")) {
           localStorage.setItem(
             "user",
-            JSON.stringify({
-              name: nameValue,
-              email: emailSignUpInput.value.trim(),
-            })
+            JSON.stringify({ name: nameValue, email: emailSignUpInput.value.trim() })
           );
           showToast("Account created successfully!", "success");
           signUpForm.reset();
-          loginToggleBtn.click();
+          loginToggleBtn?.click();
         } else {
           showToast("Signup failed. Try again.", "error");
         }
@@ -151,28 +142,23 @@ document.addEventListener("DOMContentLoaded", () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: emailSignInInput.value,
+        email: emailSignInInput.value.trim(),
         password: signInPasswordInput.value,
       }),
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.token && data.user) {
+        if (data.error) {
+          showToast(data.error, "error");
+        } else if (data.token && data.user) {
           localStorage.setItem("authToken", data.token);
-          localStorage.setItem(
-            "user",
-            JSON.stringify({
-              name: data.user.name,
-              email: data.user.email,
-            })
-          );
+          localStorage.setItem("user", JSON.stringify(data.user));
           showToast("Logged in successfully!", "success");
           setTimeout(() => {
-            window.location.href =
-              "https://emannuh254.github.io/login-page/Components/splash.html";
+            window.location.href = "https://emannuh254.github.io/login-page/Components/splash.html";
           }, 100);
         } else {
-          showToast("Login failed: " + data.error, "error");
+          showToast("Login failed. Try again.", "error");
         }
       })
       .catch(() => showToast("Server error. Try again later.", "error"));
@@ -206,18 +192,16 @@ document.addEventListener("DOMContentLoaded", () => {
       })
         .then((res) => res.json())
         .then((result) => {
-          localStorage.setItem(
-            "user",
-            JSON.stringify({
-              name: data.name,
-              email: data.email,
-            })
-          );
-          showToast(`Welcome, ${data.name}!`, "success", 2500);
-          setTimeout(() => {
-            window.location.href =
-              "https://emannuh254.github.io/login-page/Components/splash.html";
-          }, 600);
+          if (result.error) {
+            showToast(result.error, "error");
+          } else {
+            localStorage.setItem("user", JSON.stringify({ name: data.name, email: data.email }));
+            localStorage.setItem("authToken", jwt);
+            showToast(`Welcome, ${data.name}!`, "success", 2500);
+            setTimeout(() => {
+              window.location.href = "https://emannuh254.github.io/login-page/Components/splash.html";
+            }, 600);
+          }
         })
         .catch((err) => {
           console.error("Error storing Google user:", err);
@@ -229,27 +213,20 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   function initGoogleSignIn() {
-    if (
-      window.google?.accounts?.id &&
-      document.getElementById("google-signin-button")
-    ) {
+    if (window.google?.accounts?.id && document.getElementById("google-signin-button")) {
       google.accounts.id.initialize({
-        client_id:
-          "57706195065-klr8q7oot7ee889ohh40o9jp1huc7420.apps.googleusercontent.com",
+        client_id: "57706195065-klr8q7oot7ee889ohh40o9jp1huc7420.apps.googleusercontent.com",
         callback: window.handleCredentialResponse,
       });
 
-      google.accounts.id.renderButton(
-        document.getElementById("google-signin-button"),
-        {
-          theme: "outline",
-          size: "large",
-          type: "standard",
-          shape: "pill",
-          logo_alignment: "left",
-          width: 240,
-        }
-      );
+      google.accounts.id.renderButton(document.getElementById("google-signin-button"), {
+        theme: "outline",
+        size: "large",
+        type: "standard",
+        shape: "pill",
+        logo_alignment: "left",
+        width: 240,
+      });
     }
   }
 
@@ -270,4 +247,18 @@ document.addEventListener("DOMContentLoaded", () => {
       icon.classList.toggle("fa-eye-slash");
     });
   });
+   document.getElementById("loader-overlay").style.display = "flex"; // show
+
+fetch("...", {
+  method: "POST",
+  ...
+})
+.then(res => res.json())
+.then(data => {
+  ...
+})
+.finally(() => {
+  document.getElementById("loader-overlay").style.display = "none"; // hide
+});
+
 });
