@@ -106,9 +106,11 @@
     <!-- Toast Container -->
     <div id="toast-container"></div>
 
-    <!-- Scripts -->
-    <script src="Js/script.js"></script>
-    <script src="Js/redirector.js"></script>
+    <!-- Load Google Identity first -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <!-- Your scripts (after Google API is available) -->
+    <script src="../Js/redirector.js" defer></script>
+    <script src="../Js/script.js" defer></script>
   </body>
 </html>

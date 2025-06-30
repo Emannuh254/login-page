@@ -316,30 +316,39 @@ body {
   align-items: center;
   gap: 20px;
 }
-#google-signin-button:hover {
-  box-shadow: #2effbf; /* Lighter shade for hover */
-  color: #000; /* Change text color on hover */
+/* Social sign-in section container */
+.social-signin-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
+
+/* Google Sign-in button */
 #google-signin-button {
   width: 100%;
+  max-width: 280px; /* Limit max width */
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #000000; /* Google blue */
+  background-color: #000000; /* Black background */
   color: #fff;
   font-weight: bold;
   border-radius: 50px;
   cursor: pointer;
-
-  transition: box-shadow 0.3s ease;
+  user-select: none;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+  box-shadow: inset 0 0 12px #9f54ff, inset 0 0 20px #2effbf;
 }
 
+/* Hover effect */
 #google-signin-button:hover {
   box-shadow: inset 0 0 20px #9f54ff, inset 0 0 30px #2effbf;
+  color: #2effbf; /* Bright cyan text on hover */
 }
 
-/* === Responsive === */
+/* Responsive */
 @media (max-width: 400px) {
   .auth-container {
     padding: 30px 20px 50px;
@@ -351,6 +360,6 @@ body {
   }
 
   #google-signin-button {
-    width: 100%;
+    max-width: 100%; /* full width on small screens */
   }
 }
