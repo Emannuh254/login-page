@@ -244,10 +244,10 @@
     <main class="container">
       <section class="card profile-card">
         <img src="../images/user.png" alt="Default User" class="profile-img" />
-        <h2>Emmanuel Mutugi</h2>
-        <p class="username">@mannuh</p>
-        <p>Email: emmanuel@example.com</p>
-      </section>
+        <h2 id="user-name">User Name</h2>
+        <p class="username" id="user-username">@username</p>
+        <p>Email: <span id="user-email">email@example.com</span></p>
+        
 
       <section class="card referrals-card">
         <h2>Your Referrals</h2>
@@ -269,36 +269,38 @@
     </main>
 
     <footer>© 2025 FlipMarket</footer>
+    
+    <footer>© 2025 FlipMarket</footer>
 
     <!-- ✅ JavaScript -->
     <script>
-      const hamburgerBtn = document.getElementById("hamburger-btn");
-      const navbar = document.getElementById("navbar");
-      const overlay = document.getElementById("overlay");
-      const navLinks = navbar.querySelectorAll("ul.nav-links li a");
-
-      function closeNavbar() {
-        navbar.classList.remove("active");
-        overlay.classList.remove("active");
-        hamburgerBtn.setAttribute("aria-expanded", "false");
-        navbar.setAttribute("aria-hidden", "true");
-      }
-
-      function openNavbar() {
-        navbar.classList.add("active");
-        overlay.classList.add("active");
-        hamburgerBtn.setAttribute("aria-expanded", "true");
-        navbar.setAttribute("aria-hidden", "false");
-      }
-
-      hamburgerBtn.addEventListener("click", () => {
-        navbar.classList.contains("active") ? closeNavbar() : openNavbar();
-      });
-
-      overlay.addEventListener("click", closeNavbar);
-      navLinks.forEach((link) => link.addEventListener("click", closeNavbar));
-
       document.addEventListener("DOMContentLoaded", () => {
+        // ✅ Handle user info from localStorage
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user) {
+          const name = user.name || "Guest";
+          const email = user.email || "unknown";
+
+          document.getElementById("user-name").textContent = name;
+          document.getElementById("user-email").textContent = email;
+
+          const username = "@" + (name.split(" ")[0] || "user").toLowerCase();
+          document.getElementById("user-username").textContent = username;
+        } else {
+          // No user found, redirect
+          window.location.href = "https://emannuh254.github.io/login-page/index.html";
+        }
+
+        // ✅ Handle logout
+        const logoutBtn = document.getElementById("logout");
+        logoutBtn?.addEventListener("click", (e) => {
+          e.preventDefault();
+          localStorage.removeItem("user");
+          localStorage.removeItem("authToken");
+          window.location.href = "https://emannuh254.github.io/login-page/index.html";
+        });
+
+        // ✅ Charts
         const usageChartCanvas = document.getElementById("usageChart");
         const reviewsChartCanvas = document.getElementById("reviewsChart");
 
@@ -310,16 +312,14 @@
             type: "line",
             data: {
               labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-              datasets: [
-                {
-                  label: "Active Bots",
-                  data: [5, 10, 7, 12, 15, 18, 22],
-                  borderColor: "#c77dff",
-                  backgroundColor: "rgba(199,125,255,0.2)",
-                  tension: 0.3,
-                  pointBackgroundColor: "#aa4de8",
-                },
-              ],
+              datasets: [{
+                label: "Active Bots",
+                data: [5, 10, 7, 12, 15, 18, 22],
+                borderColor: "#c77dff",
+                backgroundColor: "rgba(199,125,255,0.2)",
+                tension: 0.3,
+                pointBackgroundColor: "#aa4de8",
+              }],
             },
             options: {
               plugins: { legend: { labels: { color: "#c77dff" } } },
@@ -334,12 +334,10 @@
             type: "bar",
             data: {
               labels: ["Positive", "Neutral", "Negative"],
-              datasets: [
-                {
-                  data: [85, 10, 5],
-                  backgroundColor: ["#aa4de8", "#888", "#ff6f6f"],
-                },
-              ],
+              datasets: [{
+                data: [85, 10, 5],
+                backgroundColor: ["#aa4de8", "#888", "#ff6f6f"],
+              }],
             },
             options: {
               plugins: { legend: { display: false } },
@@ -354,6 +352,33 @@
             },
           });
         }
+
+        // ✅ Hamburger menu
+        const hamburgerBtn = document.getElementById("hamburger-btn");
+        const navbar = document.getElementById("navbar");
+        const overlay = document.getElementById("overlay");
+        const navLinks = navbar.querySelectorAll("ul.nav-links li a");
+
+        function closeNavbar() {
+          navbar.classList.remove("active");
+          overlay.classList.remove("active");
+          hamburgerBtn.setAttribute("aria-expanded", "false");
+          navbar.setAttribute("aria-hidden", "true");
+        }
+
+        function openNavbar() {
+          navbar.classList.add("active");
+          overlay.classList.add("active");
+          hamburgerBtn.setAttribute("aria-expanded", "true");
+          navbar.setAttribute("aria-hidden", "false");
+        }
+
+        hamburgerBtn.addEventListener("click", () => {
+          navbar.classList.contains("active") ? closeNavbar() : openNavbar();
+        });
+
+        overlay.addEventListener("click", closeNavbar);
+        navLinks.forEach((link) => link.addEventListener("click", closeNavbar));
       });
     </script>
   </body>

@@ -55,29 +55,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ✅ Toggle to Login Form
   loginToggleBtn.addEventListener("click", () => {
     signInForm.classList.add("active");
     signUpForm.classList.remove("active");
-
     loginToggleBtn.classList.add("active");
     signupToggleBtn.classList.remove("active");
-
     triggerTitleAnimation();
   });
 
-  // ✅ Toggle to Signup Form
   signupToggleBtn.addEventListener("click", () => {
     signUpForm.classList.add("active");
     signInForm.classList.remove("active");
-
     signupToggleBtn.classList.add("active");
     loginToggleBtn.classList.remove("active");
-
     triggerTitleAnimation();
   });
 
-  // ✅ Handle Signup
   signUpForm?.addEventListener("submit", (e) => {
     e.preventDefault();
     if (!emailSignUpInput || !signUpPasswordInput || !nameInput) return;
@@ -123,6 +116,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.message === "Email already exists") {
           showToast("An account with this email already exists.", "error");
         } else if (data.message === "User created") {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              name: nameValue,
+              email: emailSignUpInput.value.trim(),
+            })
+          );
           showToast("Account created successfully!", "success");
           signUpForm.reset();
           loginToggleBtn.click();
@@ -133,7 +133,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch(() => showToast("Server error. Try again later.", "error"));
   });
 
-  // ✅ Handle Signin
   signInForm?.addEventListener("submit", (e) => {
     e.preventDefault();
     if (!emailSignInInput || !signInPasswordInput) return;
@@ -158,12 +157,20 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.message) {
+        if (data.token && data.user) {
+          localStorage.setItem("authToken", data.token);
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              name: data.user.name,
+              email: data.user.email,
+            })
+          );
           showToast("Logged in successfully!", "success");
           setTimeout(() => {
             window.location.href =
               "https://emannuh254.github.io/login-page/Components/splash.html";
-          }, 1000);
+          }, 100);
         } else {
           showToast("Login failed: " + data.error, "error");
         }
@@ -171,7 +178,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch(() => showToast("Server error. Try again later.", "error"));
   });
 
-  // ✅ JWT Parser
   function parseJwt(token) {
     try {
       const base64Url = token.split(".")[1];
@@ -188,7 +194,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ✅ Google Sign-In Handler
   window.handleCredentialResponse = (response) => {
     const jwt = response.credential;
     const data = parseJwt(jwt);
@@ -201,8 +206,14 @@ document.addEventListener("DOMContentLoaded", () => {
       })
         .then((res) => res.json())
         .then((result) => {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              name: data.name,
+              email: data.email,
+            })
+          );
           showToast(`Welcome, ${data.name}!`, "success", 2500);
-          localStorage.setItem("authToken", jwt);
           setTimeout(() => {
             window.location.href =
               "https://emannuh254.github.io/login-page/Components/splash.html";
@@ -217,7 +228,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // ✅ Google Sign-In Button Init
   function initGoogleSignIn() {
     if (
       window.google?.accounts?.id &&
@@ -250,7 +260,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, 100);
 
-  // ✅ Password Toggle
   document.querySelectorAll(".toggle-password").forEach((icon) => {
     icon.addEventListener("click", () => {
       const input = document.getElementById(icon.dataset.target);
