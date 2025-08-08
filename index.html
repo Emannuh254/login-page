@@ -106,5 +106,16 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="./Js/redirector.js" defer></script>
   <script src="./Js/script.js" defer></script>
+  <script>
+    function setAppHeight() {
+  const appHeight = window.innerHeight;
+  document.documentElement.style.setProperty('--app-height', `${appHeight}px`);
+}
+
+window.addEventListener('resize', setAppHeight);
+window.addEventListener('load', setAppHeight);
+setAppHeight();
+
+  </script>
 </body>
 </html>
