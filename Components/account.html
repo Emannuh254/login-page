@@ -2,108 +2,369 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account</title>
-    <link rel="stylesheet" href="../Css/account.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Account | FlipMarket</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #000;
+        color: #eee;
+        overflow-x: hidden;
+      }
+
+      #brand-bar {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 11001;
+        user-select: none;
+      }
+
+      #brand-bar h1 {
+        color: #9f54ff;
+        font-size: 1.8rem;
+        margin: 0;
+        transition: color 0.3s ease, text-shadow 0.3s ease;
+      }
+
+      #hamburger-btn {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #9f54ff;
+        background: transparent;
+        border: none;
+        padding: 5px;
+        line-height: 1;
+        transition: color 0.3s ease;
+        z-index: 11001;
+      }
+
+      #hamburger-btn:hover {
+        color: #2effbf;
+      }
+
+      #hamburger-btn:focus {
+        outline: none;
+      }
+
+      #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 10500;
+      }
+
+      #overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .navbar {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 50vw;
+        max-width: 320px;
+        background-color: #000;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        z-index: 11000;
+        transition: right 0.35s ease;
+      }
+
+      .navbar.active {
+        right: 0;
+      }
+
+      ul.nav-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      ul.nav-links li a {
+        color: #ddd;
+        text-decoration: none;
+        font-weight: 600;
+        padding: 10px 15px;
+        border-radius: 8px;
+        background: #000;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        display: block;
+        opacity: 0;
+        transform: translateX(20px);
+        pointer-events: none;
+      }
+
+      ul.nav-links li a:hover,
+      ul.nav-links li a.active {
+        background-color: #2effbf;
+        color: #000;
+      }
+
+      .navbar.active ul.nav-links li a {
+        animation: slideFadeIn 0.3s forwards;
+      }
+
+      ul.nav-links li:nth-child(1) a {
+        animation-delay: 0.3s;
+      }
+      ul.nav-links li:nth-child(2) a {
+        animation-delay: 0.4s;
+      }
+      ul.nav-links li:nth-child(3) a {
+        animation-delay: 0.5s;
+      }
+      ul.nav-links li:nth-child(4) a {
+        animation-delay: 0.6s;
+      }
+      ul.nav-links li:nth-child(5) a {
+        animation-delay: 0.7s;
+      }
+      ul.nav-links li:nth-child(6) a {
+        animation-delay: 0.8s;
+      }
+      ul.nav-links li:nth-child(7) a {
+        animation-delay: 0.9s;
+      }
+      ul.nav-links li:nth-child(8) a {
+        animation-delay: 1s;
+      }
+      ul.nav-links li:nth-child(9) a {
+        animation-delay: 1.1s;
+      }
+
+      @keyframes slideFadeIn {
+        to {
+          opacity: 1;
+          transform: translateX(0);
+          pointer-events: auto;
+        }
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 100px auto 40px auto;
+        padding: 0 20px;
+      }
+
+      .section {
+        background: #111;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 0 10px rgba(159, 84, 255, 0.3);
+      }
+
+      h3 {
+        margin-top: 0;
+      }
+
+      .btn {
+        background: #9f54ff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+
+      .btn.input {
+        background: #222;
+        color: #eee;
+        border: none;
+        padding: 10px;
+        border-radius: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 10px;
+      }
+
+      .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+
+      .logo {
+        height: 30px;
+        margin-top: 10px;
+      }
+
+      ul#transactions {
+        list-style-type: none;
+        padding-left: 0;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      ul#transactions li {
+        background: #222;
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+      }
+
+      #message {
+        margin-top: 10px;
+        color: #2effbf;
+        font-weight: bold;
+      }
+
+      @media (max-width: 400px) {
+        .navbar {
+          width: 80vw;
+        }
+      }
+    </style>
   </head>
   <body>
-    <!-- Injected Navbar -->
-    <div id="navbar-container"></div>
+    <!-- Navbar -->
+    <div id="brand-bar">
+      <h1>Flipmarket</h1>
+    </div>
 
+    <button
+      id="hamburger-btn"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      aria-controls="navbar"
+    >
+      &#9776;
+    </button>
+
+    <div id="overlay"></div>
+
+    <nav class="navbar" id="navbar" aria-hidden="true">
+      <ul class="nav-links">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="../Components/account.html" class="active">My Account</a></li>
+        <li><a href="../Components/bots.html">Bots</a></li>
+        <li><a href="../Components/">Settings</a></li>
+        <li><a href="../Components/Refferals.html">Referrals</a></li>
+        <li><a href="../Components/about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="faq.html">FAQ/Help</a></li>
+        <li>
+          <a
+            href="https://emannuh254.github.io/login-page/index.html"
+            id="logout"
+            >Logout</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
     <div class="container">
-      <section class="hero">
-        <!-- Balance -->
+      <section class="section">
         <h3>Your Balance</h3>
         <h3 id="balance">Ksh 0.00</h3>
 
-        <!-- Tabs -->
         <div class="tabs">
           <button class="tab active">Accounts</button>
           <button class="tab">Income</button>
           <button class="tab">Expenses</button>
         </div>
 
-        <!-- Deposit -->
-        <div class="section">
-          <h3>Deposit via M-Pesa</h3>
-          <img src="images/mpesa-logo.png" alt="M-Pesa" class="logo" />
-          <p>
-            <strong>TILL Number:</strong>
-            <span style="color: #f0f">523698</span>
-          </p>
+        <h3>Deposit via M-Pesa</h3>
+        <img src="images/mpesa-logo.png" alt="M-Pesa" class="logo" />
+        <p>
+          <strong>TILL Number:</strong>
+          <span style="color: #f0f">523698</span>
+        </p>
 
-          <div class="btn-group">
-            <button class="btn deposit-btn" data-amount="200">Ksh 200</button>
-            <button class="btn deposit-btn" data-amount="500">Ksh 500</button>
-            <button class="btn deposit-btn" data-amount="1000">Ksh 1000</button>
-          </div>
-
-          <input
-            type="number"
-            id="custom-deposit"
-            placeholder="Enter amount (min 200)"
-            class="btn input"
-          />
-          <button class="btn" onclick="deposit()">Deposit</button>
+        <div class="btn-group">
+          <button class="btn deposit-btn" data-amount="200">Ksh 200</button>
+          <button class="btn deposit-btn" data-amount="500">Ksh 500</button>
+          <button class="btn deposit-btn" data-amount="1000">Ksh 1000</button>
         </div>
 
-        <!-- Withdraw -->
-        <div class="section">
-          <h3>Withdraw</h3>
-          <input
-            type="number"
-            id="withdraw-amount"
-            placeholder="Enter amount to withdraw (min 200)"
-            class="btn input"
-          />
-          <select id="payment-method" class="btn input">
-            <option value="mpesa">M-Pesa</option>
-            <option value="airtel">Airtel</option>
-          </select>
-          <img src="images/airtel.png" id="airtel-icon" class="logo" />
-          <button class="btn" onclick="withdraw()">Withdraw</button>
-        </div>
-
-        <!-- Transactions -->
-        <div class="section">
-          <h3>Previous Transactions</h3>
-          <ul id="transactions"></ul>
-        </div>
-
-        <!-- Message Box -->
-        <div id="message"></div>
+        <input
+          type="number"
+          id="custom-deposit"
+          placeholder="Enter amount (min 200)"
+          class="btn input"
+        />
+        <button class="btn" onclick="deposit()">Deposit</button>
       </section>
+
+      <section class="section">
+        <h3>Withdraw</h3>
+        <input
+          type="number"
+          id="withdraw-amount"
+          placeholder="Enter amount to withdraw (min 200)"
+          class="btn input"
+        />
+        <select id="payment-method" class="btn input">
+          <option value="mpesa">M-Pesa</option>
+          <option value="airtel">Airtel</option>
+        </select>
+        <img src="images/airtel.png" id="airtel-icon" class="logo" />
+        <button class="btn" onclick="withdraw()">Withdraw</button>
+      </section>
+
+      <section class="section">
+        <h3>Previous Transactions</h3>
+        <ul id="transactions"></ul>
+      </section>
+
+      <div id="message"></div>
     </div>
 
-    <!-- Local logic -->
-    <script src="/account.js"></script>
-
-    <!-- Load shared navbar -->
+    <!-- Scripts -->
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        fetch("navbar.html") // adjust path if needed
-          .then((response) => {
-            if (!response.ok) throw new Error("Failed to load navbar");
-            return response.text();
-          })
-          .then((html) => {
-            const container = document.getElementById("navbar-container");
-            container.innerHTML = html;
+      // Navbar script
+      const hamburgerBtn = document.getElementById("hamburger-btn");
+      const navbar = document.getElementById("navbar");
+      const overlay = document.getElementById("overlay");
+      const navLinks = navbar.querySelectorAll("ul.nav-links li a");
 
-            container.querySelectorAll("script").forEach((oldScript) => {
-              const newScript = document.createElement("script");
-              if (oldScript.src) {
-                newScript.src = oldScript.src;
-              } else {
-                newScript.textContent = oldScript.textContent;
-              }
-              document.body.appendChild(newScript);
-            });
-          })
-          .catch((error) => {
-            console.error("Navbar loading error:", error);
-          });
+      function closeNavbar() {
+        navbar.classList.remove("active");
+        overlay.classList.remove("active");
+        hamburgerBtn.setAttribute("aria-expanded", "false");
+        navbar.setAttribute("aria-hidden", "true");
+      }
+
+      function openNavbar() {
+        navbar.classList.add("active");
+        overlay.classList.add("active");
+        hamburgerBtn.setAttribute("aria-expanded", "true");
+        navbar.setAttribute("aria-hidden", "false");
+      }
+
+      hamburgerBtn.addEventListener("click", () => {
+        if (navbar.classList.contains("active")) {
+          closeNavbar();
+        } else {
+          openNavbar();
+        }
       });
+
+      overlay.addEventListener("click", closeNavbar);
+      navLinks.forEach((link) => link.addEventListener("click", closeNavbar));
     </script>
+
+    <script src="/account.js"></script>
   </body>
 </html>

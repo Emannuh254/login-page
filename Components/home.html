@@ -284,34 +284,34 @@
     <script>
       document.addEventListener("DOMContentLoaded", () => {
   // ✅ Handle user info from localStorage
-  const user = JSON.parse(localStorage.getItem("user"));
-  console.log("USER OBJECT:", user); // for debugging
+  // const user = JSON.parse(localStorage.getItem("user"));
+  // console.log("USER OBJECT:", user); // for debugging
 
-  if (user && (user.name || user.email)) {
-    const name = (user.name ?? "Unnamed").trim();
-    const email = (user.email ?? "unknown").trim();
+  // if (user && (user.name || user.email)) {
+  //   const name = (user.name ?? "Unnamed").trim();
+  //   const email = (user.email ?? "unknown").trim();
 
-    document.getElementById("user-name").textContent = name;
-    document.getElementById("user-email").textContent = email;
+  //   document.getElementById("user-name").textContent = name;
+  //   document.getElementById("user-email").textContent = email;
 
-    const username =
-      "@" + (name.split(" ")[0] || "user").toLowerCase().replace(/[^a-z0-9]/gi, "");
-    document.getElementById("user-username").textContent = username;
-  } else {
-    // No user found, redirect
-    window.location.href =
-      "https://emannuh254.github.io/login-page/index.html";
-  }
+  //   const username =
+  //     "@" + (name.split(" ")[0] || "user").toLowerCase().replace(/[^a-z0-9]/gi, "");
+  //   document.getElementById("user-username").textContent = username;
+  // } else {
+  //   // No user found, redirect
+  //   window.location.href =
+  //     "https://emannuh254.github.io/login-page/index.html";
+  // }
 
   // ✅ Handle logout
-  const logoutBtn = document.getElementById("logout");
-  logoutBtn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    localStorage.removeItem("user");
-    localStorage.removeItem("authToken");
-    window.location.href =
-      "https://emannuh254.github.io/login-page/index.html";
-  });
+  // const logoutBtn = document.getElementById("logout");
+  // logoutBtn?.addEventListener("click", (e) => {
+  //   e.preventDefault();
+  //   localStorage.removeItem("user");
+  //   localStorage.removeItem("authToken");
+  //   window.location.href =
+  //     "https://emannuh254.github.io/login-page/index.html";
+  // });
 
   // ✅ Charts
   const usageChartCanvas = document.getElementById("usageChart");

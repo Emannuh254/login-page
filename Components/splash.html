@@ -1,104 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Loading...</title>
-    <style>
-      body {
-        margin: 0;
-        background-color: #0a0a0a;
-        color: #2effbf;
-        font-family: "Courier New", Courier, monospace;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        overflow: hidden;
-        padding: 20px;
-      }
-      #terminal {
-        font-size: 1.4rem;
-        line-height: 1.6;
-        white-space: pre-wrap;
-        max-width: 800px; /* Allow wider lines for ASCII art */
-        width: 100%;
-        text-shadow: 0 0 10px #2effbf;
-      }
-      .cursor {
-        display: inline-block;
-        width: 10px;
-        background-color: #2effbf;
-        animation: blink 0.7s steps(2, start) infinite;
-        margin-left: 2px;
-        vertical-align: bottom;
-        height: 1.2em;
-      }
-      @keyframes blink {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <pre id="terminal"></pre>
-    <div class="cursor"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Loading...</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      flex-direction: column;
+    }
 
-    <script>
-      const terminal = document.getElementById("terminal");
-      const cursor = document.querySelector(".cursor");
-      const lines = [
-        "> Access granted...",
-        "> Establishing secure connection to FlipMarket Network...",
-        "> Authenticating user credentials...",
-        "> Deploying mining bots across network nodes...",
-        "> Mining Crypto Shards...",
-        "> Tracking market volatility...",
-        "> Running algorithmic trading simulations...",
-        "> Displaying trading graphs...",
-        "> Market Trends Visualization:",
-        ">   /\\         /\\   /\\         ",
-        ">  /  \\ /\\  /\\/  \\/\\/  \\ /\\    ",
-        "> Reading blockchain ledger entries...",
-        "> Optimizing hash rates for maximum efficiency...",
-        "> Synchronizing neural trade analysis...",
-        "> Initiating blockchain consensus...",
-        "> Booting FlipMarket Dashboard...",
-      ];
+    .fade {
+      animation: fadeIn 0.6s ease-in-out forwards, fadeOut 0.6s ease-in-out forwards 2.4s;
+    }
 
-      let currentLine = 0;
-      let currentChar = 0;
-      const typingSpeed = 2; // milliseconds per character
-      const linePause = 5; // pause after each line
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
 
-      function typeLine() {
-        if (currentChar < lines[currentLine].length) {
-          terminal.textContent += lines[currentLine][currentChar];
-          currentChar++;
-          setTimeout(typeLine, typingSpeed);
-        } else {
-          terminal.textContent += "\n";
-          currentLine++;
-          currentChar = 0;
-          if (currentLine < lines.length) {
-            setTimeout(typeLine, linePause);
-          } else {
-            // All lines typed, hide cursor and redirect after a delay
-            cursor.style.display = "none";
-            setTimeout(() => {
-              window.location.href = "./home.html";
-            }, 1000);
-          }
-        }
-      }
-      // Start the typing animation when the script loads
-      typeLine();
-    </script>
-    <script src="/Js/redirector.js"></script>
-  </body>
+    @keyframes fadeOut {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-20px); }
+    }
+
+    img {
+      max-width: 200px;
+      animation: walk 2s linear infinite;
+    }
+
+    @keyframes walk {
+      0% { transform: translateX(-10px); }
+      50% { transform: translateX(10px); }
+      100% { transform: translateX(-10px); }
+    }
+
+    p {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: orange;
+    }
+  </style>
+</head>
+<body>
+  <div class="fade">
+    <img src="https://media.giphy.com/media/26xBukhKmwfGiw2Lu/giphy.gif" alt="Cute Puppy" />
+    <p>Loading... please wait 🐶</p>
+  </div>
+
+  <script>
+    // Redirect after animation
+    setTimeout(() => {
+      window.location.href = "./home.html";
+    }, 3000); // 3 seconds
+  </script>
+</body>
 </html>
