@@ -6,7 +6,7 @@
     <title>FlipMarket | Home</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
+    <!-- <style>
       body {
         margin: 0;
         font-family: Arial, sans-serif;
@@ -210,7 +210,7 @@
           width: 80vw;
         }
       }
-    </style>
+    </style> -->
   </head>
   <body>
     <!-- ✅ Navbar -->
@@ -241,7 +241,7 @@
         <li><a href="faq.html">FAQ/Help</a></li>
         <li>
           <a
-            href="https://emannuh254.github.io/login-page/index.html"
+            href="/index.html"
             id="logout"
             >Logout</a
           >
@@ -250,32 +250,33 @@
     </nav>
 
     <!-- ✅ Main Content -->
-    <main class="container">
-      <section class="card profile-card">
-        <img src="../images/user.png" alt="Default User" class="profile-img" />
-        <h2 id="user-name">User Name</h2>
-        <p class="username" id="user-username">@username</p>
-        <p>Email: <span id="user-email">email@example.com</span></p>
-        
+<main class="container">
+  <section class="card profile-card">
+    <img src="../images/user.png" alt="User Profile" class="profile-img" />
+    <h2 id="user-name">User Name</h2>
+    <p id="user-username" class="username">@username</p>
+    <p id="user-email" class="email">email@example.com</p>
+  </section>
 
-      <section class="card referrals-card">
-        <h2>Your Referrals</h2>
-        <p>Referrals: <strong> 10 users</strong></p>
-        <p>Total Earned: <strong>Ksh 4,500</strong></p>
-        <button class="btn">Share Link</button>
-      </section>
+  <section class="card referrals-card">
+    <h2>Your Referrals</h2>
+    <p>Referrals: <strong class="referrals-count">0 users</strong></p>
+    <p>Total Earned: <strong class="earned-amount">Ksh 0</strong></p>
+    <button class="btn">Share Link</button>
+  </section>
 
-      <section class="card charts-section">
-        <div class="chart-card">
-          <h3>Bots Usage</h3>
-          <canvas id="usageChart"></canvas>
-        </div>
-        <div class="chart-card">
-          <h3>User Reviews</h3>
-          <canvas id="reviewsChart"></canvas>
-        </div>
-      </section>
-    </main>
+  <section class="card charts-section">
+    <div class="chart-card">
+      <h3>Bots Usage</h3>
+      <canvas id="usageChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>User Reviews</h3>
+      <canvas id="reviewsChart"></canvas>
+    </div>
+  </section>
+</main>
+
 
     
     <footer>© 2025 FlipMarket</footer>

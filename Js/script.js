@@ -89,21 +89,26 @@ document.addEventListener("DOMContentLoaded", () => {
   // SIGN UP
   signUpForm?.addEventListener("submit", (e) => {
     e.preventDefault();
+
     const nameValue = nameInput.value.trim();
     const nameParts = nameValue.split(/\s+/);
 
     if (nameParts.length < 2) {
-      return showToast("Please enter at least two names (e.g., Emmanuel Mutugi).", "error");
+      showToast("Please enter at least two names (e.g., Emmanuel Mutugi).", "error");
+      return;
     }
     if (!isEmailValid(emailSignUpInput.value)) {
-      return showToast("Enter a valid email address.", "error");
+      showToast("Enter a valid email address.", "error");
+      return;
     }
     if (!isPasswordStrong(signUpPasswordInput.value)) {
-      return showToast("Password must be at least 6 characters and include a number.", "error");
+      showToast("Password must be at least 6 characters and include a number.", "error");
+      return;
     }
 
     showLoader();
-    fetch("http://localhost:5000/register", {
+
+    fetch("http://localhost:8000/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -114,8 +119,11 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.error) return showToast(data.error, "error");
-        showToast(data.message, "success");
+        if (data.error) {
+          showToast(data.error, "error");
+          return;
+        }
+        showToast(data.message, "Logged in successfully");
         signUpForm.reset();
         loginToggleBtn?.click();
       })
@@ -124,36 +132,52 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // SIGN IN
-  signInForm?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    if (!isEmailValid(emailSignInInput.value))
-      return showToast("Enter a valid email.", "error");
-    if (signInPasswordInput.value.length < 6)
-      return showToast("Password too short.", "error");
+signInForm?.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-    showLoader();
-    fetch("http://localhost:5000/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: emailSignInInput.value.trim(),
-        password: signInPasswordInput.value,
-      }),
+  if (!isEmailValid(emailSignInInput.value)) {
+    showToast("Enter a valid email.", "error");
+    return;
+  }
+  if (signInPasswordInput.value.length < 6) {
+    showToast("Password too short.", "error");
+    return;
+  }
+
+  showLoader();
+
+  fetch("http://localhost:8000/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email: emailSignInInput.value.trim(),
+      password: signInPasswordInput.value,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.error) {
+        showToast(data.error, "error");
+        return;
+      }
+      showToast(data.message, "success");
+      setTimeout(() => {
+        window.location.href = "/Components/splash.html";
+      }, 1500);
     })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) return showToast(data.error, "error");
-        showToast(data.message, "success");
-      })
-      .catch(() => showToast("Server error. Try again later.", "error"))
-      .finally(hideLoader);
-  });
+    .catch(() => showToast("Server error. Try again later.", "error"))
+    .finally(hideLoader);
+});
+
 
   // FORGOT PASSWORD
   forgotForm?.addEventListener("submit", (e) => {
     e.preventDefault();
-    if (!isEmailValid(forgotEmail.value))
-      return showToast("Enter a valid email.", "error");
+
+    if (!isEmailValid(forgotEmail.value)) {
+      showToast("Enter a valid email.", "error");
+      return;
+    }
     showToast("If your email exists, a reset link will be sent.", "success");
     forgotForm.reset();
     setTimeout(() => loginToggleBtn?.click(), 3000);

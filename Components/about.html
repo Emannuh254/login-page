@@ -62,48 +62,6 @@
         pointer-events: auto;
       }
 
-      .navbar {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 80vw;
-        max-width: 320px;
-        background: #000;
-        padding: 20px;
-        z-index: 11000;
-        transition: right 0.35s ease;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .navbar.active {
-        right: 0;
-      }
-
-      ul.nav-links {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      ul.nav-links li a {
-        color: #ddd;
-        text-decoration: none;
-        font-weight: 600;
-        padding: 10px 15px;
-        border-radius: 8px;
-        background: #000;
-        transition: background-color 0.3s ease, color 0.3s ease;
-      }
-
-      ul.nav-links li a:hover,
-      ul.nav-links li a.active {
-        background-color: #2effbf;
-        color: #000;
-      }
 
       /* Main Container */
       .container {
@@ -178,33 +136,197 @@
   </head>
   <body>
     <!-- ✅ Navbar -->
-    <div id="brand-bar">
-      <h1>Flipmarket</h1>
-    </div>
+    <style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #000;
+    color: #eee;
+    overflow-x: hidden;
+  }
 
-    <button id="hamburger-btn" aria-label="Toggle menu">&#9776;</button>
-    <div id="overlay"></div>
+  #brand-bar {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 11001;
+    user-select: none;
+  }
 
-    <nav class="navbar" id="navbar">
-      <ul class="nav-links">
-        <li><a href="home.html">Home</a></li>
-        <li><a href="../Components/account.html">My Account</a></li>
-        <li><a href="../Components/bots.html">Bots</a></li>
-        <li><a href="../Components/">Settings</a></li>
-        <li><a href="../Components/Refferals.html">Referrals</a></li>
-        <li><a href="../Components/about.html" class="active">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="faq.html">FAQ/Help</a></li>
-        <li>
-          <a
-            href="https://emannuh254.github.io/login-page/index.html"
-            id="logout"
-            >Logout</a
-          >
-        </li>
-      </ul>
-    </nav>
+  #brand-bar h1 {
+    color: #9f54ff;
+    font-size: 1.8rem;
+    margin: 0;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+  }
 
+  #hamburger-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #9f54ff;
+    background: transparent;
+    border: none;
+    padding: 5px;
+    margin: 0;
+    line-height: 1;
+    transition: color 0.3s ease;
+    z-index: 11001;
+  }
+  #hamburger-btn:hover {
+    color: #2effbf;
+  }
+  #hamburger-btn:focus {
+    outline: none;
+  }
+
+  #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10500;
+  }
+  #overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .navbar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 50vw;
+    max-width: 320px;
+    height: 0px;
+    background-color: transparent;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    z-index: 11000;
+    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .navbar.active {
+    right: 0;
+  }
+
+  ul.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  ul.nav-links li a {
+    color: #ddd;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background: #000000;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: block;
+    opacity: 0;
+    transform: translateX(20px);
+    pointer-events: none;
+  }
+  ul.nav-links li a:hover,
+  ul.nav-links li a.active {
+    background-color: #2effbf;
+    color: #000;
+  }
+
+  .navbar.active ul.nav-links li a {
+    animation: slideFadeIn 0.3s forwards;
+  }
+  ul.nav-links li:nth-child(1) a {
+    animation-delay: 0.3s;
+  }
+  ul.nav-links li:nth-child(2) a {
+    animation-delay: 0.25s;
+  }
+  ul.nav-links li:nth-child(3) a {
+    animation-delay: 0.4s;
+  }
+  ul.nav-links li:nth-child(4) a {
+    animation-delay: 0.55s;
+  }
+  ul.nav-links li:nth-child(5) a {
+    animation-delay: 0.7s;
+  }
+  ul.nav-links li:nth-child(6) a {
+    animation-delay: 0.85s;
+  }
+  ul.nav-links li:nth-child(7) a {
+    animation-delay: 1s;
+  }
+  ul.nav-links li:nth-child(8) a {
+    animation-delay: 1.15s;
+  }
+  ul.nav-links li:nth-child(9) a {
+    animation-delay: 1.3s;
+  }
+
+  @keyframes slideFadeIn {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .navbar {
+      width: 55vw;
+      max-width: none;
+    }
+  }
+</style>
+
+<!-- ✅ Navbar Markup -->
+<div id="brand-bar" aria-label="Site brand">
+  <h1>Flipmarket</h1>
+</div>
+
+<button
+  id="hamburger-btn"
+  aria-label="Toggle menu"
+  aria-expanded="false"
+  aria-controls="navbar"
+>
+  &#9776;
+</button>
+
+<div id="overlay"></div>
+
+<nav class="navbar" id="navbar" aria-hidden="true">
+  <ul class="nav-links">
+    <li><a href="home.html" class="active">Home</a></li>
+    <li><a href="../Components/account.html">My Account</a></li>
+    <li><a href="../Components/bots.html">Bots</a></li>
+    <li><a href="../Components/">Settings</a></li>
+    <li><a href="../Components/Refferals.html">Referrals</a></li>
+    <li><a href="../Components/about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="faq.html">FAQ/Help</a></li>
+    <li>
+      <a href="../index.html" id="logout"
+        >Logout</a
+      >
+    </li>
+  </ul>
+</nav>
     <!-- ✅ Main Content -->
     <div class="container">
       <header class="navbar">
