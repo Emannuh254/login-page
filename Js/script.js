@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     showLoader();
-    const API_BASE = "https://flip-backend-2.onrender.com"; // Change for deployment
+    // Change for deployment
 
     fetch(`${API_BASE}/login`, {
       method: "POST",
