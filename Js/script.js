@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showLoader();
     // Change for deployment
 
-    fetch(`${API_BASE}/login`, {
+    fetch(`${API_BASE}/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
