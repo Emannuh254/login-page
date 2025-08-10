@@ -2,8 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginCard = document.getElementById("login-card");
   const signupCard = document.getElementById("signup-card");
   const forgotCard = document.getElementById("forgot-card");
-  const API_BASE = "https://flip-backend-5.onrender.com"; // Change for deployment
-
+  const API_BASE = "https://flip-backend-5.onrender.com";
 
   const signUpForm = document.getElementById("signup-form");
   const signInForm = document.getElementById("login-form");
@@ -68,6 +67,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (cardToShow) cardToShow.style.display = "block";
   }
 
+  function getBasePath() {
+    return window.location.pathname.includes("/login-page/")
+      ? "/login-page/"
+      : "/";
+  }
+
   // Toggle forms
   loginToggleBtn?.addEventListener("click", () => {
     showForm(loginCard);
@@ -110,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     showLoader();
 
-    fetch(`${API_BASE}/login`, { // Change for deployment
+    fetch(`${API_BASE}/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -147,9 +152,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     showLoader();
-    // Change for deployment
 
-    fetch(`${API_BASE}/signup`, {
+    fetch(`${API_BASE}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -164,9 +168,15 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
         showToast(data.message, "success");
+
+        // Save token if backend returns it
+        if (data.token) {
+          localStorage.setItem("authToken", data.token);
+        }
+
         setTimeout(() => {
-          window.location.href = "/Components/splash.html";
-        }, 1500);
+          window.location.href = `${getBasePath()}Components/splash.html`;
+        }, 1000);
       })
       .catch(() => showToast("Server error. Try again later.", "error"))
       .finally(hideLoader);
