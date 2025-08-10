@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginCard = document.getElementById("login-card");
   const signupCard = document.getElementById("signup-card");
   const forgotCard = document.getElementById("forgot-card");
+  const API_BASE = "https://flip-backend-2.onrender.com"; // Change for deployment
+
 
   const signUpForm = document.getElementById("signup-form");
   const signInForm = document.getElementById("login-form");
@@ -66,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (cardToShow) cardToShow.style.display = "block";
   }
 
-  // Form toggles
+  // Toggle forms
   loginToggleBtn?.addEventListener("click", () => {
     showForm(loginCard);
     loginToggleBtn.classList.add("active");
@@ -108,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     showLoader();
 
-    fetch("http://localhost:8000/signup", {
+    fetch(`${API_BASE}/login`, { // Change for deployment
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -123,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
           showToast(data.error, "error");
           return;
         }
-        showToast(data.message, "Logged in successfully");
+        showToast(data.message, "success");
         signUpForm.reset();
         loginToggleBtn?.click();
       })
@@ -132,43 +134,43 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // SIGN IN
-signInForm?.addEventListener("submit", (e) => {
-  e.preventDefault();
+  signInForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-  if (!isEmailValid(emailSignInInput.value)) {
-    showToast("Enter a valid email.", "error");
-    return;
-  }
-  if (signInPasswordInput.value.length < 6) {
-    showToast("Password too short.", "error");
-    return;
-  }
+    if (!isEmailValid(emailSignInInput.value)) {
+      showToast("Enter a valid email.", "error");
+      return;
+    }
+    if (signInPasswordInput.value.length < 6) {
+      showToast("Password too short.", "error");
+      return;
+    }
 
-  showLoader();
+    showLoader();
+    const API_BASE = "https://flip-backend-2.onrender.com"; // Change for deployment
 
-  fetch("http://localhost:8000/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      email: emailSignInInput.value.trim(),
-      password: signInPasswordInput.value,
-    }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.error) {
-        showToast(data.error, "error");
-        return;
-      }
-      showToast(data.message, "success");
-      setTimeout(() => {
-        window.location.href = "/Components/splash.html";
-      }, 1500);
+    fetch(`${API_BASE}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: emailSignInInput.value.trim(),
+        password: signInPasswordInput.value,
+      }),
     })
-    .catch(() => showToast("Server error. Try again later.", "error"))
-    .finally(hideLoader);
-});
-
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          showToast(data.error, "error");
+          return;
+        }
+        showToast(data.message, "success");
+        setTimeout(() => {
+          window.location.href = "/Components/splash.html";
+        }, 1500);
+      })
+      .catch(() => showToast("Server error. Try again later.", "error"))
+      .finally(hideLoader);
+  });
 
   // FORGOT PASSWORD
   forgotForm?.addEventListener("submit", (e) => {
@@ -183,7 +185,7 @@ signInForm?.addEventListener("submit", (e) => {
     setTimeout(() => loginToggleBtn?.click(), 3000);
   });
 
-  // Password visibility toggle
+  // Toggle password visibility
   document.querySelectorAll(".toggle-password").forEach((icon) => {
     icon.addEventListener("click", () => {
       const input = document.getElementById(icon.dataset.target);
