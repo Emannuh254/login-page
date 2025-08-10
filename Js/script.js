@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginCard = document.getElementById("login-card");
   const signupCard = document.getElementById("signup-card");
   const forgotCard = document.getElementById("forgot-card");
-  const API_BASE = "https://flip-backend-2.onrender.com"; // Change for deployment
+  const API_BASE = "https://flip-backend-5.onrender.com"; // Change for deployment
 
 
   const signUpForm = document.getElementById("signup-form");
