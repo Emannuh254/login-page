@@ -1,146 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Referral Program</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #0a0a0a; /* Deep black background */
-            color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #0a0a0a;
-            border-bottom: 2px solid #ff6600; /* Thin muted orange strip */
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .user-info {
-            font-size: 14px;
-            color: #cccccc;
-        }
-        main {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 20px;
-            background-color: #111; /* Slightly lighter than body */
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(255, 102, 0, 0.08); /* Very subtle orange glow */
-        }
-        h1 {
-            color: #ff6600; /* Muted orange for headings */
-            margin-bottom: 10px;
-        }
-        .referral-link {
-            background-color: #1a1a1a;
-            padding: 15px;
-            border-radius: 5px;
-            font-size: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #262626;
-        }
-        .referral-link span {
-            color: #ff8533; /* Slightly lighter orange for link text */
-        }
-        .copy-btn {
-            background-color: #ff6600;
-            color: #0a0a0a;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        .copy-btn:hover {
-            background-color: #e65c00;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 25px;
-        }
-        th, td {
-            padding: 10px;
-            border-bottom: 1px solid #262626;
-            text-align: left;
-        }
-        th {
-            background-color: #1a1a1a;
-            color: #ff6600;
-        }
-        tr:hover {
-            background-color: #1f1f1f;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Referral Program</title>
+<style>
+/* ——— General Layout ——— */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #0a0a0a;
+  color: #f0f0f0;
+  margin: 0;
+}
+
+header {
+  background-color: #0a0a0a;
+  border-bottom: 2px solid #ff6600;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-info {
+  font-size: 14px;
+  color: #ccc;
+}
+
+main {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #111;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(255, 102, 0, 0.08);
+}
+
+h1 {
+  color: #ff6600;
+}
+
+/* ——— Referral Link Box ——— */
+.referral-link {
+  background-color: #1a1a1a;
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #262626;
+}
+
+.referral-link span {
+  color: #ff8533;
+}
+
+.copy-btn {
+  background-color: #ff6600;
+  color: #0a0a0a;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.copy-btn:hover {
+  background-color: #e65c00;
+}
+
+/* ——— Table ——— */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #262626;
+  text-align: left;
+}
+
+th {
+  background-color: #1a1a1a;
+  color: #ff6600;
+}
+
+tr:hover {
+  background-color: #1f1f1f;
+}
+
+/* ——— Navbar ——— */
+#hamburger-btn {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #9f54ff;
+  background: transparent;
+  border: none;
+  z-index: 11001;
+}
+
+#hamburger-btn:hover {
+  color: #2effbf;
+}
+
+#overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 10500;
+}
+
+#overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 60w;
+  max-width: 400px;
+  background-color:  transparent;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  z-index: 11000;
+  transition: right 0.35s ease;
+}
+
+.navbar.active {
+  right: 0;
+}
+
+ul.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+ul.nav-links li a {
+  color: #ddd;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 15px;
+  border-radius: 8px;
+  background: #000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+ul.nav-links li a:hover,
+ul.nav-links li a.active {
+  background-color: #2effbf;
+  color: #000;
+}
+
+@media (max-width: 400px) {
+  .navbar {
+    width: 55vw;
+  }
+}
+</style>
 </head>
 <body>
-    <header>
-        <div class="logo"><strong>Referral Program</strong></div>
-        <div class="user-info">
-            Name: <span id="userName">Loading...</span> |
-            Email: <span id="userEmail">Loading...</span>
-        </div>
-    </header>
 
-    <main>
-        <h1>Your Referral Link</h1>
-        <div class="referral-link">
-            <span id="referralLink">https://example.com/referral/ABC123</span>
-            <button class="copy-btn" onclick="copyReferral()">Copy</button>
-        </div>
+<header>
+  <div class="logo"><strong>Referral Program</strong></div>
+  <div class="user-info">
+    Name: <span id="userName">Loading...</span> |
+    Email: <span id="userEmail">Loading...</span>
+  </div>
+</header>
 
-        <h1>Referred Users</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Date Joined</th>
-                </tr>
-            </thead>
-            <tbody id="referralList">
-                <tr><td colspan="3">Loading...</td></tr>
-            </tbody>
-        </table>
-    </main>
+<button id="hamburger-btn">&#9776;</button>
+<div id="overlay"></div>
 
-    <script>
-        // Fetch user and referral data from backend
-        document.addEventListener("DOMContentLoaded", () => {
-            fetch("/api/referral-data")
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById("userName").textContent = data.user.name;
-                    document.getElementById("userEmail").textContent = data.user.email;
-                    document.getElementById("referralLink").textContent = data.referralLink;
+<nav class="navbar" id="navbar">
+  <ul class="nav-links">
+    <li><a href="home.html" class="active">Home</a></li>
+    <li><a href="../Components/account.html">My Account</a></li>
+    <li><a href="../Components/bots.html">Bots</a></li>
+    <li><a href="../Components/">Settings</a></li>
+    <li><a href="../Components/Refferals.html">Referrals</a></li>
+    <li><a href="../Components/about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="faq.html">FAQ/Help</a></li>
+    <li><a href="https://emannuh254.github.io/login-page/index.html" id="logout">Logout</a></li>
+  </ul>
+</nav>
 
-                    let tableBody = document.getElementById("referralList");
-                    tableBody.innerHTML = "";
-                    data.referredUsers.forEach(user => {
-                        let row = `<tr>
-                            <td>${user.name}</td>
-                            <td>${user.email}</td>
-                            <td>${user.dateJoined}</td>
-                        </tr>`;
-                        tableBody.innerHTML += row;
-                    });
-                })
-                .catch(err => console.error("Error loading referral data", err));
-        });
+<main>
+  <h1>Your Referral Link</h1>
+  <div class="referral-link">
+    <span id="referralLink">Loading...</span>
+    <button class="copy-btn" onclick="copyReferral()">Copy</button>
+  </div>
 
-        function copyReferral() {
-            let link = document.getElementById("referralLink").textContent;
-            navigator.clipboard.writeText(link).then(() => {
-                alert("Referral link copied!");
-            });
-        }
-    </script>
+  <h1>Referred Users</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th><th>Email</th><th>Date Joined</th>
+      </tr>
+    </thead>
+    <tbody id="referralList">
+      <tr><td colspan="3">Loading...</td></tr>
+    </tbody>
+  </table>
+</main>
+
+<script>
+// Navbar toggle
+const hamburgerBtn = document.getElementById("hamburger-btn");
+const navbar = document.getElementById("navbar");
+const overlay = document.getElementById("overlay");
+
+hamburgerBtn.addEventListener("click", () => {
+  navbar.classList.toggle("active");
+  overlay.classList.toggle("active");
+});
+
+overlay.addEventListener("click", () => {
+  navbar.classList.remove("active");
+  overlay.classList.remove("active");
+});
+
+// Load data from backend
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("/api/referral-data")
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("userName").textContent = data.user.name;
+      document.getElementById("userEmail").textContent = data.user.email;
+      document.getElementById("referralLink").textContent = data.referralLink;
+
+      let tableBody = document.getElementById("referralList");
+      tableBody.innerHTML = "";
+      data.referredUsers.forEach(user => {
+        tableBody.innerHTML += `
+          <tr>
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td>${user.dateJoined}</td>
+          </tr>`;
+      });
+    })
+    .catch(err => {
+      console.error("Error loading referral data", err);
+    });
+});
+
+function copyReferral() {
+  let link = document.getElementById("referralLink").textContent;
+  navigator.clipboard.writeText(link)
+    .then(() => alert("Referral link copied!"));
+}
+</script>
 </body>
 </html>
