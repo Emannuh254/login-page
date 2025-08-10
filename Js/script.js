@@ -2,7 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginCard = document.getElementById("login-card");
   const signupCard = document.getElementById("signup-card");
   const forgotCard = document.getElementById("forgot-card");
+
+  // Backend API and GitHub Pages base path
   const API_BASE = "https://flip-backend-5.onrender.com";
+  const basePath = "https://emannuh254.github.io/login-page/";
 
   const signUpForm = document.getElementById("signup-form");
   const signInForm = document.getElementById("login-form");
@@ -65,12 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (card) card.style.display = "none";
     });
     if (cardToShow) cardToShow.style.display = "block";
-  }
-
-  function getBasePath() {
-    return window.location.pathname.includes("/login-page/")
-      ? "/login-page/"
-      : "/";
   }
 
   // Toggle forms
@@ -153,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     showLoader();
 
-    fetch(`${API_BASE}/signup`, {
+    fetch(`${API_BASE}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -175,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         setTimeout(() => {
-          window.location.href = `${getBasePath()}Components/splash.html`;
+          window.location.href = `${basePath}Components/splash.html`;
         }, 1000);
       })
       .catch(() => showToast("Server error. Try again later.", "error"))
