@@ -1,403 +1,1108 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>FlipMarket | Bots</title>
+    <title>FlipMarket | Mining Bots</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #000;
-        color: #eee;
-        overflow-x: hidden;
-      }
-
-      #brand-bar {
-        position: fixed;
-        top: 15px;
-        left: 15px;
-        z-index: 11001;
-        user-select: none;
-      }
-
-      #brand-bar h1 {
-        color: #9f54ff;
-        font-size: 1.8rem;
-        margin: 0;
-      }
-
-      #hamburger-btn {
-        position: fixed;
-        top: 15px;
-        right: 15px;
-        font-size: 2rem;
-        cursor: pointer;
-        color: #9f54ff;
-        background: transparent;
-        border: none;
-        padding: 5px;
-        z-index: 11001;
-      }
-
-      #hamburger-btn:hover {
-        color: #2effbf;
-      }
-
-      #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-        z-index: 10500;
-      }
-
-      #overlay.active {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .navbar {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 80vw;
-        max-width: 320px;
-        background: #000;
-        padding: 20px;
-        z-index: 11000;
-        transition: right 0.35s ease;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .navbar.active {
-        right: 0;
-      }
-
-      ul.nav-links {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      ul.nav-links li a {
-        color: #ddd;
-        text-decoration: none;
-        font-weight: 600;
-        padding: 10px 15px;
-        border-radius: 8px;
-        background: #000;
-        transition: background-color 0.3s ease, color 0.3s ease;
-        display: block;
-      }
-
-      ul.nav-links li a:hover,
-      ul.nav-links li a.active {
-        background-color: #2effbf;
-        color: #000;
-      }
-
-      h1#heading {
-        margin-top: 100px;
-        text-align: center;
-        color: #9f54ff;
-        font-size: 2rem;
-      }
-
-      .marquee-container {
-        background: #111;
-        padding: 10px 0;
-        text-align: center;
-        margin-bottom: 20px;
-      }
-
-      .marquee-text {
-        color: #2effbf;
-        font-weight: bold;
-        font-size: 1rem;
-      }
-
-      .bot-card {
-        background: #111;
-        border-radius: 12px;
-        padding: 20px;
-        margin: 20px;
-        box-shadow: 0 0 10px rgba(159, 84, 255, 0.3);
-        text-align: center;
-      }
-
-      .bot-image {
-        width: 100%;
-        max-width: 300px;
-        height: auto;
-        border-radius: 10px;
-        margin-bottom: 15px;
-      }
-
-      .buy-btn,
-      .claim-btn,
-      .btn {
-        margin-top: 10px;
-        background-color: #9f54ff;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-      }
-
-      .claim-btn[disabled] {
-        background-color: #444;
-        cursor: not-allowed;
-      }
-
-      #dashboard {
-        margin: 20px;
-        background: #111;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 0 10px rgba(46, 255, 191, 0.3);
-      }
-
-      footer {
-        text-align: center;
-        padding: 20px;
-        color: #aaa;
-      }
-
-      /* Modal */
-      .modal {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0);
-        background: #111;
-        padding: 20px;
-        border-radius: 10px;
-        z-index: 12000;
-        transition: transform 0.3s ease;
-        box-shadow: 0 0 10px #9f54ff;
-        text-align: center;
-        width: 90%;
-        max-width: 400px;
-      }
-
-      .modal.active {
-        transform: translate(-50%, -50%) scale(1);
-      }
-
-      .till-number {
-        color: #2effbf;
-        font-weight: bold;
-        font-size: 1.3rem;
-      }
-
-      .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        background: rgba(0, 0, 0, 0.7);
-        width: 100vw;
-        height: 100vh;
-        z-index: 11000;
-        display: none;
-      }
-
-      .overlay.active {
-        display: block;
-      }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* Modern Navbar */
+        #brand-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            z-index: 11001;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(159, 84, 255, 0.2);
+        }
+        
+        #brand-bar h1 {
+            color: #9f54ff;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        #brand-bar h1 i {
+            font-size: 1.5rem;
+            color: #2effbf;
+        }
+        
+        #hamburger-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #9f54ff;
+            background: transparent;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            z-index: 11001;
+        }
+        
+        #hamburger-btn:hover {
+            background: rgba(159, 84, 255, 0.1);
+            color: #2effbf;
+        }
+        
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10500;
+        }
+        
+        #overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80vw;
+            max-width: 320px;
+            height: 100vh;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 80px 20px 20px;
+            z-index: 11000;
+            transition: right 0.35s ease;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid rgba(159, 84, 255, 0.2);
+            overflow-y: auto;
+        }
+        
+        .navbar.active {
+            right: 0;
+        }
+        
+        ul.nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        ul.nav-links li a {
+            color: #ddd;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 12px 16px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        ul.nav-links li a i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        ul.nav-links li a:hover,
+        ul.nav-links li a.active {
+            background: linear-gradient(135deg, #9f54ff, #2effbf);
+            color: #000;
+            transform: translateX(5px);
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+        
+        h1#heading {
+            text-align: center;
+            color: #9f54ff;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 30px 0;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        h1#heading::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #9f54ff, #2effbf);
+            border-radius: 2px;
+        }
+        
+        /* Marquee */
+        .marquee-container {
+            background: rgba(159, 84, 255, 0.1);
+            padding: 15px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-top: 1px solid rgba(159, 84, 255, 0.2);
+            border-bottom: 1px solid rgba(159, 84, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .marquee-text {
+            color: #2effbf;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* Dashboard */
+        #dashboard {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(159, 84, 255, 0.2);
+        }
+        
+        #dashboard h2 {
+            color: #2effbf;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .dashboard-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(46, 255, 191, 0.1);
+            border-color: rgba(46, 255, 191, 0.3);
+        }
+        
+        .dashboard-label {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .dashboard-value {
+            color: #2effbf;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        /* Bot Container */
+        #botContainer {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 0 20px;
+        }
+        
+        /* Bot Cards */
+        .bot-card {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(159, 84, 255, 0.2);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .bot-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(159, 84, 255, 0.2);
+        }
+        
+        .bot-card.active {
+            border-color: #2effbf;
+            box-shadow: 0 0 20px rgba(46, 255, 191, 0.3);
+        }
+        
+        .bot-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(46, 255, 191, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .bot-card.active::before {
+            left: 100%;
+            animation: mining 3s linear infinite;
+        }
+        
+        @keyframes mining {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .mining-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #444;
+        }
+        
+        .mining-indicator.active {
+            background-color: #2effbf;
+            box-shadow: 0 0 10px #2effbf;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .bot-image-container {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .bot-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .bot-card:hover .bot-image {
+            transform: scale(1.05);
+        }
+        
+        .bot-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(135deg, #9f54ff, #2effbf);
+            color: #000;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .bot-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .bot-details {
+            margin-bottom: 20px;
+        }
+        
+        .bot-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .bot-detail:last-child {
+            border-bottom: none;
+        }
+        
+        .bot-detail-label {
+            color: #aaa;
+        }
+        
+        .bot-detail-value {
+            color: #2effbf;
+            font-weight: 600;
+        }
+        
+        .earnings-progress {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .earnings-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #9f54ff, #2effbf);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+        
+        .bot-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            font-size: 0.9rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-label {
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            color: #2effbf;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .bot-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .buy-btn,
+        .claim-btn,
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .buy-btn {
+            background: linear-gradient(135deg, #9f54ff, #2effbf);
+            color: #000;
+        }
+        
+        .buy-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(159, 84, 255, 0.3);
+        }
+        
+        .claim-btn {
+            background: linear-gradient(135deg, #2effbf, #9f54ff);
+            color: #000;
+        }
+        
+        .claim-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(46, 255, 191, 0.3);
+        }
+        
+        .claim-btn[disabled] {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 20px;
+            z-index: 12000;
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(159, 84, 255, 0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
+        }
+        
+        .modal.active {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .modal h3 {
+            color: #2effbf;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .till-number {
+            color: #9f54ff;
+            font-weight: 700;
+            font-size: 2rem;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(159, 84, 255, 0.1);
+            border-radius: 10px;
+            border: 1px dashed rgba(159, 84, 255, 0.3);
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .confirm-pay {
+            background: linear-gradient(135deg, #2effbf, #9f54ff);
+            color: #000;
+        }
+        
+        .cancel-pay {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ddd;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.8);
+            width: 100vw;
+            height: 100vh;
+            z-index: 11000;
+            display: none;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(159, 84, 255, 0.2);
+            border-radius: 50%;
+            border-top-color: #9f54ff;
+            animation: spin 1s ease-in-out infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border-left: 4px solid #2effbf;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            z-index: 12000;
+            max-width: 350px;
+            border: 1px solid rgba(46, 255, 191, 0.2);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #2effbf;
+            font-size: 1.1rem;
+        }
+        
+        .notification-message {
+            color: #ddd;
+            line-height: 1.4;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #888;
+            background: rgba(10, 10, 10, 0.5);
+            border-top: 1px solid rgba(159, 84, 255, 0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            #botContainer {
+                grid-template-columns: 1fr;
+                padding: 0 15px;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1#heading {
+                font-size: 2rem;
+            }
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <!-- ✅ Navbar -->
     <div id="brand-bar">
-      <h1>Flipmarket</h1>
+        <h1><i class="fas fa-coins"></i> FlipMarket</h1>
+        <button id="hamburger-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="navbar">
+            <i class="fas fa-bars"></i>
+        </button>
     </div>
-
-    <button id="hamburger-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="navbar">
-      &#9776;
-    </button>
-
-        <div id="overlay"></div>
-
+    <div id="overlay"></div>
     <nav class="navbar" id="navbar" aria-hidden="true">
-      <ul class="nav-links">
-        <li><a href="home.html" class="active">Home</a></li>
-        <li><a href="../Components/account.html">My Account</a></li>
-        <li><a href="../Components/bots.html">Bots</a></li>
-        <li><a href="../Components/">Settings</a></li>
-        <li><a href="../Components/Refferals.html">Referrals</a></li>
-        <li><a href="../Components/about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="faq.html">FAQ/Help</a></li>
-        <li>
-          <a
-            href="https://emannuh254.github.io/login-page/index.html"
-            id="logout"
-            >Logout</a
-          >
-        </li>
-      </ul>
+        <ul class="nav-links">
+            <li><a href="home.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="../Components/account.html"><i class="fas fa-user"></i> My Account</a></li>
+            <li><a href="../Components/bots.html"><i class="fas fa-robot"></i> Bots</a></li>
+            <li><a href="../Components/"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="../Components/Refferals.html"><i class="fas fa-users"></i> Referrals</a></li>
+            <li><a href="../Components/about.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ/Help</a></li>
+            <li>
+                <a href="https://emannuh254.github.io/login-page/index.html" id="logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
+        </ul>
     </nav>
 
-    <!-- ✅ Page Heading -->
-    <h1 id="heading">Bots Available</h1>
+    <!-- ✅ Main Content -->
+    <div class="main-content">
+        <!-- ✅ Page Heading -->
+        <h1 id="heading">Mining Bots Available</h1>
 
-    <!-- 💬 Marquee -->
-    <div class="marquee-container">
-      <span class="marquee-text">Start mining today</span>
-    </div>
+        <!-- 💬 Marquee -->
+        <div class="marquee-container">
+            <span class="marquee-text">🔥 Start mining today with our advanced Bitcoin bots! Earn passive income daily! 🔥</span>
+        </div>
 
-    <!-- 📊 Dashboard -->
-    <section id="dashboard">
-      <h2>My Bot Summary</h2>
-      <p>Current Balance: <strong id="balance" class="zero">Ksh 0</strong></p>
-      <p>Total Bots Activated: <span id="bot-count">0</span></p>
-      <p>Total Claimed Earnings: <span id="total-claimed">0</span> Ksh</p>
-    </section>
+        <!-- 📊 Dashboard -->
+        <section id="dashboard">
+            <h2><i class="fas fa-chart-line"></i> My Mining Dashboard</h2>
+            <div class="dashboard-grid">
+                <div class="dashboard-item">
+                    <div class="dashboard-label">Current Balance</div>
+                    <div class="dashboard-value" id="balance">Ksh 0</div>
+                </div>
+                <div class="dashboard-item">
+                    <div class="dashboard-label">Active Mining Bots</div>
+                    <div class="dashboard-value" id="bot-count">0</div>
+                </div>
+                <div class="dashboard-item">
+                    <div class="dashboard-label">Total Mined</div>
+                    <div class="dashboard-value" id="total-claimed">0 Ksh</div>
+                </div>
+                <div class="dashboard-item">
+                    <div class="dashboard-label">Daily Mining Rate</div>
+                    <div class="dashboard-value" id="daily-rate">0 Ksh/day</div>
+                </div>
+            </div>
+        </section>
 
-    <!-- 🤖 Bot Cards -->
-    <div id="botContainer">
-      <!-- Repeat your bots here... -->
-      <!-- Example bot -->
-      <div class="bot-card">
-        <img src="../images/pic1.jpg" alt="1000 Bot" class="bot-image" />
-        <h2>1,000 Ksh Bot</h2>
-        <p>Earns: 70 Ksh/day</p>
-        <p><strong>Total in 30 Days: 2,100 Ksh</strong></p>
-        <p>Expires in: <span class="days-left">30</span> days</p>
-        <button class="buy-btn">Buy Bot</button>
-        <button class="claim-btn" disabled>Claim Earnings</button>
-        <p class="earnings">Total Claimed: <span class="total-earned">0</span> Ksh</p>
-      </div>
-      <div class="bot-card">
-        <img src="../images/pic2.jpg" alt="2000 Bot" class="bot-image" />
-        <h2>2,000 Ksh Bot</h2>
-        <p>Earns: 140 Ksh/day</p>
-        <p><strong>Total in 30 Days: 4,200 Ksh</strong></p>
-        <p>Expires in: <span class="days-left">30</span> days</p>
-        <button class="buy-btn">Buy Bot</button>
-        <button class="claim-btn" disabled>Claim Earnings</button>
-        <p class="earnings">Total Claimed: <span class="total-earned">0</span> Ksh</p>
-      </div>
-  
-      <div class="bot-card">
-        <img src="../images/pic3.jpg" alt="4000 Bot" class="bot-image" />
-        <h2>4,000 Ksh Bot</h2>
-        <p>Earns: 280 Ksh/day</p>
-        <p><strong>Total in 30 Days: 8,400 Ksh</strong></p>
-        <p>Expires in: <span class="days-left">30</span> days</p>
-        <button class="buy-btn">Buy Bot</button>
-        <button class="claim-btn" disabled>Claim Earnings</button>
-        <p class="earnings">Total Claimed: <span class="total-earned">0</span> Ksh</p>
-      </div>
-  
-      <div class="bot-card">
-        <img src="../images/pic4.jpg" alt="7000 Bot" class="bot-image" />
-        <h2>7,000 Ksh Bot</h2>
-        <p>Earns: 490 Ksh/day</p>
-        <p><strong>Total in 30 Days: 14,700 Ksh</strong></p>
-        <p>Expires in: <span class="days-left">30</span> days</p>
-        <button class="buy-btn">Buy Bot</button>
-        <button class="claim-btn" disabled>Claim Earnings</button>
-        <p class="earnings">Total Claimed: <span class="total-earned">0</span> Ksh</p>
-      </div>
-  
-      <div class="bot-card">
-        <img src="../images/pic5.jpg" alt="10000 Bot" class="bot-image" />
-        <h2>10,000 Ksh Bot</h2>
-        <p>Earns: 700 Ksh/day</p>
-        <p><strong>Total in 30 Days: 21,000 Ksh</strong></p>
-        <p>Expires in: <span class="days-left">30</span> days</p>
-        <button class="buy-btn">Buy Bot</button>
-        <button class="claim-btn" disabled>Claim Earnings</button>
-        <p class="earnings">Total Claimed: <span class="total-earned">0</span> Ksh</p>
-      </div>
-  
-      <div class="bot-card">
-        <img src="../images/pic6.jpg" alt="15000 Bot" class="bot-image" />
-        <h2>15,000 Ksh Bot</h2>
-        <p>Earns: 1,050 Ksh/day</p>
-        <p><strong>Total in 30 Days: 31,500 Ksh</strong></p>
-        <p>Expires in: <span class="days-left">30</span> days</p>
-        <button class="buy-btn">Buy Bot</button>
-        <button class="claim-btn" disabled>Claim Earnings</button>
-        <p class="earnings">Total Claimed: <span class="total-earned">0</span> Ksh</p>
-      </div>
-  
-      <div class="bot-card">
-        <img src="../images/pic7.jpg" alt="30000 Bot" class="bot-image" />
-        <h2>30,000 Ksh Bot</h2>
-        <p>Earns: 2,100 Ksh/day</p>
-        <p><strong>Total in 30 Days: 63,000 Ksh</strong></p>
-        <p>Expires in: <span class="days-left">30</span> days</p>
-        <button class="buy-btn">Buy Bot</button>
-        <button class="claim-btn" disabled>Claim Earnings</button>
-        <p class="earnings">Total Claimed: <span class="total-earned">0</span> Ksh</p>
-      </div>
-    </div>
-      <!-- Add other bot cards similarly -->
+        <!-- 🤖 Bot Cards -->
+        <div id="botContainer">
+            <!-- Bot cards will be generated by JavaScript -->
+        </div>
     </div>
 
     <!-- 💰 Payment Modal -->
     <div class="modal" id="paymentModal">
-      <div class="modal-content">
-        <h3>Confirm Bot Purchase</h3>
-        <p>Pay via M-Pesa Till Number:</p>
-        <p class="till-number">523698</p>
-        <button class="btn confirm-pay">Confirm Payment</button>
-        <button class="btn cancel-pay">Cancel</button>
-      </div>
+        <div class="modal-content">
+            <h3><i class="fas fa-shopping-cart"></i> Confirm Bot Purchase</h3>
+            <p>Pay via M-Pesa Till Number:</p>
+            <p class="till-number">523698</p>
+            <div class="loading-spinner" id="paymentLoading"></div>
+            <div class="modal-actions">
+                <button class="btn confirm-pay" id="confirmPaymentBtn">Confirm Payment</button>
+                <button class="btn cancel-pay" id="cancelPaymentBtn">Cancel</button>
+            </div>
+        </div>
     </div>
-
     <div class="overlay" id="modalOverlay"></div>
 
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-title" id="notificationTitle">Success</div>
+        <div class="notification-message" id="notificationMessage">Your action was completed successfully!</div>
+    </div>
+
     <!-- ✅ Footer -->
-    <footer>FlipMarket 2025. All rights reserved.</footer>
+    <footer>
+        <p>&copy; 2025 FlipMarket. All rights reserved.</p>
+    </footer>
 
     <!-- ✅ Script -->
     <script>
-      const hamburgerBtn = document.getElementById("hamburger-btn");
-      const navbar = document.getElementById("navbar");
-      const overlay = document.getElementById("overlay");
-      const navLinks = navbar.querySelectorAll("ul.nav-links li a");
+        // Bot data with image URLs
+        const botTypes = [
+            {
+                id: 1,
+                name: "1,000 Ksh Bot",
+                price: 1000,
+                dailyEarning: 70,
+                totalEarning: 2100,
+                image: "https://images.unsplash.com/photo-1622630998477-20aa696ecb05?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 2,
+                name: "2,000 Ksh Bot",
+                price: 2000,
+                dailyEarning: 140,
+                totalEarning: 4200,
+                image: "https://images.unsplash.com/photo-1633412802994-5c058f151b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 3,
+                name: "4,000 Ksh Bot",
+                price: 4000,
+                dailyEarning: 280,
+                totalEarning: 8400,
+                image: "https://images.unsplash.com/photo-1633412802994-5c058f151b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 4,
+                name: "7,000 Ksh Bot",
+                price: 7000,
+                dailyEarning: 490,
+                totalEarning: 14700,
+                image: "https://images.unsplash.com/photo-1633412802994-5c058f151b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 5,
+                name: "10,000 Ksh Bot",
+                price: 10000,
+                dailyEarning: 700,
+                totalEarning: 21000,
+                image: "https://images.unsplash.com/photo-1633412802994-5c058f151b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 6,
+                name: "15,000 Ksh Bot",
+                price: 15000,
+                dailyEarning: 1050,
+                totalEarning: 31500,
+                image: "https://images.unsplash.com/photo-1633412802994-5c058f151b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 7,
+                name: "30,000 Ksh Bot",
+                price: 30000,
+                dailyEarning: 2100,
+                totalEarning: 63000,
+                image: "https://images.unsplash.com/photo-1633412802994-5c058f151b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            }
+        ];
 
-      function closeNavbar() {
-        navbar.classList.remove("active");
-        overlay.classList.remove("active");
-        hamburgerBtn.setAttribute("aria-expanded", "false");
-        navbar.setAttribute("aria-hidden", "true");
-      }
+        // User data (simulating localStorage)
+        let userData = {
+            balance: 0,
+            bots: [],
+            totalClaimed: 0,
+            dailyRate: 0
+        };
 
-      function openNavbar() {
-        navbar.classList.add("active");
-        overlay.classList.add("active");
-        hamburgerBtn.setAttribute("aria-expanded", "true");
-        navbar.setAttribute("aria-hidden", "false");
-      }
+        // DOM elements
+        const hamburgerBtn = document.getElementById("hamburger-btn");
+        const navbar = document.getElementById("navbar");
+        const overlay = document.getElementById("overlay");
+        const botContainer = document.getElementById("botContainer");
+        const paymentModal = document.getElementById("paymentModal");
+        const modalOverlay = document.getElementById("modalOverlay");
+        const confirmPaymentBtn = document.getElementById("confirmPaymentBtn");
+        const cancelPaymentBtn = document.getElementById("cancelPaymentBtn");
+        const paymentLoading = document.getElementById("paymentLoading");
+        const notification = document.getElementById("notification");
+        const notificationTitle = document.getElementById("notificationTitle");
+        const notificationMessage = document.getElementById("notificationMessage");
 
-      hamburgerBtn.addEventListener("click", () => {
-        if (navbar.classList.contains("active")) {
-          closeNavbar();
-        } else {
-          openNavbar();
+        // Current bot being purchased
+        let currentBot = null;
+
+        // Initialize the page
+        function init() {
+            // Load user data from localStorage
+            const savedData = localStorage.getItem("flipMarketUserData");
+            if (savedData) {
+                userData = JSON.parse(savedData);
+            }
+            
+            // Update dashboard
+            updateDashboard();
+            
+            // Render bot cards
+            renderBotCards();
+            
+            // Start mining simulation
+            startMiningSimulation();
         }
-      });
 
-      overlay.addEventListener("click", closeNavbar);
-      navLinks.forEach((link) => {
-        link.addEventListener("click", closeNavbar);
-      });
+        // Update dashboard
+        function updateDashboard() {
+            document.getElementById("balance").textContent = `Ksh ${userData.balance.toLocaleString()}`;
+            document.getElementById("bot-count").textContent = userData.bots.length;
+            document.getElementById("total-claimed").textContent = `${userData.totalClaimed.toLocaleString()} Ksh`;
+            
+            // Calculate daily rate
+            let dailyRate = 0;
+            userData.bots.forEach(bot => {
+                if (bot.active) {
+                    dailyRate += bot.dailyEarning;
+                }
+            });
+            userData.dailyRate = dailyRate;
+            document.getElementById("daily-rate").textContent = `${dailyRate.toLocaleString()} Ksh/day`;
+            
+            // Save updated data
+            saveUserData();
+        }
+
+        // Save user data to localStorage
+        function saveUserData() {
+            localStorage.setItem("flipMarketUserData", JSON.stringify(userData));
+        }
+
+        // Render bot cards
+        function renderBotCards() {
+            botContainer.innerHTML = "";
+            
+            botTypes.forEach(botType => {
+                // Check if user owns this bot
+                const userBot = userData.bots.find(b => b.id === botType.id);
+                
+                const card = document.createElement("div");
+                card.className = `bot-card ${userBot && userBot.active ? "active" : ""}`;
+                
+                // Calculate days left
+                let daysLeft = 30;
+                let earnings = 0;
+                let progress = 0;
+                
+                if (userBot) {
+                    const now = new Date();
+                    const timeDiff = now - new Date(userBot.purchaseDate);
+                    const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                    daysLeft = Math.max(0, 30 - daysDiff);
+                    
+                    // Calculate earnings
+                    earnings = Math.min(userBot.dailyEarning * daysDiff, userBot.totalEarning);
+                    progress = Math.min(100, (earnings / userBot.totalEarning) * 100);
+                }
+                
+                card.innerHTML = `
+                    <div class="mining-indicator ${userBot && userBot.active ? "active" : ""}"></div>
+                    <div class="bot-image-container">
+                        <img src="${botType.image}" alt="${botType.name}" class="bot-image" />
+                        <div class="bot-badge">${userBot ? "ACTIVE" : "NEW"}</div>
+                    </div>
+                    <h3 class="bot-title">${botType.name}</h3>
+                    <div class="bot-details">
+                        <div class="bot-detail">
+                            <span class="bot-detail-label">Mining Power:</span>
+                            <span class="bot-detail-value">${botType.dailyEarning} Ksh/day</span>
+                        </div>
+                        <div class="bot-detail">
+                            <span class="bot-detail-label">Total Potential:</span>
+                            <span class="bot-detail-value">${botType.totalEarning.toLocaleString()} Ksh</span>
+                        </div>
+                        <div class="bot-detail">
+                            <span class="bot-detail-label">Expires in:</span>
+                            <span class="bot-detail-value countdown">${daysLeft} days</span>
+                        </div>
+                    </div>
+                    
+                    ${userBot ? `
+                        <div class="earnings-progress">
+                            <div class="earnings-bar" style="width: ${progress}%"></div>
+                        </div>
+                        <div class="bot-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Mined</div>
+                                <div class="stat-value">${earnings.toLocaleString()} Ksh</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Remaining</div>
+                                <div class="stat-value">${(botType.totalEarning - earnings).toLocaleString()} Ksh</div>
+                            </div>
+                        </div>
+                        <div class="bot-actions">
+                            <button class="claim-btn ${earnings > 0 ? "" : "disabled"}" data-id="${botType.id}">
+                                ${earnings > 0 ? "Claim Earnings" : "No Earnings"}
+                            </button>
+                        </div>
+                    ` : `
+                        <div class="bot-actions">
+                            <button class="buy-btn" data-id="${botType.id}">Buy Mining Bot</button>
+                        </div>
+                    `}
+                `;
+                
+                botContainer.appendChild(card);
+            });
+            
+            // Add event listeners to buttons
+            document.querySelectorAll(".buy-btn").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    const botId = parseInt(this.getAttribute("data-id"));
+                    currentBot = botTypes.find(b => b.id === botId);
+                    showPaymentModal();
+                });
+            });
+            
+            document.querySelectorAll(".claim-btn").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    const botId = parseInt(this.getAttribute("data-id"));
+                    claimEarnings(botId);
+                });
+            });
+        }
+
+        // Show payment modal
+        function showPaymentModal() {
+            paymentModal.classList.add("active");
+            modalOverlay.classList.add("active");
+            paymentLoading.style.display = "none";
+            confirmPaymentBtn.style.display = "block";
+        }
+
+        // Hide payment modal
+        function hidePaymentModal() {
+            paymentModal.classList.remove("active");
+            modalOverlay.classList.remove("active");
+            currentBot = null;
+        }
+
+        // Confirm payment
+        confirmPaymentBtn.addEventListener("click", function() {
+            // Show loading
+            paymentLoading.style.display = "block";
+            confirmPaymentBtn.style.display = "none";
+            
+            // Simulate payment processing
+            setTimeout(() => {
+                // Add bot to user's bots
+                const newBot = {
+                    ...currentBot,
+                    purchaseDate: new Date().toISOString(),
+                    active: true,
+                    totalClaimed: 0
+                };
+                
+                userData.bots.push(newBot);
+                
+                // Update dashboard
+                updateDashboard();
+                
+                // Re-render bot cards
+                renderBotCards();
+                
+                // Hide modal
+                hidePaymentModal();
+                
+                // Show notification
+                showNotification("Purchase Successful", `Your ${currentBot.name} is now mining!`);
+            }, 2000);
+        });
+
+        // Cancel payment
+        cancelPaymentBtn.addEventListener("click", hidePaymentModal);
+        modalOverlay.addEventListener("click", hidePaymentModal);
+
+        // Claim earnings
+        function claimEarnings(botId) {
+            const bot = userData.bots.find(b => b.id === botId);
+            if (!bot) return;
+            
+            const now = new Date();
+            const timeDiff = now - new Date(bot.purchaseDate);
+            const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            
+            // Calculate earnings
+            const earnings = Math.min(bot.dailyEarning * daysDiff, bot.totalEarning) - bot.totalClaimed;
+            
+            if (earnings <= 0) {
+                showNotification("No Earnings", "You don't have any earnings to claim yet.");
+                return;
+            }
+            
+            // Update user data
+            userData.balance += earnings;
+            bot.totalClaimed += earnings;
+            userData.totalClaimed += earnings;
+            
+            // Check if bot has expired
+            if (bot.totalClaimed >= bot.totalEarning) {
+                bot.active = false;
+                showNotification("Bot Expired", "Your mining bot has completed its cycle.");
+            }
+            
+            // Update dashboard
+            updateDashboard();
+            
+            // Re-render bot cards
+            renderBotCards();
+            
+            // Show notification
+            showNotification("Earnings Claimed", `You've successfully claimed ${earnings.toLocaleString()} Ksh!`);
+        }
+
+        // Show notification
+        function showNotification(title, message) {
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            notification.classList.add("show");
+            
+            setTimeout(() => {
+                notification.classList.remove("show");
+            }, 3000);
+        }
+
+        // Start mining simulation
+        function startMiningSimulation() {
+            // Update every minute
+            setInterval(() => {
+                // Update dashboard to show real-time earnings
+                updateDashboard();
+                
+                // Update bot cards if needed
+                renderBotCards();
+            }, 60000); // Every minute
+        }
+
+        // Navbar functionality
+        function closeNavbar() {
+            navbar.classList.remove("active");
+            overlay.classList.remove("active");
+            hamburgerBtn.setAttribute("aria-expanded", "false");
+            navbar.setAttribute("aria-hidden", "true");
+        }
+
+        function openNavbar() {
+            navbar.classList.add("active");
+            overlay.classList.add("active");
+            hamburgerBtn.setAttribute("aria-expanded", "true");
+            navbar.setAttribute("aria-hidden", "false");
+        }
+
+        hamburgerBtn.addEventListener("click", () => {
+            if (navbar.classList.contains("active")) {
+                closeNavbar();
+            } else {
+                openNavbar();
+            }
+        });
+
+        overlay.addEventListener("click", closeNavbar);
+
+        document.querySelectorAll(".nav-links li a").forEach(link => {
+            link.addEventListener("click", closeNavbar);
+        });
+
+        // Initialize the page when DOM is loaded
+        document.addEventListener("DOMContentLoaded", init);
     </script>
-  </body>
+</body>
 </html>

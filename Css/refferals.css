@@ -1,0 +1,181 @@
+  /* Reset & base */
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #000;
+    color: #ddd;
+    overflow-x: hidden;
+  }
+
+  header {
+    background: #000;
+    border-bottom: 2px solid #9f54ff;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header .logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #9f54ff;
+  }
+  .user-info {
+    font-size: 0.5rem;
+    color: #aaa;
+  
+  }
+  .user-info span {
+    color: #2effbf;
+  }
+
+  main {
+    max-width: 900px;
+    margin: 50px auto 40px;
+    background: #111;
+    border-radius: 12px;
+    padding: 25px 30px;
+    box-shadow: 0 0 15px rgba(159, 84, 255, 0.3);
+  }
+
+  h1 {
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+
+  /* Referral Link Box */
+  .referral-link {
+    background: #1a1a1a;
+    border: 1px solid #3a1a9f;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    font-size: 1rem;
+    color: #ccc;
+    user-select: text;
+  }
+  .referral-link span#referralLink {
+    color: #9f54ff;
+    font-weight: 600;
+    word-break: break-all;
+  }
+
+  .copy-btn {
+    background-color: #9f54ff;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: background-color 0.3s ease;
+  }
+  .copy-btn:hover {
+    background-color: #7a38cc;
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+  }
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #3a1a9f;
+  }
+  th {
+    background: #1a1a1a;
+    color: #9f54ff;
+    font-weight: 700;
+  }
+  tr:hover {
+    background: #2e2a4d;
+  }
+  tbody tr td {
+    color: #ccc;
+  }
+
+  /* Navbar */
+  #hamburger-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #9f54ff;
+    background: transparent;
+    border: none;
+    z-index: 11001;
+    transition: color 0.3s ease;
+  }
+  #hamburger-btn:hover {
+    color: #2effbf;
+  }
+
+  #overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10500;
+  }
+  #overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .navbar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 50vw;
+    max-width: 320px;
+    height: 100vh;
+    background-color: #000;
+    padding: 40px 25px;
+    display: flex;
+    flex-direction: column;
+    z-index: 11000;
+    transition: right 0.35s ease;
+    overflow-y: auto;
+  }
+  .navbar.active {
+    right: 0;
+  }
+
+  ul.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  ul.nav-links li a {
+    color: #ccc;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 10px;
+    background: #111;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  ul.nav-links li a:hover,
+  ul.nav-links li a.active {
+    background-color: #2effbf;
+    color: #000;
+  }
+
+  @media (max-width: 400px) {
+    .navbar {
+      width: 80vw;
+    }
+  }
