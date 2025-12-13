@@ -1,441 +1,537 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FlipMarket | About Us</title>
-    <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #000;
-        color: #eee;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FlipMarket | About Us</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Reset & base */
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+      color: #e0e0e0;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
+      opacity: 0.05;
+      z-index: -1;
+    }
 
-      /* Navbar Styles */
-      #brand-bar {
-        position: fixed;
-        top: 15px;
-        left: 15px;
-        z-index: 11001;
-        user-select: none;
-      }
+    /* Brand bar */
+    #brand-bar {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 11001;
+      user-select: none;
+    }
+    #brand-bar h1 {
+      color: #9f54ff;
+      font-size: 1.8rem;
+      margin: 0;
+      font-weight: bold;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    #brand-bar h1 i {
+      color: #2effbf;
+    }
 
-      #brand-bar h1 {
-        color: #9f54ff;
-        font-size: 1.8rem;
-        margin: 0;
-      }
+    /* Hamburger button */
+    #hamburger-btn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #9f54ff;
+      background: transparent;
+      border: none;
+      padding: 8px;
+      margin: 0;
+      line-height: 1;
+      transition: color 0.3s ease;
+      z-index: 11001;
+      border-radius: 8px;
+    }
+    #hamburger-btn:hover {
+      color: #2effbf;
+      background: rgba(159, 84, 255, 0.1);
+    }
+    #hamburger-btn:focus {
+      outline: none;
+    }
 
-      #hamburger-btn {
-        position: fixed;
-        top: 15px;
-        right: 15px;
-        font-size: 2rem;
-        cursor: pointer;
-        color: #9f54ff;
-        background: transparent;
-        border: none;
-        padding: 5px;
-        z-index: 11001;
-      }
-
-      #hamburger-btn:hover {
-        color: #2effbf;
-      }
-
-      #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-        z-index: 10500;
-      }
-
-      #overlay.active {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-
-      /* Main Container */
-      .container {
-        max-width: 900px;
-        margin: 100px auto 40px auto;
-        padding: 0 20px;
-      }
-
-      header.navbar h1 {
-        color: #9f54ff;
-        font-size: 2rem;
-        margin-bottom: 5px;
-      }
-
-      header.navbar p {
-        color: #2effbf;
-        font-style: italic;
-        margin-top: 0;
-      }
-
-      .card {
-        background: #111;
-        border-radius: 10px;
-        padding: 20px;
-        margin-top: 20px;
-        box-shadow: 0 0 10px rgba(159, 84, 255, 0.3);
-      }
-
-      h2 {
-        color: #c77dff;
-      }
-
-      ul {
-        padding-left: 20px;
-      }
-
-      .team-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-      }
-
-      .member {
-        flex: 1 1 45%;
-        background: #222;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 0 8px rgba(46, 255, 191, 0.2);
-      }
-
-      blockquote {
-        font-style: italic;
-        border-left: 3px solid #2effbf;
-        padding-left: 15px;
-        margin: 10px 0;
-        color: #ddd;
-      }
-
-      cite {
-        display: block;
-        margin-top: 5px;
-        color: #999;
-      }
-
-      footer {
-        text-align: center;
-        margin-top: 40px;
-        padding: 20px;
-        color: #aaa;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- ✅ Navbar -->
-    <style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #000;
-    color: #eee;
-    overflow-x: hidden;
-  }
-
-  #brand-bar {
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    z-index: 11001;
-    user-select: none;
-  }
-
-  #brand-bar h1 {
-    color: #9f54ff;
-    font-size: 1.8rem;
-    margin: 0;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
-  }
-
-  #hamburger-btn {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    font-size: 2rem;
-    cursor: pointer;
-    color: #9f54ff;
-    background: transparent;
-    border: none;
-    padding: 5px;
-    margin: 0;
-    line-height: 1;
-    transition: color 0.3s ease;
-    z-index: 11001;
-  }
-  #hamburger-btn:hover {
-    color: #2effbf;
-  }
-  #hamburger-btn:focus {
-    outline: none;
-  }
-
-  #overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    z-index: 10500;
-  }
-  #overlay.active {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .navbar {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 50vw;
-    max-width: 320px;
-    height: 0px;
-    background-color: transparent;
-    padding: 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    z-index: 11000;
-    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .navbar.active {
-    right: 0;
-  }
-
-  ul.nav-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  ul.nav-links li a {
-    color: #ddd;
-    text-decoration: none;
-    font-weight: 600;
-    padding: 10px 15px;
-    border-radius: 8px;
-    background: #000000;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    display: block;
-    opacity: 0;
-    transform: translateX(20px);
-    pointer-events: none;
-  }
-  ul.nav-links li a:hover,
-  ul.nav-links li a.active {
-    background-color: #2effbf;
-    color: #000;
-  }
-
-  .navbar.active ul.nav-links li a {
-    animation: slideFadeIn 0.3s forwards;
-  }
-  ul.nav-links li:nth-child(1) a {
-    animation-delay: 0.3s;
-  }
-  ul.nav-links li:nth-child(2) a {
-    animation-delay: 0.25s;
-  }
-  ul.nav-links li:nth-child(3) a {
-    animation-delay: 0.4s;
-  }
-  ul.nav-links li:nth-child(4) a {
-    animation-delay: 0.55s;
-  }
-  ul.nav-links li:nth-child(5) a {
-    animation-delay: 0.7s;
-  }
-  ul.nav-links li:nth-child(6) a {
-    animation-delay: 0.85s;
-  }
-  ul.nav-links li:nth-child(7) a {
-    animation-delay: 1s;
-  }
-  ul.nav-links li:nth-child(8) a {
-    animation-delay: 1.15s;
-  }
-  ul.nav-links li:nth-child(9) a {
-    animation-delay: 1.3s;
-  }
-
-  @keyframes slideFadeIn {
-    to {
+    /* Overlay */
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 10500;
+    }
+    #overlay.active {
       opacity: 1;
-      transform: translateX(0);
       pointer-events: auto;
     }
-  }
 
-  @media (max-width: 400px) {
+    /* Navbar styles */
     .navbar {
-      width: 55vw;
-      max-width: none;
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80vw;
+      max-width: 320px;
+      height: 100vh;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 80px 20px 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      z-index: 11000;
+      transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+      border-left: 1px solid rgba(159, 84, 255, 0.2);
     }
-  }
-</style>
+    .navbar.active {
+      right: 0;
+    }
 
-<!-- ✅ Navbar Markup -->
-<div id="brand-bar" aria-label="Site brand">
-  <h1>Flipmarket</h1>
-</div>
+    ul.nav-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-<button
-  id="hamburger-btn"
-  aria-label="Toggle menu"
-  aria-expanded="false"
-  aria-controls="navbar"
->
-  &#9776;
-</button>
+    ul.nav-links li a {
+      color: #ddd;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      transform: translateX(20px);
+      pointer-events: none;
+    }
+    
+    ul.nav-links li a i {
+      width: 20px;
+      text-align: center;
+    }
+    
+    ul.nav-links li a:hover,
+    ul.nav-links li a.active {
+      background: linear-gradient(135deg, #9f54ff, #2effbf);
+      color: #000;
+      transform: translateX(5px);
+    }
+    .navbar.active ul.nav-links li a {
+      animation: slideFadeIn 0.3s forwards;
+    }
+    ul.nav-links li:nth-child(1) a { animation-delay: 0.3s; }
+    ul.nav-links li:nth-child(2) a { animation-delay: 0.45s; }
+    ul.nav-links li:nth-child(3) a { animation-delay: 0.6s; }
+    ul.nav-links li:nth-child(4) a { animation-delay: 0.75s; }
+    ul.nav-links li:nth-child(5) a { animation-delay: 0.9s; }
+    ul.nav-links li:nth-child(6) a { animation-delay: 1.05s; }
+    ul.nav-links li:nth-child(7) a { animation-delay: 1.2s; }
+    ul.nav-links li:nth-child(8) a { animation-delay: 1.35s; }
+    ul.nav-links li:nth-child(9) a { animation-delay: 1.5s; }
 
-    <div id="overlay"></div>
+    @keyframes slideFadeIn {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+        pointer-events: auto;
+      }
+    }
 
-    <nav class="navbar" id="navbar" aria-hidden="true">
-      <ul class="nav-links">
-        <li><a href="home.html" class="active">Home</a></li>
-        <li><a href="../Components/account.html">My Account</a></li>
-        <li><a href="../Components/bots.html">Bots</a></li>
-        <li><a href="../Components/">Settings</a></li>
-        <li><a href="../Components/Refferals.html">Referrals</a></li>
-        <li><a href="../Components/about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="faq.html">FAQ/Help</a></li>
-        <li>
-          <a
-            href="https://emannuh254.github.io/login-page/index.html"
-            id="logout"
-            >Logout</a
-          >
-        </li>
-      </ul>
-    </nav>
-    <!-- ✅ Main Content -->
-    <div class="container">
-      <header class="navbar">
-        <h1>About Our Bot Platform</h1>
-        <p>Smart. Secure. Automated.</p>
-      </header>
-      <section class="card about-section">
-  <h2>Our Story | Since 2009</h2>
-  <p>
-    In 2009, long before the crypto wave swept the globe, a small team of engineers in Nairobi dared to ask:
-    <em>how can automation make financial tools accessible, efficient, and sustainable?</em>
-    The result — FlipMarket’s crypto trading bots — was born out of a vision to empower everyday users with AI-driven
-    precision, even in energy-constrained environments.
-  </p>
-</section>
+    /* Main content spacing */
+    main {
+      max-width: 900px;
+      margin: 100px auto 2rem;
+      padding: 0 20px;
+    }
 
-<section class="card mission-section">
-  <h2>Empowering African Traders</h2>
-  <p>
-    Today, across Africa — from Lagos to Nairobi — our bots are leveling the playing field.
-    Retail users, small-scale farmers, and emerging entrepreneurs gain access to 24/7 trading strategies that were
-    once exclusive to institutional players. By optimizing trades, bots reduce manual time, minimize emotional trading
-    errors, and allow users to concentrate on what truly matters: their lives and businesses.
-  </p>
-</section>
+    /* FAQ/About styles */
+    .faq {
+      background-color: rgba(26, 26, 46, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(159, 84, 255, 0.2);
+      border-radius: 15px;
+      margin-bottom: 15px;
+      padding: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    .faq:hover {
+      background-color: rgba(26, 26, 46, 0.8);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(159, 84, 255, 0.2);
+    }
+    .faq-question {
+      font-weight: bold;
+      color: #2effbf;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.2rem;
+    }
+    .faq-question i {
+      color: #9f54ff;
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.4s ease;
+      opacity: 0;
+      margin-top: 10px;
+      color: #ddd;
+      line-height: 1.6;
+    }
+    .faq-answer.show {
+      max-height: 1000px;
+      opacity: 1;
+    }
+    .icon {
+      transition: transform 0.3s ease;
+    }
+    .rotate {
+      transform: rotate(180deg);
+    }
+    
+    .faq-answer p {
+      margin-bottom: 15px;
+    }
+    
+    .faq-answer ul {
+      padding-left: 20px;
+      margin-bottom: 15px;
+    }
+    
+    .faq-answer li {
+      margin-bottom: 8px;
+    }
+    
+    .highlight {
+      color: #2effbf;
+      font-weight: 600;
+    }
+    
+    .highlight-purple {
+      color: #9f54ff;
+      font-weight: 600;
+    }
+    
+    .faq-answer h3 {
+      color: #9f54ff;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
 
-<section class="card mission-section">
-  <h2>Conserving Power, Maximizing Impact</h2>
-  <p>
-    Aware of energy challenges across many parts of Africa, we built our bots with efficiency at the core.
-    Our systems run light, lean, and optimized — prioritizing low-energy algorithms, adaptive execution, and
-    server-side processing. Each purchase not only unlocks trading power but also supports sustainable computing
-    practices — helping conserve power while maintaining performance.
-  </p>
-</section>
+    /* Links */
+    a {
+      color: #9f54ff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    a:hover {
+      color: #2effbf;
+      text-decoration: underline;
+    }
 
-<section class="card mission-section">
-  <h2>How Our Bots Work</h2>
-  <p>
-    Under the hood, our crypto bots:
-  </p>
-  <ul>
-    <li>Scan real-time data across multiple exchanges for arbitrage, momentum, and sentiment.</li>
-    <li>Analyze market conditions using AI models trained for volatility and low-bandwidth environments.</li>
-    <li>Execute trades automatically, refining in-flight orders for optimal results.</li>
-    <li>Adapt based on local thresholds, allowing users in power-stretched regions to pause or throttle activity automatically.</li>
-  </ul>
-</section>
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #aaa;
+      position: relative;
+      margin-top: 40px;
+      border-top: 1px solid rgba(159, 84, 255, 0.1);
+    }
+    
+    /* Responsive adjustment for very small screens */
+    @media (max-width: 768px) {
+      .faq {
+        padding: 12px;
+      }
+      
+      .faq-question {
+        font-size: 1.1rem;
+      }
+    }
+    
+    @media (max-width: 400px) {
+      .navbar {
+        width: 55vw;
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Brand & Hamburger -->
+  <div id="brand-bar" aria-label="Site brand">
+    <h1><i class="fas fa-coins"></i> FlipMarket</h1>
+  </div>
 
-<section class="card mission-section">
-  <h2>Built on Local Insights</h2>
-  <p>
-    Our roots in Italy give us a unique edge. We understand network constraints, power variability,
-    and local market behaviors — so our bots reflect resilient design and real-world practicality.
-  </p>
-</section>
+  <button
+    id="hamburger-btn"
+    aria-label="Toggle menu"
+    aria-expanded="false"
+    aria-controls="navbar"
+  >
+    <i class="fas fa-bars"></i>
+  </button>
 
-<section class="card mission-section">
-  <h2>Join the Movement</h2>
-  <p>
-    When you acquire a FlipMarket bot, you're not just investing in trading tech — you're joining a legacy
-    of innovation and sustainability. Since 2009, we’ve grown from a niche experiment into a movement:
-    empowering African users with autonomy, efficiency, and impact.
-  </p>
-</section>
+  <div id="overlay"></div>
 
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar" aria-hidden="true">
+    <ul class="nav-links">
+      <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="../Components/account.html"><i class="fas fa-user"></i> My Account</a></li>
+      <li><a href="../Components/bots.html"><i class="fas fa-robot"></i> Bots</a></li>
+      <li><a href="../Components/settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+      <li><a href="../Components/Refferals.html"><i class="fas fa-users"></i> Referrals</a></li>
+      <li><a href="../Components/about.html" class="active"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+      <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ / Help</a></li>
+      <li>
+        <a href="https://emannuh254.github.io/login-page/index.html" id="logout">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </nav>
 
-
-
-      <footer class="footer">
-        <p>&copy; 2025 FlipMarket. All rights reserved.</p>
-      </footer>
+  <!-- Main Content -->
+  <main>
+    <h1 style="text-align: center; color: #9f54ff; font-size: 2.5rem; margin-bottom: 30px;">About FlipMarket</h1>
+    
+    <div class="faq">
+      <div class="faq-question">
+        <span><i class="fas fa-history"></i> Our Story | Since 2009</span>
+        <span class="icon"><i class="fas fa-chevron-down"></i></span>
+      </div>
+      <div class="faq-answer">
+        <p>Since 2009, FlipMarket has been quietly building and operating high-performance crypto infrastructure behind the scenes. What began as a small server-based experiment evolved into a scalable network of optimized mining systems designed to run continuously, securely, and efficiently.</p>
+        <p>Rather than requiring individuals to own expensive hardware, manage heat, or deal with unstable power, FlipMarket centralized the heavy lifting. Our platform allows users to participate in crypto mining by purchasing access to professionally maintained servers — what we call <span class="highlight">bots</span> — hosted and managed by our technical team.</p>
+      </div>
     </div>
+    
+    <div class="faq">
+      <div class="faq-question">
+        <span><i class="fas fa-users"></i> Empowering Users Through Shared Mining</span>
+        <span class="icon"><i class="fas fa-chevron-down"></i></span>
+      </div>
+      <div class="faq-answer">
+        <p>FlipMarket bots are not software installed on your device. They are dedicated online mining servers operating 24/7 in optimized environments. When you purchase a bot on our platform, you gain access to a portion of this infrastructure, enabling you to earn from crypto mining without technical complexity.</p>
+        <p>This shared-infrastructure model makes mining accessible to users across Africa and beyond — regardless of hardware limitations, electricity costs, or technical background. You simply monitor performance while the servers do the work.</p>
+      </div>
+    </div>
+    
+    <div class="faq">
+      <div class="faq-question">
+        <span><i class="fas fa-cogs"></i> What the Bots Actually Do</span>
+        <span class="icon"><i class="fas fa-chevron-down"></i></span>
+      </div>
+      <div class="faq-answer">
+        <p>Each FlipMarket bot is a remotely hosted mining instance connected to our server network. These servers mine Ethereum and other supported cryptocurrencies, dynamically allocating resources to stable and profitable networks.</p>
+        <p>The entire process is automated:</p>
+        <ul>
+          <li>Mining operations run continuously on FlipMarket servers</li>
+          <li>Revenue generated is calculated and reflected in your account</li>
+          <li>Performance optimization is handled server-side</li>
+          <li>No downloads, GPUs, or local power consumption required</li>
+        </ul>
+        <p>Once a bot is active, it begins generating revenue daily based on real mining activity.</p>
+      </div>
+    </div>
+    
+    <div class="faq">
+      <div class="faq-question">
+        <span><i class="fas fa-coins"></i> How You Earn on FlipMarket</span>
+        <span class="icon"><i class="fas fa-chevron-down"></i></span>
+      </div>
+      <div class="faq-answer">
+        <p>FlipMarket provides two clear earning methods, both visible and selectable when interacting with the platform.</p>
+        
+        <h3>1. Earning Through Bots</h3>
+        <p>When you purchase a bot:</p>
+        <ul>
+          <li>The bot generates daily mining revenue</li>
+          <li>Earnings accumulate automatically in your account</li>
+          <li>You are required to collect your earnings daily to keep your balance updated</li>
+          <li>Higher-tier or exclusive bots generate increased daily returns</li>
+        </ul>
+        <p>This ensures transparency and encourages active participation.</p>
+        
+        <h3>2. Earning Through Referrals</h3>
+        <p>FlipMarket rewards growth through partnerships.</p>
+        <ul>
+          <li>When you refer a new partner, you receive $2 USD instantly into your account</li>
+          <li>There is no limit to the number of partners you can refer</li>
+          <li>Referral rewards are credited separately from bot earnings</li>
+        </ul>
+        <p>Both methods work together — users can earn through bots, referrals, or a combination of both.</p>
+      </div>
+    </div>
+    
+    <div class="faq">
+      <div class="faq-question">
+        <span><i class="fas fa-star"></i> VIP Levels & Increased Earnings</span>
+        <span class="icon"><i class="fas fa-chevron-down"></i></span>
+      </div>
+      <div class="faq-answer">
+        <p>FlipMarket features a VIP level system designed to reward active and committed users.</p>
+        <p>You can increase your VIP level by:</p>
+        <ul>
+          <li>Referring a certain number of users</li>
+          <li>Purchasing exclusive or higher-tier bots</li>
+        </ul>
+        <p>Higher VIP levels unlock:</p>
+        <ul>
+          <li>Increased daily bot earnings</li>
+          <li>Access to premium bots</li>
+          <li>Priority account features and faster processing</li>
+        </ul>
+        <p>As your VIP status grows, so does your earning potential.</p>
+      </div>
+    </div>
+    
+    <div class="faq">
+      <div class="faq-question">
+        <span><i class="fas fa-bolt"></i> Built for Efficiency and Stability</span>
+        <span class="icon"><i class="fas fa-chevron-down"></i></span>
+      </div>
+      <div class="faq-answer">
+        <p>We understand the realities of power costs and hardware availability, especially in emerging markets. That's why FlipMarket focuses on centralized efficiency rather than individual setups.</p>
+        <p>Our mining servers are optimized for:</p>
+        <ul>
+          <li>Stable uptime</li>
+          <li>Controlled power usage</li>
+          <li>Efficient cooling and load balancing</li>
+          <li>Long-term performance rather than short-term spikes</li>
+        </ul>
+        <p>By pooling resources into managed infrastructure, we reduce waste and improve consistency for all users.</p>
+      </div>
+    </div>
+    
+    <div class="faq">
+      <div class="faq-question">
+        <span><i class="fas fa-shield-alt"></i> Secure, Remote, and Always Online</span>
+        <span class="icon"><i class="fas fa-chevron-down"></i></span>
+      </div>
+      <div class="faq-answer">
+        <p>All mining activity takes place on secure servers, monitored and maintained by our technical team. Users never need to expose personal devices or install risky software.</p>
+        <p>Through your FlipMarket account, you can:</p>
+        <ul>
+          <li>Track daily earnings</li>
+          <li>Monitor bot activity</li>
+          <li>View referral rewards</li>
+          <li>Manage VIP progress in real time</li>
+        </ul>
+        <p>This server-based approach ensures higher security, reduced downtime, and consistent mining output.</p>
+      </div>
+    </div>
+    
+    <div class="faq">
+      <div class="faq-question">
+        <span><i class="fas fa-network-wired"></i> Join the FlipMarket Network</span>
+        <span class="icon"><i class="fas fa-chevron-down"></i></span>
+      </div>
+      <div class="faq-answer">
+        <p>When you buy a FlipMarket bot, you're purchasing access to real mining infrastructure, not a simulation or promise. Your bot operates as part of our live server network, contributing to actual blockchain mining activity.</p>
+        <p>Whether you earn by running bots, referring partners, or advancing through VIP levels, FlipMarket is designed to be simple, transparent, and scalable — bridging complex crypto mining systems with everyday users.</p>
+      </div>
+    </div>
+  </main>
 
-    <!-- ✅ Script for Navbar -->
-    <script>
-      const hamburgerBtn = document.getElementById("hamburger-btn");
-      const navbar = document.getElementById("navbar");
-      const overlay = document.getElementById("overlay");
-      const navLinks = navbar.querySelectorAll("ul.nav-links li a");
+  <footer>© 2025 FlipMarket. All rights reserved.</footer>
 
-      function closeNavbar() {
-        navbar.classList.remove("active");
-        overlay.classList.remove("active");
-        hamburgerBtn.setAttribute("aria-expanded", "false");
-        navbar.setAttribute("aria-hidden", "true");
+  <script>
+    // Hamburger menu toggle
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const navbar = document.getElementById('navbar');
+    const overlay = document.getElementById('overlay');
+    const navLinks = navbar.querySelectorAll('ul.nav-links li a');
+
+    function closeNavbar() {
+      navbar.classList.remove('active');
+      overlay.classList.remove('active');
+      hamburgerBtn.setAttribute('aria-expanded', 'false');
+      navbar.setAttribute('aria-hidden', 'true');
+    }
+
+    function openNavbar() {
+      navbar.classList.add('active');
+      overlay.classList.add('active');
+      hamburgerBtn.setAttribute('aria-expanded', 'true');
+      navbar.setAttribute('aria-hidden', 'false');
+    }
+
+    hamburgerBtn.addEventListener('click', () => {
+      if (navbar.classList.contains('active')) {
+        closeNavbar();
+      } else {
+        openNavbar();
       }
+    });
 
-      function openNavbar() {
-        navbar.classList.add("active");
-        overlay.classList.add("active");
-        hamburgerBtn.setAttribute("aria-expanded", "true");
-        navbar.setAttribute("aria-hidden", "false");
-      }
+    overlay.addEventListener('click', () => {
+      closeNavbar();
+    });
 
-      hamburgerBtn.addEventListener("click", () => {
-        if (navbar.classList.contains("active")) {
-          closeNavbar();
-        } else {
-          openNavbar();
-        }
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        closeNavbar();
       });
-
-      overlay.addEventListener("click", closeNavbar);
-      navLinks.forEach((link) => {
-        link.addEventListener("click", closeNavbar);
+    });
+    
+    // FAQ accordion toggle
+    const questions = document.querySelectorAll('.faq-question');
+    questions.forEach(q => {
+      q.addEventListener('click', () => {
+        const answer = q.nextElementSibling;
+        const icon = q.querySelector('.icon');
+        answer.classList.toggle('show');
+        icon.classList.toggle('rotate');
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>

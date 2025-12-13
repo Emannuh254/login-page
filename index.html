@@ -1,121 +1,1125 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>FlipMarket - Authentication</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous">
+  <style>
+    :root {
+      --primary-color: #00d1ff;
+      --primary-dark: #00a8cc;
+      --primary-light: #33e0ff;
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="index.css" />
-  <link 
-    rel="stylesheet" 
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" 
-    crossorigin="anonymous"
-  />
+      --accent-color: #7b68ee;
+
+      --success-color: #00e676;
+      --error-color: #ff5252;
+      
+      --text-primary: #ffffff;
+      --text-secondary: #b0bec5;
+
+      --bg-primary: #0a192f;
+      --bg-secondary: #112240;
+
+      --card-bg: rgba(17, 34, 64, 0.6);
+      --input-bg: rgba(255, 255, 255, 0.08);
+
+      --border-color: rgba(255, 255, 255, 0.15);
+
+      --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.5);
+
+      --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body, html {
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      color: var(--text-primary);
+      background: linear-gradient(135deg, #0a192f 0%, #001e3c 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 420px;
+      height: auto;
+      min-height: 600px;
+      background: var(--card-bg);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .bg-pattern {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(0, 209, 255, 0.15) 0%, transparent 30%),
+        radial-gradient(circle at 80% 20%, rgba(123, 104, 238, 0.15) 0%, transparent 30%);
+      z-index: 0;
+    }
+
+    .header {
+      padding: 40px 32px 24px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
+    }
+
+    .header .tagline {
+      margin-top: 8px;
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .form-container {
+      padding: 0 32px 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .form-toggle {
+      display: flex;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 6px;
+      margin-bottom: 32px;
+      position: relative;
+      backdrop-filter: blur(12px);
+    }
+
+    .form-toggle-slider {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: calc(50% - 6px);
+      height: calc(100% - 12px);
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      border-radius: 12px;
+      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: var(--shadow-md);
+    }
+
+    .form-toggle-slider.signup {
+      transform: translateX(100%);
+    }
+
+    .form-toggle button {
+      flex: 1;
+      padding: 14px;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 1.05rem;
+      cursor: pointer;
+      border-radius: 12px;
+      z-index: 1;
+      transition: color 0.3s;
+    }
+
+    .form-toggle button.active {
+      color: white;
+    }
+
+    .form-card {
+      display: none;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .form-card.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    .form-group label {
+      position: absolute;
+      top: 18px;
+      left: 20px;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 18px 20px;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      font-size: 1rem;
+      color: var(--text-primary);
+      transition: var(--transition);
+    }
+
+    .form-group input:focus,
+    .form-group input:not(:placeholder-shown) {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(0, 209, 255, 0.2);
+    }
+
+    .form-group input:focus + label,
+    .form-group input:not(:placeholder-shown) + label {
+      top: -10px;
+      left: 16px;
+      font-size: 0.8rem;
+      background: var(--card-bg);
+      padding: 0 8px;
+      color: var(--primary-color);
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    .toggle-password:hover {
+      color: var(--primary-color);
+    }
+
+    .password-strength {
+      height: 5px;
+      background: var(--border-color);
+      border-radius: 3px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .password-strength-meter {
+      height: 100%;
+      width: 0;
+      transition: var(--transition);
+    }
+
+    .weak { width: 33%; background: var(--error-color); }
+    .medium { width: 66%; background: #ffb300; }
+    .strong { width: 100%; background: var(--success-color); }
+
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+    }
+
+    .remember-me input[type="checkbox"] {
+      accent-color: var(--primary-color);
+    }
+
+    .forgot-link {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+
+    .submit-btn {
+      padding: 18px;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 32px 0;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+    }
+
+    .divider span {
+      padding: 0 20px;
+    }
+
+    .google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      color: var(--text-primary);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      backdrop-filter: blur(12px);
+    }
+
+    .google-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .google-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary-color);
+      background: none;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-bottom: 24px;
+    }
+
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      backdrop-filter: blur(10px);
+    }
+
+    .loader-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 5px solid rgba(255, 255, 255, 0.2);
+      border-top-color: var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .toast-container {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1001;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 90%;
+    }
+
+    .toast {
+      padding: 16px 24px;
+      border-radius: 16px;
+      background: rgba(30, 30, 30, 0.9);
+      color: white;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      backdrop-filter: blur(12px);
+      animation: slideDown 0.4s ease-out;
+    }
+
+    .toast.success { border-left: 5px solid var(--success-color); }
+    .toast.error { border-left: 5px solid var(--error-color); }
+    .toast.warning { border-left: 5px solid #ffb300; }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .password-requirements {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .requirement {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .requirement i {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .requirement.met i {
+      color: var(--success-color);
+    }
+
+    .field-error {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: var(--error-color);
+      display: none;
+    }
+
+    .field-error.show {
+      display: block;
+    }
+
+    @media (max-width: 480px) {
+      .app-container {
+        margin: 16px;
+        border-radius: 20px;
+      }
+      .form-container {
+        padding: 0 24px 32px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- Loader -->
-  <div id="loader-overlay">
-    <div class="dot-loader">
-      <span></span><span></span><span></span>
-    </div>
+  <div class="loader-overlay" id="loader">
+    <div class="loader"></div>
   </div>
 
-  <!-- Page Container -->
-  <div class="page-wrapper">
-    
-    <!-- Header -->
-    <header class="site-header">
+  <div class="toast-container" id="toast-container"></div>
+
+  <div class="app-container">
+    <div class="bg-pattern"></div>
+
+    <div class="header">
       <h1>FlipMarket</h1>
       <p class="tagline">Your gateway to exclusive deals</p>
-    </header>
+    </div>
 
-    <!-- Auth Section -->
-    <section class="auth-section">
-      <!-- Toggle Buttons -->
+    <div class="form-container">
       <div class="form-toggle">
+        <div class="form-toggle-slider" id="form-slider"></div>
         <button id="show-login" class="active">Login</button>
         <button id="show-signup">Sign Up</button>
       </div>
 
-      <!-- Login Card -->
-      <div class="form-card" id="login-card">
+      <!-- Login Form -->
+      <div class="form-card active" id="login-card">
         <form id="login-form" class="auth-form">
-          <input type="email" id="signInEmail" placeholder="Email" required />
-          <div class="input-wrapper">
-            <input 
-              type="password" 
-              id="signInPassword" 
-              placeholder="Password" 
-              autocomplete="off" 
-              required 
-            />
-            <i class="fas fa-eye toggle-password" data-target="signInPassword"></i>
+          <div class="form-group">
+            <input type="email" id="login-email" placeholder=" " required>
+            <label for="login-email">Email</label>
+            <div class="field-error" id="login-email-error"></div>
           </div>
-          <p class="forgot-text">
-            <a href="#" id="forgot-password-link">Forgot Password?</a>
-          </p>
-          <button type="submit">Log In</button>
 
-          <!-- Google Sign-In (only in login) -->
-          <p class="social-text">Or sign in with Google</p>
-          <div class="google-wrapper">
-            <div id="google-signin-button"></div>
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input type="password" id="login-password" placeholder=" " required>
+              <label for="login-password">Password</label>
+              <i class="fas fa-eye toggle-password" data-target="login-password"></i>
+            </div>
+            <div class="field-error" id="login-password-error"></div>
           </div>
+
+          <div class="form-actions">
+            <div class="remember-me">
+              <input type="checkbox" id="remember-me">
+              <label for="remember-me">Remember me</label>
+            </div>
+            <a href="#" class="forgot-link" id="forgot-link">Forgot?</a>
+          </div>
+
+          <button type="submit" class="submit-btn" id="login-submit-btn">Log In</button>
         </form>
+
+        <div class="divider"><span>OR</span></div>
+
+        <button type="button" class="google-btn" id="google-signin">
+          <i class="fab fa-google"></i>
+          Continue with Google
+        </button>
       </div>
 
-      <!-- Sign Up Card -->
-      <div class="form-card" id="signup-card" style="display: none;">
+      <!-- Sign Up Form -->
+      <div class="form-card" id="signup-card">
         <form id="signup-form" class="auth-form">
-          <input type="text" id="signUpName" placeholder="Full Name" required />
-          <input type="email" id="signUpEmail" placeholder="Email" required />
-          <div class="input-wrapper">
-            <input 
-              type="password" 
-              id="signUpPassword" 
-              placeholder="Password" 
-              autocomplete="off" 
-              required 
-            />
-            <i class="fas fa-eye toggle-password" data-target="signUpPassword"></i>
+          <div class="form-group">
+            <input type="text" id="signup-name" placeholder=" " required>
+            <label for="signup-name">Full Name</label>
+            <div class="field-error" id="signup-name-error"></div>
           </div>
-          <button type="submit">Sign Up</button>
+
+          <div class="form-group">
+            <input type="email" id="signup-email" placeholder=" " required>
+            <label for="signup-email">Email</label>
+            <div class="field-error" id="signup-email-error"></div>
+          </div>
+
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input type="password" id="signup-password" placeholder=" " required>
+              <label for="signup-password">Password</label>
+              <i class="fas fa-eye toggle-password" data-target="signup-password"></i>
+            </div>
+            <div class="password-strength">
+              <div class="password-strength-meter" id="password-strength-meter"></div>
+            </div>
+            <div class="password-requirements">
+              <div class="requirement" id="req-length">
+                <i class="fas fa-circle"></i> At least 8 characters
+              </div>
+              <div class="requirement" id="req-uppercase">
+                <i class="fas fa-circle"></i> One uppercase letter
+              </div>
+              <div class="requirement" id="req-lowercase">
+                <i class="fas fa-circle"></i> One lowercase letter
+              </div>
+              <div class="requirement" id="req-number">
+                <i class="fas fa-circle"></i> One number
+              </div>
+              <div class="requirement" id="req-special">
+                <i class="fas fa-circle"></i> One special character
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn" id="signup-submit-btn">Create Account</button>
         </form>
+
+        <div class="divider"><span>OR</span></div>
+
+        <button type="button" class="google-btn" id="google-signup">
+          <i class="fab fa-google"></i>
+          Sign up with Google
+        </button>
       </div>
 
-      <!-- Forgot Password Card -->
-      <div class="form-card" id="forgot-card" style="display: none;">
-        <form id="forgot-password-form" class="auth-form">
-          <input 
-            type="email" 
-            id="forgotEmail" 
-            placeholder="Enter your email" 
-            required 
-          />
-          <button type="submit">Reset Password</button>
+      <!-- Forgot Password -->
+      <div class="form-card" id="forgot-card">
+        <button class="back-btn" id="back-to-login">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+
+        <form id="forgot-form" class="auth-form">
+          <div class="form-group">
+            <input type="email" id="forgot-email" placeholder=" " required>
+            <label for="forgot-email">Email</label>
+            <div class="field-error" id="forgot-email-error"></div>
+          </div>
+
+          <button type="submit" class="submit-btn" id="forgot-submit-btn">Send Reset Link</button>
         </form>
       </div>
-    </section>
-
-    <!-- Toast Container -->
-    <div id="toast-container"></div>
+    </div>
   </div>
 
-  <!-- Google Identity -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="./Js/redirector.js" defer></script>
-  <script src="./Js/script.js" defer></script>
   <script>
-    function setAppHeight() {
-  const appHeight = window.innerHeight;
-  document.documentElement.style.setProperty('--app-height', `${appHeight}px`);
-}
+  document.addEventListener("DOMContentLoaded", () => {
+    // Get the login and signup buttons
+    const loginBtn = document.getElementById("login-submit-btn");
+    const signupBtn = document.getElementById("signup-submit-btn");
 
-window.addEventListener('resize', setAppHeight);
-window.addEventListener('load', setAppHeight);
-setAppHeight();
+    // Redirect function
+    const redirectToSplash = (e) => {
+      e.preventDefault(); // prevent form submission
+      window.location.href = "Components/splash.html";
+    };
 
-  </script>
+    // Attach click event listeners
+    loginBtn.addEventListener("click", redirectToSplash);
+    signupBtn.addEventListener("click", redirectToSplash);
+  });
+</script>
+
+
+  <!-- <script>
+    // Configuration
+    const API_BASE = "https://flip-backend-5.onrender.com";
+    const BASE_PATH = "https://emannuh254.github.io/login-page/";
+    const MAX_LOGIN_ATTEMPTS = 5;
+    const LOCKOUT_DURATION = 15 * 60 * 1000; // 15 minutes
+    
+    // DOM Elements
+    const loginCard = document.getElementById("login-card");
+    const signupCard = document.getElementById("signup-card");
+    const forgotCard = document.getElementById("forgot-card");
+    const formSlider = document.getElementById("form-slider");
+    const showLoginBtn = document.getElementById("show-login");
+    const showSignupBtn = document.getElementById("show-signup");
+    const forgotLink = document.getElementById("forgot-link");
+    const backToLoginBtn = document.getElementById("back-to-login");
+    const loader = document.getElementById("loader");
+    const toastContainer = document.getElementById("toast-container");
+    const passwordStrengthMeter = document.getElementById("password-strength-meter");
+    
+    // Forms
+    const loginForm = document.getElementById("login-form");
+    const signupForm = document.getElementById("signup-form");
+    const forgotForm = document.getElementById("forgot-form");
+    
+    // Buttons
+    const loginSubmitBtn = document.getElementById("login-submit-btn");
+    const signupSubmitBtn = document.getElementById("signup-submit-btn");
+    const forgotSubmitBtn = document.getElementById("forgot-submit-btn");
+    const googleSigninBtn = document.getElementById("google-signin");
+    const googleSignupBtn = document.getElementById("google-signup");
+    
+    // Password requirements
+    const reqLength = document.getElementById("req-length");
+    const reqUppercase = document.getElementById("req-uppercase");
+    const reqLowercase = document.getElementById("req-lowercase");
+    const reqNumber = document.getElementById("req-number");
+    const reqSpecial = document.getElementById("req-special");
+    
+    // State
+    const activeToasts = new Set();
+    const loginAttempts = {};
+    
+    // Initialize
+    document.addEventListener("DOMContentLoaded", () => {
+      // Event listeners for form switching
+      showLoginBtn.addEventListener("click", () => showForm("login"));
+      showSignupBtn.addEventListener("click", () => showForm("signup"));
+      
+      forgotLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        showForm("forgot");
+      });
+      
+      backToLoginBtn.addEventListener("click", () => showForm("login"));
+      
+      // Password visibility toggle
+      document.querySelectorAll(".toggle-password").forEach(icon => {
+        icon.addEventListener("click", () => {
+          const input = document.getElementById(icon.dataset.target);
+          const isPassword = input.type === "password";
+          input.type = isPassword ? "text" : "password";
+          icon.classList.toggle("fa-eye", !isPassword);
+          icon.classList.toggle("fa-eye-slash", isPassword);
+        });
+      });
+      
+      // Password strength and requirements
+      document.getElementById("signup-password")?.addEventListener("input", e => {
+        updatePasswordStrength(e.target.value);
+        updatePasswordRequirements(e.target.value);
+      });
+      
+      // Form submissions
+      loginForm.addEventListener("submit", handleLogin);
+      signupForm.addEventListener("submit", handleSignup);
+      forgotForm.addEventListener("submit", handleForgotPassword);
+      
+      // Social login
+      googleSigninBtn.addEventListener("click", () => handleSocial("google", "login"));
+      googleSignupBtn.addEventListener("click", () => handleSocial("google", "signup"));
+      
+      // Input validation
+      setupInputValidation();
+      
+      // Check for remembered email
+      checkRememberedEmail();
+    });
+    
+    // Form switching
+    function showForm(type) {
+      // Reset all cards
+      [loginCard, signupCard, forgotCard].forEach(c => c.classList.remove("active"));
+      
+      // Update toggle buttons
+      showLoginBtn.classList.toggle("active", type === "login");
+      showSignupBtn.classList.toggle("active", type === "signup");
+      formSlider.classList.toggle("signup", type === "signup");
+      
+      // Show selected form
+      if (type === "login") loginCard.classList.add("active");
+      else if (type === "signup") signupCard.classList.add("active");
+      else if (type === "forgot") forgotCard.classList.add("active");
+      
+      // Clear any error messages
+      clearFieldErrors();
+    }
+    
+    // Password strength
+    function updatePasswordStrength(password) {
+      let strength = 0;
+      
+      if (password.length >= 8) strength++;
+      if (/[a-z]/.test(password)) strength++;
+      if (/[A-Z]/.test(password)) strength++;
+      if (/[0-9]/.test(password)) strength++;
+      if (/[^A-Za-z0-9]/.test(password)) strength++;
+      
+      passwordStrengthMeter.className = "password-strength-meter " + 
+        (strength <= 2 ? "weak" : strength <= 4 ? "medium" : "strong");
+    }
+    
+    // Password requirements
+    function updatePasswordRequirements(password) {
+      reqLength.classList.toggle("met", password.length >= 8);
+      reqUppercase.classList.toggle("met", /[A-Z]/.test(password));
+      reqLowercase.classList.toggle("met", /[a-z]/.test(password));
+      reqNumber.classList.toggle("met", /[0-9]/.test(password));
+      reqSpecial.classList.toggle("met", /[^A-Za-z0-9]/.test(password));
+    }
+    
+    // Input validation
+    function setupInputValidation() {
+      // Email validation
+      document.getElementById("login-email")?.addEventListener("blur", e => {
+        validateEmail(e.target, "login-email-error");
+      });
+      
+      document.getElementById("signup-email")?.addEventListener("blur", e => {
+        validateEmail(e.target, "signup-email-error");
+      });
+      
+      document.getElementById("forgot-email")?.addEventListener("blur", e => {
+        validateEmail(e.target, "forgot-email-error");
+      });
+      
+      // Name validation
+      document.getElementById("signup-name")?.addEventListener("blur", e => {
+        validateName(e.target, "signup-name-error");
+      });
+      
+      // Password validation
+      document.getElementById("login-password")?.addEventListener("blur", e => {
+        validatePassword(e.target, "login-password-error", false);
+      });
+      
+      document.getElementById("signup-password")?.addEventListener("blur", e => {
+        validatePassword(e.target, "signup-password-error", true);
+      });
+    }
+    
+    function validateEmail(input, errorId) {
+      const error = document.getElementById(errorId);
+      const value = input.value.trim();
+      
+      if (!value) {
+        showError(error, "Email is required");
+        return false;
+      }
+      
+      if (!isEmailValid(value)) {
+        showError(error, "Please enter a valid email address");
+        return false;
+      }
+      
+      hideError(error);
+      return true;
+    }
+    
+    function validateName(input, errorId) {
+      const error = document.getElementById(errorId);
+      const value = input.value.trim();
+      
+      if (!value) {
+        showError(error, "Name is required");
+        return false;
+      }
+      
+      if (value.split(" ").length < 2) {
+        showError(error, "Please enter your full name");
+        return false;
+      }
+      
+      hideError(error);
+      return true;
+    }
+    
+    function validatePassword(input, errorId, isSignup) {
+      const error = document.getElementById(errorId);
+      const value = input.value;
+      
+      if (!value) {
+        showError(error, "Password is required");
+        return false;
+      }
+      
+      if (value.length < 6) {
+        showError(error, "Password must be at least 6 characters");
+        return false;
+      }
+      
+      if (isSignup && !isPasswordStrong(value)) {
+        showError(error, "Password does not meet all requirements");
+        return false;
+      }
+      
+      hideError(error);
+      return true;
+    }
+    
+    function showError(element, message) {
+      element.textContent = message;
+      element.classList.add("show");
+    }
+    
+    function hideError(element) {
+      element.classList.remove("show");
+    }
+    
+    function clearFieldErrors() {
+      document.querySelectorAll(".field-error").forEach(el => {
+        el.classList.remove("show");
+        el.textContent = "";
+      });
+    }
+    
+    // Form handlers
+    async function handleLogin(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value;
+      const remember = document.getElementById("remember-me").checked;
+      
+      // Validate inputs
+      const isEmailValid = validateEmail(document.getElementById("login-email"), "login-email-error");
+      const isPasswordValid = validatePassword(document.getElementById("login-password"), "login-password-error", false);
+      
+      if (!isEmailValid || !isPasswordValid) {
+        showToast("Please fix the errors and try again", "error");
+        return;
+      }
+      
+      // Check for rate limiting
+      if (isRateLimited(email)) {
+        showToast("Too many login attempts. Please try again later.", "error");
+        return;
+      }
+      
+      // Disable button and show loader
+      setButtonState(loginSubmitBtn, true);
+      showLoader();
+      
+      try {
+        const data = await apiCall("/login", { email, password, rememberMe: remember });
+        
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        
+        // Reset login attempts on successful login
+        delete loginAttempts[email];
+        
+        // Save token and remember me preference
+        if (data.token) {
+          localStorage.setItem("authToken", data.token);
+        }
+        
+        if (remember) {
+          localStorage.setItem("rememberedEmail", email);
+        } else {
+          localStorage.removeItem("rememberedEmail");
+        }
+        
+        showToast("Login successful!", "success");
+        
+        // Redirect after successful login
+        setTimeout(() => {
+          window.location.href = `${BASE_PATH}Components/splash.html`;
+        }, 1500);
+      } catch (error) {
+        // Record failed attempt
+        recordFailedAttempt(email);
+        
+        showToast(error.message || "Login failed. Please try again.", "error");
+      } finally {
+        setButtonState(loginSubmitBtn, false);
+        hideLoader();
+      }
+    }
+    
+    async function handleSignup(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById("signup-name").value.trim();
+      const email = document.getElementById("signup-email").value.trim();
+      const password = document.getElementById("signup-password").value;
+      
+      // Validate inputs
+      const isNameValid = validateName(document.getElementById("signup-name"), "signup-name-error");
+      const isEmailValid = validateEmail(document.getElementById("signup-email"), "signup-email-error");
+      const isPasswordValid = validatePassword(document.getElementById("signup-password"), "signup-password-error", true);
+      
+      if (!isNameValid || !isEmailValid || !isPasswordValid) {
+        showToast("Please fix the errors and try again", "error");
+        return;
+      }
+      
+      // Disable button and show loader
+      setButtonState(signupSubmitBtn, true);
+      showLoader();
+      
+      try {
+        const data = await apiCall("/signup", { name, email, password });
+        
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        
+        showToast("Account created successfully!", "success");
+        
+        // Switch to login form after successful signup
+        setTimeout(() => {
+          showForm("login");
+          // Pre-fill email in login form
+          document.getElementById("login-email").value = email;
+        }, 1500);
+      } catch (error) {
+        showToast(error.message || "Account creation failed. Please try again.", "error");
+      } finally {
+        setButtonState(signupSubmitBtn, false);
+        hideLoader();
+      }
+    }
+    
+    async function handleForgotPassword(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById("forgot-email").value.trim();
+      
+      // Validate input
+      const isEmailValid = validateEmail(document.getElementById("forgot-email"), "forgot-email-error");
+      
+      if (!isEmailValid) {
+        showToast("Please enter a valid email address", "error");
+        return;
+      }
+      
+      // Disable button and show loader
+      setButtonState(forgotSubmitBtn, true);
+      showLoader();
+      
+      try {
+        const data = await apiCall("/forgot-password", { email });
+        
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        
+        showToast("Password reset link sent to your email", "success");
+        
+        // Switch back to login form
+        setTimeout(() => {
+          showForm("login");
+        }, 2000);
+      } catch (error) {
+        showToast(error.message || "Failed to send reset link. Please try again.", "error");
+      } finally {
+        setButtonState(forgotSubmitBtn, false);
+        hideLoader();
+      }
+    }
+    
+    function handleSocial(provider, action) {
+      showLoader();
+      showToast(`${provider} ${action} would be implemented here`, "warning");
+      setTimeout(hideLoader, 1500);
+    }
+    
+    // Utility functions
+    function isEmailValid(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+    
+    function isPasswordStrong(password) {
+      return password.length >= 8 && 
+             /[a-z]/.test(password) && 
+             /[A-Z]/.test(password) && 
+             /[0-9]/.test(password) && 
+             /[^A-Za-z0-9]/.test(password);
+    }
+    
+    async function apiCall(endpoint, data) {
+      try {
+        const response = await fetch(`${API_BASE}${endpoint}`, {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest"  // CSRF protection
+          },
+          body: JSON.stringify(data)
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status}`);
+        }
+        
+        return await response.json();
+      } catch (error) {
+        console.error("API call failed:", error);
+        throw error;
+      }
+    }
+    
+    function showLoader() {
+      loader.classList.add("active");
+    }
+    
+    function hideLoader() {
+      loader.classList.remove("active");
+    }
+    
+    function setButtonState(button, disabled) {
+      button.disabled = disabled;
+      button.textContent = disabled ? "Processing..." : button.getAttribute("data-original-text") || button.textContent;
+      
+      if (!disabled && !button.getAttribute("data-original-text")) {
+        button.setAttribute("data-original-text", button.textContent);
+      }
+    }
+    
+    function showToast(message, type = "success", duration = 3500) {
+      const id = `${message}-${type}`;
+      if (activeToasts.has(id)) return;
+      activeToasts.add(id);
+      
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `
+        <i class="fas ${type === "success" ? "fa-check-circle" : 
+                         type === "error" ? "fa-exclamation-circle" : 
+                         "fa-info-circle"}"></i>
+        <span>${message}</span>
+      `;
+      toastContainer.appendChild(toast);
+      
+      // Auto dismiss
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(-20px)";
+        setTimeout(() => {
+          toast.remove();
+          activeToasts.delete(id);
+        }, 400);
+      }, duration);
+    }
+    
+    // Rate limiting
+    function isRateLimited(email) {
+      const attempts = loginAttempts[email];
+      if (!attempts) return false;
+      
+      const now = Date.now();
+      const recentAttempts = attempts.filter(time => now - time < LOCKOUT_DURATION);
+      
+      return recentAttempts.length >= MAX_LOGIN_ATTEMPTS;
+    }
+    
+    function recordFailedAttempt(email) {
+      if (!loginAttempts[email]) {
+        loginAttempts[email] = [];
+      }
+      
+      loginAttempts[email].push(Date.now());
+      
+      // Clean up old attempts
+      const now = Date.now();
+      loginAttempts[email] = loginAttempts[email].filter(time => now - time < LOCKOUT_DURATION);
+    }
+    
+    // Remember me functionality
+    function checkRememberedEmail() {
+      const rememberedEmail = localStorage.getItem("rememberedEmail");
+      if (rememberedEmail) {
+        document.getElementById("login-email").value = rememberedEmail;
+        document.getElementById("remember-me").checked = true;
+      }
+    }
+  </script> -->
 </body>
 </html>

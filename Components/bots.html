@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>FlipMarket | Mining Bots</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -18,6 +19,19 @@
             color: #e0e0e0;
             overflow-x: hidden;
             min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
+            opacity: 0.05;
+            z-index: -1;
         }
         
         /* Modern Navbar */
@@ -26,14 +40,15 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(15px);
             padding: 15px 20px;
             z-index: 11001;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid rgba(159, 84, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
         
         #brand-bar h1 {
@@ -43,6 +58,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         #brand-bar h1 i {
@@ -141,10 +157,112 @@
             transform: translateX(5px);
         }
         
+        /* User Info in Navbar */
+        .user-info {
+            padding: 15px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9f54ff, #2effbf);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 1.5rem;
+            color: #000;
+            font-weight: 700;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        
+        .user-email {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+        
+        /* <CHANGE> Added login banner styles */
+        .login-banner {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(159, 84, 255, 0.15), rgba(46, 255, 191, 0.15));
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(159, 84, 255, 0.3);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .login-banner.show {
+            display: block;
+        }
+        
+        .login-banner-text {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .login-banner-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .login-banner-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.95rem;
+        }
+        
+        .login-banner-btn.signup {
+            background: linear-gradient(135deg, #9f54ff, #2effbf);
+            color: #000;
+        }
+        
+        .login-banner-btn.signin {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .login-banner-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(159, 84, 255, 0.3);
+        }
+        
         /* Main Content */
         .main-content {
             padding-top: 80px;
             min-height: 100vh;
+        }
+        
+        /* <CHANGE> Adjust main-content padding when banner is shown */
+        .main-content.with-banner {
+            padding-top: 150px;
         }
         
         h1#heading {
@@ -216,6 +334,7 @@
             margin-bottom: 20px;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
         }
         
@@ -231,6 +350,7 @@
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
+            text-align: center;
         }
         
         .dashboard-item:hover {
@@ -243,12 +363,14 @@
             color: #aaa;
             font-size: 0.9rem;
             margin-bottom: 5px;
+            text-align: center;
         }
         
         .dashboard-value {
             color: #2effbf;
             font-size: 1.5rem;
             font-weight: 700;
+            text-align: center;
         }
         
         /* Bot Container */
@@ -365,6 +487,7 @@
             font-weight: 700;
             margin-bottom: 15px;
             color: #fff;
+            text-align: center;
         }
         
         .bot-details {
@@ -423,12 +546,14 @@
         .stat-label {
             color: #aaa;
             margin-bottom: 5px;
+            text-align: center;
         }
         
         .stat-value {
             color: #2effbf;
             font-weight: 600;
             font-size: 1.1rem;
+            text-align: center;
         }
         
         .bot-actions {
@@ -507,6 +632,7 @@
             color: #2effbf;
             font-size: 1.8rem;
             margin-bottom: 20px;
+            text-align: center;
         }
         
         .till-number {
@@ -518,6 +644,7 @@
             background: rgba(159, 84, 255, 0.1);
             border-radius: 10px;
             border: 1px dashed rgba(159, 84, 255, 0.3);
+            text-align: center;
         }
         
         .modal-actions {
@@ -617,6 +744,41 @@
             line-height: 1.4;
         }
         
+        /* Login Redirect Notification */
+        .login-redirect-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 20px;
+            z-index: 12000;
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(159, 84, 255, 0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
+        }
+        
+        .login-redirect-notification.active {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .login-redirect-notification h3 {
+            color: #2effbf;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .login-redirect-notification p {
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+        
         /* Footer */
         footer {
             text-align: center;
@@ -640,53 +802,83 @@
             h1#heading {
                 font-size: 2rem;
             }
+            
+            .main-content.with-banner {
+                padding-top: 180px;
+            }
+            
+            .login-banner-buttons {
+                flex-direction: row;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- ✅ Navbar -->
+    <!-- Navbar -->
     <div id="brand-bar">
         <h1><i class="fas fa-coins"></i> FlipMarket</h1>
         <button id="hamburger-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="navbar">
             <i class="fas fa-bars"></i>
         </button>
     </div>
+    
+    <!-- <CHANGE> Added login banner that shows when user is not logged in -->
+    <div class="login-banner" id="loginBanner">
+        <div class="login-banner-text">
+            <i class="fas fa-info-circle"></i> Not logged in? Sign up or Sign in to purchase mining bots!
+        </div>
+        <div class="login-banner-buttons">
+            <a href="signup.html" class="login-banner-btn signup">
+                <i class="fas fa-user-plus"></i> Sign Up
+            </a>
+            <a href="index.html" class="login-banner-btn signin">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </a>
+        </div>
+    </div>
+    
     <div id="overlay"></div>
     <nav class="navbar" id="navbar" aria-hidden="true">
+        <div class="user-info" id="userInfo" style="display: none;">
+            <div class="user-avatar" id="userAvatar">U</div>
+            <div class="user-name" id="userName">User</div>
+            <div class="user-email" id="userEmail">user@example.com</div>
+        </div>
         <ul class="nav-links">
             <li><a href="home.html" class="active"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="../Components/account.html"><i class="fas fa-user"></i> My Account</a></li>
             <li><a href="../Components/bots.html"><i class="fas fa-robot"></i> Bots</a></li>
-            <li><a href="../Components/"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="../Components/settings.html"><i class="fas fa-cog"></i> Settings</a></li>
             <li><a href="../Components/Refferals.html"><i class="fas fa-users"></i> Referrals</a></li>
             <li><a href="../Components/about.html"><i class="fas fa-info-circle"></i> About</a></li>
-            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
-            <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ/Help</a></li>
             <li>
-                <a href="https://emannuh254.github.io/login-page/index.html" id="logout">
+                <a href="#" id="logout" style="display: none;">
                     <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+                <a href="index.html" id="loginLink">
+                    <i class="fas fa-sign-in-alt"></i> Login
                 </a>
             </li>
         </ul>
     </nav>
 
-    <!-- ✅ Main Content -->
-    <div class="main-content">
-        <!-- ✅ Page Heading -->
-        <h1 id="heading">Mining Bots Available</h1>
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Page Heading -->
+        <h1 id="heading">Available Mining Bots</h1>
 
-        <!-- 💬 Marquee -->
+        <!-- Marquee -->
         <div class="marquee-container">
-            <span class="marquee-text">🔥 Start mining today with our advanced Bitcoin bots! Earn passive income daily! 🔥</span>
+            <div class="marquee-text">Limited Time Offer: Get 10% bonus on your first mining bot purchase!</div>
         </div>
 
-        <!-- 📊 Dashboard -->
-        <section id="dashboard">
+        <!-- Dashboard -->
+        <section id="dashboard" style="display: none;">
             <h2><i class="fas fa-chart-line"></i> My Mining Dashboard</h2>
             <div class="dashboard-grid">
                 <div class="dashboard-item">
                     <div class="dashboard-label">Current Balance</div>
-                    <div class="dashboard-value" id="balance">Ksh 0</div>
+                    <div class="dashboard-value" id="balance">$0.00</div>
                 </div>
                 <div class="dashboard-item">
                     <div class="dashboard-label">Active Mining Bots</div>
@@ -694,22 +886,22 @@
                 </div>
                 <div class="dashboard-item">
                     <div class="dashboard-label">Total Mined</div>
-                    <div class="dashboard-value" id="total-claimed">0 Ksh</div>
+                    <div class="dashboard-value" id="total-claimed">$0.00</div>
                 </div>
                 <div class="dashboard-item">
                     <div class="dashboard-label">Daily Mining Rate</div>
-                    <div class="dashboard-value" id="daily-rate">0 Ksh/day</div>
+                    <div class="dashboard-value" id="daily-rate">$0.00/day</div>
                 </div>
             </div>
         </section>
 
-        <!-- 🤖 Bot Cards -->
+        <!-- Bot Cards -->
         <div id="botContainer">
             <!-- Bot cards will be generated by JavaScript -->
         </div>
     </div>
 
-    <!-- 💰 Payment Modal -->
+    <!-- Payment Modal -->
     <div class="modal" id="paymentModal">
         <div class="modal-content">
             <h3><i class="fas fa-shopping-cart"></i> Confirm Bot Purchase</h3>
@@ -724,88 +916,133 @@
     </div>
     <div class="overlay" id="modalOverlay"></div>
 
+    <!-- Login Redirect Notification -->
+    <div class="login-redirect-notification" id="loginRedirectNotification">
+        <h3><i class="fas fa-lock"></i> Login Required</h3>
+        <p>You need to login or create an account to purchase mining bots.</p>
+        <p>You will be redirected to the login page in <span id="redirectCountdown">5</span> seconds.</p>
+        <button class="btn confirm-pay" id="continueToLogin">Continue to Login</button>
+        <button class="btn cancel-pay" id="cancelRedirect">Cancel</button>
+    </div>
+    <div class="overlay" id="loginRedirectOverlay"></div>
+
     <!-- Notification -->
     <div class="notification" id="notification">
         <div class="notification-title" id="notificationTitle">Success</div>
         <div class="notification-message" id="notificationMessage">Your action was completed successfully!</div>
     </div>
 
-    <!-- ✅ Footer -->
+    <!-- Footer -->
     <footer>
         <p>&copy; 2025 FlipMarket. All rights reserved.</p>
     </footer>
 
-    <!-- ✅ Script -->
+    <!-- Script -->
     <script>
-        // Bot data with image URLs
+        // ========================================
+        // CONFIGURATION
+        // ========================================
+        
+        // API Configuration - Replace with your actual API URL
+        const API_BASE_URL = "https://your-api-domain.com/api";
+        
+        // Set to true to use mock data for development, false for production
+        const USE_MOCK_DATA = true;
+        
+        // ========================================
+        // BOT DATA
+        // ========================================
+        
+        // Bot data with image URLs (prices in USD)
         const botTypes = [
             {
                 id: 1,
-                name: "1,000 Ksh Bot",
-                price: 1000,
-                dailyEarning: 70,
-                totalEarning: 2100,
+                name: "MineX Bot",
+                price: 10,
+                dailyEarning: 0.70,
+                totalEarning: 21,
                 image: "https://images.unsplash.com/photo-1622630998477-20aa696ecb05?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
             },
             {
                 id: 2,
-                name: "2,000 Ksh Bot",
-                price: 2000,
-                dailyEarning: 140,
-                totalEarning: 4200,
-                image: "https://images.unsplash.com/photo-1633412802994-5c058f151b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                name: "HashNova Bot",
+                price: 20,
+                dailyEarning: 1.40,
+                totalEarning: 42,
+                image: "https://media.istockphoto.com/id/903578410/photo/data-storage-center.jpg?s=612x612&w=0&k=20&c=dARiz1f9c-XfpJcDfWJ-rbeQfj9MK2hugg-eOtDWPoQ="
             },
             {
                 id: 3,
-                name: "4,000 Ksh Bot",
-                price: 4000,
-                dailyEarning: 280,
-                totalEarning: 8400,
-                image: "https://images.unsplash.com/photo-1633412802994-5c058f151b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                name: "CryptoPulse Bot",
+                price: 40,
+                dailyEarning: 2.80,
+                totalEarning: 84,
+                image: "https://images.unsplash.com/photo-1577538926988-7926820ed209?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c21hbGwlMjBzZXJ2ZXJ8ZW58MHx8MHx8fDA%3D"
             },
             {
                 id: 4,
-                name: "7,000 Ksh Bot",
-                price: 7000,
-                dailyEarning: 490,
-                totalEarning: 14700,
-                image: "https://images.unsplash.com/photo-1633412802994-5c058f151b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                name: "EtherForge Bot",
+                price: 70,
+                dailyEarning: 4.90,
+                totalEarning: 147,
+                image: "https://plus.unsplash.com/premium_photo-1664297989345-f4ff2063b212?q=80&w=1098&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             },
             {
                 id: 5,
-                name: "10,000 Ksh Bot",
-                price: 10000,
-                dailyEarning: 700,
-                totalEarning: 21000,
-                image: "https://images.unsplash.com/photo-1633412802994-5c058f151b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                name: "VoltHash Bot",
+                price: 100,
+                dailyEarning: 7.00,
+                totalEarning: 210,
+                image: "https://media.istockphoto.com/id/1040386538/photo/hard-drives-in-computer-monitoring-recording-server.jpg?s=2048x2048&w=is&k=20&c=lin3Auj8YIhiYEQ51n3YjMDqTldlTJ6aYgmwd9yRrTg="
             },
             {
                 id: 6,
-                name: "15,000 Ksh Bot",
-                price: 15000,
-                dailyEarning: 1050,
-                totalEarning: 31500,
-                image: "https://images.unsplash.com/photo-1633412802994-5c058f151b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                name: "IronNode Bot",
+                price: 150,
+                dailyEarning: 10.50,
+                totalEarning: 315,
+                image: "https://media.istockphoto.com/id/2181288788/photo/servers-in-server-rooms-corporate-networks.jpg?s=612x612&w=0&k=20&c=9FH3f6lkYFZUUWb2NNUyOeftLvioza-C96wdqjXlySo="
             },
             {
                 id: 7,
-                name: "30,000 Ksh Bot",
-                price: 30000,
-                dailyEarning: 2100,
-                totalEarning: 63000,
-                image: "https://images.unsplash.com/photo-1633412802994-5c058f151b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                name: "QuantumHash Bot",
+                price: 300,
+                dailyEarning: 21.00,
+                totalEarning: 630,
+                image: "https://images.unsplash.com/photo-1548544027-1a96c4c24c7a?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            },
+            {
+                id: 8,
+                name: "NebulaMine Bot",
+                price: 800,
+                dailyEarning: 60.00,
+                totalEarning: 1800,
+                image: "https://media.istockphoto.com/id/1860756412/photo/server-computer-should-be-high-performance-stable-able-to-serve-a-large-number-of-users.jpg?s=2048x2048&w=is&k=20&c=SyVTCXAcNT_8ZVWlp7Rs5SieM9he59MNpV69PXPHRAc="
             }
         ];
 
+        // ========================================
+        // USER DATA
+        // ========================================
+        
         // User data (simulating localStorage)
         let userData = {
+            isLoggedIn: false,
             balance: 0,
             bots: [],
             totalClaimed: 0,
-            dailyRate: 0
+            dailyRate: 0,
+            userInfo: {
+                name: '',
+                email: '',
+                avatar: ''
+            }
         };
 
-        // DOM elements
+        // ========================================
+        // DOM ELEMENTS
+        // ========================================
+        
         const hamburgerBtn = document.getElementById("hamburger-btn");
         const navbar = document.getElementById("navbar");
         const overlay = document.getElementById("overlay");
@@ -818,11 +1055,60 @@
         const notification = document.getElementById("notification");
         const notificationTitle = document.getElementById("notificationTitle");
         const notificationMessage = document.getElementById("notificationMessage");
-
-        // Current bot being purchased
+        const dashboard = document.getElementById("dashboard");
+        const userInfo = document.getElementById("userInfo");
+        const userAvatar = document.getElementById("userAvatar");
+        const userName = document.getElementById("userName");
+        const userEmail = document.getElementById("userEmail");
+        const loginRedirectNotification = document.getElementById("loginRedirectNotification");
+        const loginRedirectOverlay = document.getElementById("loginRedirectOverlay");
+        const redirectCountdown = document.getElementById("redirectCountdown");
+        const continueToLogin = document.getElementById("continueToLogin");
+        const cancelRedirect = document.getElementById("cancelRedirect");
+        // <CHANGE> Added login banner elements
+        const loginBanner = document.getElementById("loginBanner");
+        const mainContent = document.getElementById("mainContent");
+        
         let currentBot = null;
+        let redirectTimer = null;
 
-        // Initialize the page
+        // ========================================
+        // NAVIGATION
+        // ========================================
+        
+        // Toggle navbar
+        hamburgerBtn.addEventListener("click", () => {
+            navbar.classList.toggle("active");
+            overlay.classList.toggle("active");
+            
+            const isActive = navbar.classList.contains("active");
+            hamburgerBtn.setAttribute("aria-expanded", isActive);
+            navbar.setAttribute("aria-hidden", !isActive);
+        });
+        
+        // Close navbar when clicking overlay
+        overlay.addEventListener("click", () => {
+            navbar.classList.remove("active");
+            overlay.classList.remove("active");
+            hamburgerBtn.setAttribute("aria-expanded", "false");
+            navbar.setAttribute("aria-hidden", "true");
+        });
+
+        // Logout
+        document.getElementById("logout").addEventListener("click", (e) => {
+            e.preventDefault();
+            userData.isLoggedIn = false;
+            saveUserData();
+            checkAuthStatus();
+            renderBotCards();
+            showNotification("Logged Out", "You have been successfully logged out.");
+        });
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        
+        // Initialize the app
         function init() {
             // Load user data from localStorage
             const savedData = localStorage.getItem("flipMarketUserData");
@@ -830,21 +1116,64 @@
                 userData = JSON.parse(savedData);
             }
             
-            // Update dashboard
-            updateDashboard();
+            // Check if user is logged in
+            checkAuthStatus();
             
-            // Render bot cards
+            // Render bot cards (always show bots)
             renderBotCards();
             
             // Start mining simulation
             startMiningSimulation();
         }
 
+        // ========================================
+        // AUTHENTICATION FUNCTIONS
+        // ========================================
+        
+        // <CHANGE> Modified checkAuthStatus to show/hide login banner
+        function checkAuthStatus() {
+            if (userData.isLoggedIn) {
+                // Hide login banner
+                loginBanner.classList.remove("show");
+                mainContent.classList.remove("with-banner");
+                
+                // Show user info in navbar
+                userInfo.style.display = "block";
+                userAvatar.textContent = userData.userInfo.name.charAt(0).toUpperCase();
+                userName.textContent = userData.userInfo.name;
+                userEmail.textContent = userData.userInfo.email;
+                
+                // Show logout link, hide login link
+                document.getElementById("logout").style.display = "block";
+                document.getElementById("loginLink").style.display = "none";
+                
+                // Show dashboard
+                dashboard.style.display = "block";
+                
+                // Update dashboard
+                updateDashboard();
+            } else {
+                // Show login banner
+                loginBanner.classList.add("show");
+                mainContent.classList.add("with-banner");
+                
+                // Hide user info
+                userInfo.style.display = "none";
+                
+                // Show login link, hide logout link
+                document.getElementById("logout").style.display = "none";
+                document.getElementById("loginLink").style.display = "block";
+                
+                // Hide dashboard
+                dashboard.style.display = "none";
+            }
+        }
+
         // Update dashboard
         function updateDashboard() {
-            document.getElementById("balance").textContent = `Ksh ${userData.balance.toLocaleString()}`;
+            document.getElementById("balance").textContent = `$${userData.balance.toFixed(2)}`;
             document.getElementById("bot-count").textContent = userData.bots.length;
-            document.getElementById("total-claimed").textContent = `${userData.totalClaimed.toLocaleString()} Ksh`;
+            document.getElementById("total-claimed").textContent = `$${userData.totalClaimed.toFixed(2)}`;
             
             // Calculate daily rate
             let dailyRate = 0;
@@ -854,7 +1183,7 @@
                 }
             });
             userData.dailyRate = dailyRate;
-            document.getElementById("daily-rate").textContent = `${dailyRate.toLocaleString()} Ksh/day`;
+            document.getElementById("daily-rate").textContent = `$${dailyRate.toFixed(2)}/day`;
             
             // Save updated data
             saveUserData();
@@ -865,10 +1194,15 @@
             localStorage.setItem("flipMarketUserData", JSON.stringify(userData));
         }
 
-        // Render bot cards
+        // ========================================
+        // UI FUNCTIONS
+        // ========================================
+        
+        // <CHANGE> Modified renderBotCards to always show all bots
         function renderBotCards() {
             botContainer.innerHTML = "";
             
+            // Always show all bot types
             botTypes.forEach(botType => {
                 // Check if user owns this bot
                 const userBot = userData.bots.find(b => b.id === botType.id);
@@ -902,15 +1236,15 @@
                     <div class="bot-details">
                         <div class="bot-detail">
                             <span class="bot-detail-label">Mining Power:</span>
-                            <span class="bot-detail-value">${botType.dailyEarning} Ksh/day</span>
+                            <span class="bot-detail-value">$${botType.dailyEarning.toFixed(2)}/day</span>
                         </div>
                         <div class="bot-detail">
                             <span class="bot-detail-label">Total Potential:</span>
-                            <span class="bot-detail-value">${botType.totalEarning.toLocaleString()} Ksh</span>
+                            <span class="bot-detail-value">$${botType.totalEarning.toFixed(2)}</span>
                         </div>
                         <div class="bot-detail">
-                            <span class="bot-detail-label">Expires in:</span>
-                            <span class="bot-detail-value countdown">${daysLeft} days</span>
+                            <span class="bot-detail-label">Contract Duration:</span>
+                            <span class="bot-detail-value countdown">30 days</span>
                         </div>
                     </div>
                     
@@ -921,21 +1255,21 @@
                         <div class="bot-stats">
                             <div class="stat-item">
                                 <div class="stat-label">Mined</div>
-                                <div class="stat-value">${earnings.toLocaleString()} Ksh</div>
+                                <div class="stat-value">$${earnings.toFixed(2)}</div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-label">Remaining</div>
-                                <div class="stat-value">${(botType.totalEarning - earnings).toLocaleString()} Ksh</div>
+                                <div class="stat-value">$${(botType.totalEarning - earnings).toFixed(2)}</div>
                             </div>
                         </div>
                         <div class="bot-actions">
-                            <button class="claim-btn ${earnings > 0 ? "" : "disabled"}" data-id="${botType.id}">
+                            <button class="claim-btn ${earnings > 0 ? "" : "disabled"}" data-id="${botType.id}" ${earnings > 0 ? "" : "disabled"}>
                                 ${earnings > 0 ? "Claim Earnings" : "No Earnings"}
                             </button>
                         </div>
                     ` : `
                         <div class="bot-actions">
-                            <button class="buy-btn" data-id="${botType.id}">Buy Mining Bot</button>
+                            <button class="buy-btn" data-id="${botType.id}">Buy for $${botType.price}</button>
                         </div>
                     `}
                 `;
@@ -946,14 +1280,26 @@
             // Add event listeners to buttons
             document.querySelectorAll(".buy-btn").forEach(btn => {
                 btn.addEventListener("click", function() {
+                    // <CHANGE> Check login status when buy button is clicked
+                    if (!userData.isLoggedIn) {
+                        showLoginRedirectNotification();
+                        return;
+                    }
+                    
                     const botId = parseInt(this.getAttribute("data-id"));
                     currentBot = botTypes.find(b => b.id === botId);
                     showPaymentModal();
                 });
             });
             
-            document.querySelectorAll(".claim-btn").forEach(btn => {
+            document.querySelectorAll(".claim-btn:not([disabled])").forEach(btn => {
                 btn.addEventListener("click", function() {
+                    // <CHANGE> Check login status when claim button is clicked
+                    if (!userData.isLoggedIn) {
+                        showLoginRedirectNotification();
+                        return;
+                    }
+                    
                     const botId = parseInt(this.getAttribute("data-id"));
                     claimEarnings(botId);
                 });
@@ -975,8 +1321,55 @@
             currentBot = null;
         }
 
+        // Show login redirect notification
+        function showLoginRedirectNotification() {
+            loginRedirectNotification.classList.add("active");
+            loginRedirectOverlay.classList.add("active");
+            
+            // Start countdown
+            let secondsLeft = 5;
+            redirectCountdown.textContent = secondsLeft;
+            
+            redirectTimer = setInterval(() => {
+                secondsLeft--;
+                redirectCountdown.textContent = secondsLeft;
+                
+                if (secondsLeft <= 0) {
+                    clearInterval(redirectTimer);
+                    // Redirect to login page
+                    window.location.href = "index.html";
+                }
+            }, 1000);
+        }
+
+        // Hide login redirect notification
+        function hideLoginRedirectNotification() {
+            loginRedirectNotification.classList.remove("active");
+            loginRedirectOverlay.classList.remove("active");
+            
+            if (redirectTimer) {
+                clearInterval(redirectTimer);
+                redirectTimer = null;
+            }
+        }
+
+        // Show notification
+        function showNotification(title, message) {
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            notification.classList.add("show");
+            
+            setTimeout(() => {
+                notification.classList.remove("show");
+            }, 4000);
+        }
+
+        // ========================================
+        // BOT FUNCTIONS
+        // ========================================
+        
         // Confirm payment
-        confirmPaymentBtn.addEventListener("click", function() {
+        confirmPaymentBtn.addEventListener("click", async function() {
             // Show loading
             paymentLoading.style.display = "block";
             confirmPaymentBtn.style.display = "none";
@@ -1011,16 +1404,23 @@
         cancelPaymentBtn.addEventListener("click", hidePaymentModal);
         modalOverlay.addEventListener("click", hidePaymentModal);
 
+        // Continue to login button
+        continueToLogin.addEventListener("click", () => {
+            window.location.href = "index.html";
+        });
+
+        // Cancel redirect button
+        cancelRedirect.addEventListener("click", hideLoginRedirectNotification);
+        loginRedirectOverlay.addEventListener("click", hideLoginRedirectNotification);
+
         // Claim earnings
-        function claimEarnings(botId) {
+        async function claimEarnings(botId) {
             const bot = userData.bots.find(b => b.id === botId);
             if (!bot) return;
             
             const now = new Date();
             const timeDiff = now - new Date(bot.purchaseDate);
             const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-            
-            // Calculate earnings
             const earnings = Math.min(bot.dailyEarning * daysDiff, bot.totalEarning) - bot.totalClaimed;
             
             if (earnings <= 0) {
@@ -1046,62 +1446,27 @@
             renderBotCards();
             
             // Show notification
-            showNotification("Earnings Claimed", `You've successfully claimed ${earnings.toLocaleString()} Ksh!`);
+            showNotification("Earnings Claimed", `You've successfully claimed $${earnings.toFixed(2)}!`);
         }
 
-        // Show notification
-        function showNotification(title, message) {
-            notificationTitle.textContent = title;
-            notificationMessage.textContent = message;
-            notification.classList.add("show");
-            
-            setTimeout(() => {
-                notification.classList.remove("show");
-            }, 3000);
-        }
-
-        // Start mining simulation
+        // ========================================
+        // MINING SIMULATION
+        // ========================================
+        
+        // Start mining simulation (update earnings in real-time)
         function startMiningSimulation() {
-            // Update every minute
             setInterval(() => {
-                // Update dashboard to show real-time earnings
-                updateDashboard();
-                
-                // Update bot cards if needed
-                renderBotCards();
-            }, 60000); // Every minute
+                if (userData.isLoggedIn && userData.bots.length > 0) {
+                    renderBotCards();
+                }
+            }, 60000); // Update every minute
         }
 
-        // Navbar functionality
-        function closeNavbar() {
-            navbar.classList.remove("active");
-            overlay.classList.remove("active");
-            hamburgerBtn.setAttribute("aria-expanded", "false");
-            navbar.setAttribute("aria-hidden", "true");
-        }
-
-        function openNavbar() {
-            navbar.classList.add("active");
-            overlay.classList.add("active");
-            hamburgerBtn.setAttribute("aria-expanded", "true");
-            navbar.setAttribute("aria-hidden", "false");
-        }
-
-        hamburgerBtn.addEventListener("click", () => {
-            if (navbar.classList.contains("active")) {
-                closeNavbar();
-            } else {
-                openNavbar();
-            }
-        });
-
-        overlay.addEventListener("click", closeNavbar);
-
-        document.querySelectorAll(".nav-links li a").forEach(link => {
-            link.addEventListener("click", closeNavbar);
-        });
-
-        // Initialize the page when DOM is loaded
+        // ========================================
+        // START APPLICATION
+        // ========================================
+        
+        // Initialize when DOM is ready
         document.addEventListener("DOMContentLoaded", init);
     </script>
 </body>

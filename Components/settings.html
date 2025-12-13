@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Settings | FlipMarket</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
+            opacity: 0.05;
+            z-index: -1;
+        }
+        
+        /* Modern Navbar */
+        #brand-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(15px);
+            padding: 15px 20px;
+            z-index: 11001;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(159, 84, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        #brand-bar h1 {
+            color: #9f54ff;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        #brand-bar h1 i {
+            font-size: 1.5rem;
+            color: #2effbf;
+        }
+        
+        #hamburger-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #9f54ff;
+            background: transparent;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            z-index: 11001;
+        }
+        
+        #hamburger-btn:hover {
+            background: rgba(159, 84, 255, 0.1);
+            color: #2effbf;
+        }
+        
+        #hamburger-btn:focus {
+            outline: none;
+        }
+        
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10500;
+        }
+        
+        #overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80vw;
+            max-width: 320px;
+            height: 100vh;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 80px 20px 20px;
+            z-index: 11000;
+            transition: right 0.35s ease;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid rgba(159, 84, 255, 0.2);
+            overflow-y: auto;
+        }
+        
+        .navbar.active {
+            right: 0;
+        }
+        
+        ul.nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        ul.nav-links li a {
+            color: #ddd;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 12px 16px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        ul.nav-links li a i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        ul.nav-links li a:hover,
+        ul.nav-links li a.active {
+            background: linear-gradient(135deg, #9f54ff, #2effbf);
+            color: #000;
+            transform: translateX(5px);
+        }
+        
+        /* Added login banner styles */
+        .login-banner {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(159, 84, 255, 0.15), rgba(46, 255, 191, 0.15));
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid rgba(159, 84, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-banner-text {
+            color: #fff;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .login-banner-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        .login-banner-btn.signup {
+            background: linear-gradient(135deg, #9f54ff, #2effbf);
+            color: #000;
+        }
+
+        .login-banner-btn.signin {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .login-banner-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(159, 84, 255, 0.3);
+        }
+
+        @media (max-width: 640px) {
+            .login-banner {
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px 15px;
+            }
+
+            .login-banner-text {
+                font-size: 0.9rem;
+                text-align: center;
+            }
+
+            .login-banner-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+        /* </CHANGE> */
+        
+        /* User Info in Navbar */
+        .user-info {
+            padding: 15px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9f54ff, #2effbf);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 1.5rem;
+            color: #000;
+            font-weight: 700;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        
+        .user-email {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding-top: 80px;
+            min-height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 20px;
+        }
+        
+        h1#heading {
+            text-align: center;
+            color: #9f54ff;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 30px 0;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        h1#heading::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #9f54ff, #2effbf);
+            border-radius: 2px;
+        }
+        
+        /* Settings Sections */
+        .settings-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .settings-section {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(159, 84, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .settings-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(159, 84, 255, 0.2);
+        }
+        
+        .section-title {
+            color: #2effbf;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: #9f54ff;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ddd;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #9f54ff;
+            box-shadow: 0 0 0 2px rgba(159, 84, 255, 0.2);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: #9f54ff;
+            box-shadow: 0 0 0 2px rgba(159, 84, 255, 0.2);
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-textarea:focus {
+            outline: none;
+            border-color: #9f54ff;
+            box-shadow: 0 0 0 2px rgba(159, 84, 255, 0.2);
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #9f54ff, #2effbf);
+            color: #000;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(159, 84, 255, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ddd;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff5555, #ff8888);
+            color: #fff;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 85, 85, 0.3);
+        }
+        
+        /* Toggle Switch */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 30px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #2effbf;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+        
+        /* Added login modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 12000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(10, 10, 10, 0.95));
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            border: 1px solid rgba(159, 84, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            color: #9f54ff;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2effbf;
+            margin-bottom: 15px;
+        }
+
+        .modal-message {
+            font-size: 1.1rem;
+            color: #ddd;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .modal-timer {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #9f54ff;
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #9f54ff, #2effbf);
+            color: #000;
+        }
+
+        .modal-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(159, 84, 255, 0.3);
+        }
+        /* </CHANGE> */
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border-left: 4px solid #2effbf;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            z-index: 12000;
+            max-width: 350px;
+            border: 1px solid rgba(46, 255, 191, 0.2);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #2effbf;
+            font-size: 1.1rem;
+        }
+        
+        .notification-message {
+            color: #ddd;
+            line-height: 1.4;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #888;
+            background: rgba(10, 10, 10, 0.5);
+            border-top: 1px solid rgba(159, 84, 255, 0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .settings-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div id="brand-bar">
+        <h1><i class="fas fa-coins"></i> FlipMarket</h1>
+        <button id="hamburger-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="navbar">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+    
+    <!-- Added login banner for non-logged-in users -->
+    <div class="login-banner" id="loginBanner" style="display: none;">
+        <span class="login-banner-text">Not logged in? Sign up or Sign in to save your settings!</span>
+        <a href="../index.html?mode=signup" class="login-banner-btn signup">Sign Up</a>
+        <a href="../index.html?mode=signin" class="login-banner-btn signin">Sign In</a>
+    </div>
+    <!-- </CHANGE> -->
+    
+    <div id="overlay"></div>
+    <nav class="navbar" id="navbar" aria-hidden="true">
+        <div class="user-info" id="userInfo" style="display: none;">
+            <div class="user-avatar" id="userAvatar">U</div>
+            <div class="user-name" id="userName">User</div>
+            <div class="user-email" id="userEmail">user@example.com</div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="../Components/account.html"><i class="fas fa-user"></i> My Account</a></li>
+            <li><a href="../Components/bots.html"><i class="fas fa-robot"></i> Bots</a></li>
+            <li><a href="../Components/settings.html" class="active"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="../Components/Refferals.html"><i class="fas fa-users"></i> Referrals</a></li>
+            <li><a href="../Components/about.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ / Help</a></li>
+            <li>
+                <a href="#" id="logout" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+                <a href="../index.html" id="loginLink">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Added login required modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2 class="modal-title">Login Required</h2>
+            <p class="modal-message">You need to login to save your settings and preferences.</p>
+            <div class="modal-timer" id="modalTimer">3</div>
+            <div class="modal-buttons">
+                <a href="../index.html" class="modal-btn modal-btn-primary">Go to Login</a>
+                <button class="modal-btn modal-btn-secondary" id="closeModal">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <!-- </CHANGE> -->
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 id="heading">Account Settings</h1>
+        
+        <div class="settings-container">
+            <!-- Profile Settings -->
+            <div class="settings-section">
+                <h2 class="section-title"><i class="fas fa-user-circle"></i> Profile Settings</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="fullName" class="form-input" placeholder="Enter your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="emailAddress" class="form-input" placeholder="Enter your email address">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" id="phoneNumber" class="form-input" placeholder="Enter your phone number">
+                </div>
+                
+                <button class="btn btn-primary" id="saveProfileBtn">Save Profile</button>
+            </div>
+            
+            <!-- Security Settings -->
+            <div class="settings-section">
+                <h2 class="section-title"><i class="fas fa-shield-alt"></i> Security Settings</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Current Password</label>
+                    <input type="password" id="currentPassword" class="form-input" placeholder="Enter your current password">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">New Password</label>
+                    <input type="password" id="newPassword" class="form-input" placeholder="Enter your new password">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm your new password">
+                </div>
+                
+                <button class="btn btn-primary" id="changePasswordBtn">Change Password</button>
+            </div>
+            
+            <!-- Notification Settings -->
+            <div class="settings-section">
+                <h2 class="section-title"><i class="fas fa-bell"></i> Notification Settings</h2>
+                
+                <div class="form-group">
+                    <div class="toggle-container">
+                        <label class="form-label">Email Notifications</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="emailNotifications" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="toggle-container">
+                        <label class="form-label">SMS Notifications</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="smsNotifications">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="toggle-container">
+                        <label class="form-label">Bot Expiry Alerts</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="botExpiryAlerts" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" id="saveNotificationBtn">Save Preferences</button>
+            </div>
+            
+            <!-- Withdrawal Settings -->
+            <div class="settings-section">
+                <h2 class="section-title"><i class="fas fa-money-bill-wave"></i> Withdrawal Settings</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Default Withdrawal Method</label>
+                    <select id="defaultWithdrawalMethod" class="form-select">
+                        <option value="mpesa">M-Pesa</option>
+                        <option value="bnb">BNB Smart Chain</option>
+                        <option value="binance">Binance</option>
+                        <option value="usdt">USDT (TRC-20)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Default Wallet Address</label>
+                    <input type="text" id="defaultWalletAddress" class="form-input" placeholder="Enter your default wallet address">
+                </div>
+                
+                <button class="btn btn-primary" id="saveWithdrawalBtn">Save Withdrawal Settings</button>
+            </div>
+            
+            <!-- Account Actions -->
+            <div class="settings-section">
+                <h2 class="section-title"><i class="fas fa-exclamation-triangle"></i> Account Actions</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">If you want to delete your account, please note:</label>
+                    <ul style="color: #aaa; margin-left: 20px; margin-top: 10px; line-height: 1.6;">
+                        <li>All your data will be permanently deleted</li>
+                        <li>You will lose access to all your bots and earnings</li>
+                        <li>This action cannot be undone</li>
+                    </ul>
+                </div>
+                
+                <button class="btn btn-danger" id="deleteAccountBtn">Delete My Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-title" id="notificationTitle">Success</div>
+        <div class="notification-message" id="notificationMessage">Your action was completed successfully!</div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 FlipMarket. All rights reserved.</p>
+    </footer>
+
+    <!-- Script -->
+    <script>
+        
+        // API Configuration
+        const API_BASE_URL = "https://your-api-domain.com/api";
+        const USE_MOCK_DATA = true;
+        
+        // User data
+        let userData = {
+            isLoggedIn: false,
+            balance: 0,
+            transactions: [],
+            userInfo: {
+                name: '',
+                email: '',
+                phone: '',
+                avatar: ''
+            },
+            settings: {
+                emailNotifications: true,
+                smsNotifications: false,
+                botExpiryAlerts: true,
+                defaultWithdrawalMethod: 'mpesa',
+                defaultWalletAddress: ''
+            }
+        };
+
+        
+        const hamburgerBtn = document.getElementById("hamburger-btn");
+        const navbar = document.getElementById("navbar");
+        const overlay = document.getElementById("overlay");
+        const notification = document.getElementById("notification");
+        const notificationTitle = document.getElementById("notificationTitle");
+        const notificationMessage = document.getElementById("notificationMessage");
+        
+        const loginBanner = document.getElementById("loginBanner");
+        const loginModal = document.getElementById("loginModal");
+        const modalTimer = document.getElementById("modalTimer");
+        const closeModal = document.getElementById("closeModal");
+        // </CHANGE>
+        
+        const userInfo = document.getElementById("userInfo");
+        const userAvatar = document.getElementById("userAvatar");
+        const userName = document.getElementById("userName");
+        const userEmail = document.getElementById("userEmail");
+        
+        const fullNameInput = document.getElementById("fullName");
+        const emailAddressInput = document.getElementById("emailAddress");
+        const phoneNumberInput = document.getElementById("phoneNumber");
+        const saveProfileBtn = document.getElementById("saveProfileBtn");
+        
+        const currentPasswordInput = document.getElementById("currentPassword");
+        const newPasswordInput = document.getElementById("newPassword");
+        const confirmPasswordInput = document.getElementById("confirmPassword");
+        const changePasswordBtn = document.getElementById("changePasswordBtn");
+        
+        const emailNotificationsToggle = document.getElementById("emailNotifications");
+        const smsNotificationsToggle = document.getElementById("smsNotifications");
+        const botExpiryAlertsToggle = document.getElementById("botExpiryAlerts");
+        const saveNotificationBtn = document.getElementById("saveNotificationBtn");
+        
+        const defaultWithdrawalMethodSelect = document.getElementById("defaultWithdrawalMethod");
+        const defaultWalletAddressInput = document.getElementById("defaultWalletAddress");
+        const saveWithdrawalBtn = document.getElementById("saveWithdrawalBtn");
+        const deleteAccountBtn = document.getElementById("deleteAccountBtn");
+        
+        const loginLink = document.getElementById("loginLink");
+        const logout = document.getElementById("logout");
+
+        function init() {
+            const savedData = localStorage.getItem("flipMarketUserData");
+            if (savedData) {
+                userData = JSON.parse(savedData);
+            }
+            
+            checkAuthStatus();
+            setupEventListeners();
+        }
+
+        function checkAuthStatus() {
+            if (userData.isLoggedIn) {
+                // User is logged in
+                userInfo.style.display = "block";
+                userAvatar.textContent = userData.userInfo.name.charAt(0).toUpperCase();
+                userName.textContent = userData.userInfo.name;
+                userEmail.textContent = userData.userInfo.email;
+                
+                logout.style.display = "block";
+                loginLink.style.display = "none";
+                loginBanner.style.display = "none";
+                
+                fullNameInput.value = userData.userInfo.name;
+                emailAddressInput.value = userData.userInfo.email;
+                phoneNumberInput.value = userData.userInfo.phone || '';
+                
+                emailNotificationsToggle.checked = userData.settings.emailNotifications;
+                smsNotificationsToggle.checked = userData.settings.smsNotifications;
+                botExpiryAlertsToggle.checked = userData.settings.botExpiryAlerts;
+                
+                defaultWithdrawalMethodSelect.value = userData.settings.defaultWithdrawalMethod;
+                defaultWalletAddressInput.value = userData.settings.defaultWalletAddress;
+            } else {
+                // User is NOT logged in - show login banner
+                userInfo.style.display = "none";
+                logout.style.display = "none";
+                loginLink.style.display = "block";
+                loginBanner.style.display = "flex";
+            }
+        }
+
+        function saveUserData() {
+            localStorage.setItem("flipMarketUserData", JSON.stringify(userData));
+        }
+
+        function showLoginModal() {
+            loginModal.classList.add("show");
+            let countdown = 3;
+            modalTimer.textContent = countdown;
+            
+            const timer = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    modalTimer.textContent = countdown;
+                } else {
+                    clearInterval(timer);
+                    window.location.href = "../index.html";
+                }
+            }, 1000);
+            
+            closeModal.onclick = () => {
+                clearInterval(timer);
+                loginModal.classList.remove("show");
+            };
+            
+            loginModal.onclick = (e) => {
+                if (e.target === loginModal) {
+                    clearInterval(timer);
+                    loginModal.classList.remove("show");
+                }
+            };
+        }
+        // </CHANGE>
+        
+        function showNotification(title, message) {
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            notification.classList.add("show");
+            
+            setTimeout(() => {
+                notification.classList.remove("show");
+            }, 3000);
+        }
+
+        
+        async function apiRequest(endpoint, method = 'GET', data = null) {
+            try {
+                const options = {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                };
+                
+                const token = localStorage.getItem('authToken');
+                if (token) {
+                    options.headers.Authorization = `Bearer ${token}`;
+                }
+                
+                if (data) {
+                    options.body = JSON.stringify(data);
+                }
+                
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+                
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('API request error:', error);
+                throw error;
+            }
+        }
+        
+        const api = {
+            updateProfile: async (name, email, phone) => {
+                if (USE_MOCK_DATA) {
+                    return new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve({
+                                success: true,
+                                message: "Profile updated successfully"
+                            });
+                        }, 1000);
+                    });
+                }
+                
+                return await apiRequest('/user/profile', 'PUT', { name, email, phone });
+            },
+            
+            changePassword: async (currentPassword, newPassword) => {
+                if (USE_MOCK_DATA) {
+                    return new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve({
+                                success: true,
+                                message: "Password changed successfully"
+                            });
+                        }, 1000);
+                    });
+                }
+                
+                return await apiRequest('/user/password', 'PUT', { currentPassword, newPassword });
+            },
+            
+            updateNotificationSettings: async (settings) => {
+                if (USE_MOCK_DATA) {
+                    return new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve({
+                                success: true,
+                                message: "Notification settings updated successfully"
+                            });
+                        }, 1000);
+                    });
+                }
+                
+                return await apiRequest('/user/notifications', 'PUT', settings);
+            },
+            
+            updateWithdrawalSettings: async (settings) => {
+                if (USE_MOCK_DATA) {
+                    return new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve({
+                                success: true,
+                                message: "Withdrawal settings updated successfully"
+                            });
+                        }, 1000);
+                    });
+                }
+                
+                return await apiRequest('/user/withdrawal-settings', 'PUT', settings);
+            },
+            
+            deleteAccount: async () => {
+                if (USE_MOCK_DATA) {
+                    return new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve({
+                                success: true,
+                                message: "Account deleted successfully"
+                            });
+                        }, 2000);
+                    });
+                }
+                
+                return await apiRequest('/user/account', 'DELETE');
+            }
+        };
+
+        function setupEventListeners() {
+            saveProfileBtn.addEventListener('click', async function() {
+                if (!userData.isLoggedIn) {
+                    showLoginModal();
+                    return;
+                }
+                
+                const name = fullNameInput.value.trim();
+                const email = emailAddressInput.value.trim();
+                const phone = phoneNumberInput.value.trim();
+                
+                if (!name || !email) {
+                    showNotification('Validation Error', 'Name and email are required fields.');
+                    return;
+                }
+                
+                try {
+                    this.textContent = 'Saving...';
+                    this.disabled = true;
+                    
+                    const response = await api.updateProfile(name, email, phone);
+                    
+                    if (response.success) {
+                        userData.userInfo.name = name;
+                        userData.userInfo.email = email;
+                        userData.userInfo.phone = phone;
+                        
+                        saveUserData();
+                        
+                        userAvatar.textContent = name.charAt(0).toUpperCase();
+                        userName.textContent = name;
+                        userEmail.textContent = email;
+                        
+                        showNotification('Profile Updated', 'Your profile has been updated successfully.');
+                    } else {
+                        throw new Error(response.message || "Profile update failed");
+                    }
+                } catch (error) {
+                    console.error("Profile update error:", error);
+                    showNotification('Update Failed', 'There was an error updating your profile. Please try again.');
+                } finally {
+                    this.textContent = 'Save Profile';
+                    this.disabled = false;
+                }
+            });
+            
+            changePasswordBtn.addEventListener('click', async function() {
+                if (!userData.isLoggedIn) {
+                    showLoginModal();
+                    return;
+                }
+                
+                const currentPassword = currentPasswordInput.value;
+                const newPassword = newPasswordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+                
+                if (!currentPassword || !newPassword || !confirmPassword) {
+                    showNotification('Validation Error', 'All password fields are required.');
+                    return;
+                }
+                
+                if (newPassword !== confirmPassword) {
+                    showNotification('Validation Error', 'New passwords do not match.');
+                    return;
+                }
+                
+                if (newPassword.length < 8) {
+                    showNotification('Validation Error', 'Password must be at least 8 characters long.');
+                    return;
+                }
+                
+                try {
+                    this.textContent = 'Changing...';
+                    this.disabled = true;
+                    
+                    const response = await api.changePassword(currentPassword, newPassword);
+                    
+                    if (response.success) {
+                        showNotification('Password Changed', 'Your password has been changed successfully.');
+                        
+                        currentPasswordInput.value = '';
+                        newPasswordInput.value = '';
+                        confirmPasswordInput.value = '';
+                    } else {
+                        throw new Error(response.message || "Password change failed");
+                    }
+                } catch (error) {
+                    console.error("Password change error:", error);
+                    showNotification('Change Failed', 'There was an error changing your password. Please try again.');
+                } finally {
+                    this.textContent = 'Change Password';
+                    this.disabled = false;
+                }
+            });
+            
+            saveNotificationBtn.addEventListener('click', async function() {
+                if (!userData.isLoggedIn) {
+                    showLoginModal();
+                    return;
+                }
+                
+                const settings = {
+                    emailNotifications: emailNotificationsToggle.checked,
+                    smsNotifications: smsNotificationsToggle.checked,
+                    botExpiryAlerts: botExpiryAlertsToggle.checked
+                };
+                
+                try {
+                    this.textContent = 'Saving...';
+                    this.disabled = true;
+                    
+                    const response = await api.updateNotificationSettings(settings);
+                    
+                    if (response.success) {
+                        userData.settings = { ...userData.settings, ...settings };
+                        saveUserData();
+                        showNotification('Settings Saved', 'Your notification preferences have been saved.');
+                    } else {
+                        throw new Error(response.message || "Settings update failed");
+                    }
+                } catch (error) {
+                    console.error("Settings update error:", error);
+                    showNotification('Update Failed', 'There was an error updating your settings. Please try again.');
+                } finally {
+                    this.textContent = 'Save Preferences';
+                    this.disabled = false;
+                }
+            });
+            
+            saveWithdrawalBtn.addEventListener('click', async function() {
+                if (!userData.isLoggedIn) {
+                    showLoginModal();
+                    return;
+                }
+                
+                const method = defaultWithdrawalMethodSelect.value;
+                const walletAddress = defaultWalletAddressInput.value.trim();
+                
+                if (method !== 'mpesa' && !walletAddress) {
+                    showNotification('Validation Error', 'Wallet address is required for this withdrawal method.');
+                    return;
+                }
+                
+                try {
+                    this.textContent = 'Saving...';
+                    this.disabled = true;
+                    
+                    const response = await api.updateWithdrawalSettings({
+                        defaultWithdrawalMethod: method,
+                        defaultWalletAddress: walletAddress
+                    });
+                    
+                    if (response.success) {
+                        userData.settings.defaultWithdrawalMethod = method;
+                        userData.settings.defaultWalletAddress = walletAddress;
+                        
+                        saveUserData();
+                        showNotification('Settings Saved', 'Your withdrawal preferences have been saved.');
+                    } else {
+                        throw new Error(response.message || "Settings update failed");
+                    }
+                } catch (error) {
+                    console.error("Settings update error:", error);
+                    showNotification('Update Failed', 'There was an error updating your settings. Please try again.');
+                } finally {
+                    this.textContent = 'Save Withdrawal Settings';
+                    this.disabled = false;
+                }
+            });
+            
+            deleteAccountBtn.addEventListener('click', async function() {
+                if (!userData.isLoggedIn) {
+                    showLoginModal();
+                    return;
+                }
+                
+                if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                    return;
+                }
+                
+                try {
+                    this.textContent = 'Deleting...';
+                    this.disabled = true;
+                    
+                    const response = await api.deleteAccount();
+                    
+                    if (response.success) {
+                        userData = {
+                            isLoggedIn: false,
+                            balance: 0,
+                            transactions: [],
+                            userInfo: {
+                                name: '',
+                                email: '',
+                                phone: '',
+                                avatar: ''
+                            },
+                            settings: {
+                                emailNotifications: true,
+                                smsNotifications: false,
+                                botExpiryAlerts: true,
+                                defaultWithdrawalMethod: 'mpesa',
+                                defaultWalletAddress: ''
+                            }
+                        };
+                        
+                        localStorage.removeItem('authToken');
+                        saveUserData();
+                        showNotification('Account Deleted', 'Your account has been deleted successfully.');
+                        
+                        setTimeout(() => {
+                            window.location.href = "home.html";
+                        }, 2000);
+                    } else {
+                        throw new Error(response.message || "Account deletion failed");
+                    }
+                } catch (error) {
+                    console.error("Account deletion error:", error);
+                    showNotification('Deletion Failed', 'There was an error deleting your account. Please try again.');
+                } finally {
+                    this.textContent = 'Delete My Account';
+                    this.disabled = false;
+                }
+            });
+        }
+        // </CHANGE>
+
+        
+        function closeNavbar() {
+            navbar.classList.remove('active');
+            overlay.classList.remove('active');
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
+            navbar.setAttribute('aria-hidden', 'true');
+        }
+
+        function openNavbar() {
+            navbar.classList.add('active');
+            overlay.classList.add('active');
+            hamburgerBtn.setAttribute('aria-expanded', 'true');
+            navbar.setAttribute('aria-hidden', 'false');
+        }
+
+        hamburgerBtn.addEventListener('click', () => {
+            if (navbar.classList.contains('active')) {
+                closeNavbar();
+            } else {
+                openNavbar();
+            }
+        });
+
+        overlay.addEventListener('click', closeNavbar);
+
+        document.querySelectorAll('.nav-links li a').forEach(link => {
+            link.addEventListener('click', closeNavbar);
+        });
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

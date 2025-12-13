@@ -1,0 +1,14 @@
+# Project Setup Commands
+mkdir flip-backend
+cd flip-backend
+npm init -y
+
+# Install dependencies
+npm install express mongoose bcryptjs jsonwebtoken dotenv cors helmet express-rate-limit nodemailer crypto socket.io
+
+# For production (optional but recommended)
+npm install pm2 --save-dev  # or globally: npm install -g pm2
+
+# Create folder structure
+mkdir models controllers middleware routes utils
+touch server.js .env ecosystem.config.js
