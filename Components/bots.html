@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>FlipMarket | Mining Bots</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,13 +15,14 @@
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            background: #0a0a0f;
             color: #e0e0e0;
             overflow-x: hidden;
             min-height: 100vh;
             position: relative;
         }
         
+        /* Animated gradient background */
         body::before {
             content: '';
             position: fixed;
@@ -29,182 +30,90 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
-            opacity: 0.05;
+            background: radial-gradient(circle at 20% 50%, rgba(88, 28, 135, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+                        linear-gradient(135deg, #0a0a0f 0%, #1a0f2e 50%, #0f1419 100%);
             z-index: -1;
+            animation: gradientShift 15s ease infinite;
         }
         
-        /* Modern Navbar */
+        @keyframes gradientShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        /* Modern glassmorphic navbar */
         #brand-bar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(15px);
-            padding: 15px 20px;
+            background: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            padding: 18px 30px;
             z-index: 11001;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(159, 84, 255, 0.2);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
         
         #brand-bar h1 {
-            color: #9f54ff;
-            font-size: 1.8rem;
-            font-weight: 700;
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 50%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.9rem;
+            font-weight: 900;
             display: flex;
             align-items: center;
-            gap: 10px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            gap: 12px;
+            letter-spacing: -0.5px;
         }
         
         #brand-bar h1 i {
-            font-size: 1.5rem;
-            color: #2effbf;
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
         }
         
         #hamburger-btn {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             cursor: pointer;
-            color: #9f54ff;
-            background: transparent;
-            border: none;
-            padding: 8px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: #a78bfa;
+            padding: 10px 14px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 11001;
         }
         
         #hamburger-btn:hover {
-            background: rgba(159, 84, 255, 0.1);
-            color: #2effbf;
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
         }
         
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            z-index: 10500;
-        }
-        
-        #overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        
-        .navbar {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 80vw;
-            max-width: 320px;
-            height: 100vh;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 80px 20px 20px;
-            z-index: 11000;
-            transition: right 0.35s ease;
-            display: flex;
-            flex-direction: column;
-            border-left: 1px solid rgba(159, 84, 255, 0.2);
-            overflow-y: auto;
-        }
-        
-        .navbar.active {
-            right: 0;
-        }
-        
-        ul.nav-links {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        ul.nav-links li a {
-            color: #ddd;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 12px 16px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        ul.nav-links li a i {
-            width: 20px;
-            text-align: center;
-        }
-        
-        ul.nav-links li a:hover,
-        ul.nav-links li a.active {
-            background: linear-gradient(135deg, #9f54ff, #2effbf);
-            color: #000;
-            transform: translateX(5px);
-        }
-        
-        /* User Info in Navbar */
-        .user-info {
-            padding: 15px;
-            margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .user-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #9f54ff, #2effbf);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 10px;
-            font-size: 1.5rem;
-            color: #000;
-            font-weight: 700;
-        }
-        
-        .user-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #fff;
-        }
-        
-        .user-email {
-            font-size: 0.85rem;
-            color: #aaa;
-        }
-        
-        /* <CHANGE> Added login banner styles */
+        /* Login banner */
         .login-banner {
             position: fixed;
-            top: 70px;
+            top: 75px;
             left: 0;
             right: 0;
-            background: linear-gradient(135deg, rgba(159, 84, 255, 0.15), rgba(46, 255, 191, 0.15));
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(59, 130, 246, 0.12));
+            backdrop-filter: blur(15px) saturate(180%);
+            padding: 18px 25px;
             text-align: center;
-            border-bottom: 1px solid rgba(159, 84, 255, 0.3);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
             z-index: 1000;
             display: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
         
         .login-banner.show {
@@ -213,9 +122,17 @@
         
         .login-banner-text {
             color: #fff;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .login-banner-text i {
+            color: #a78bfa;
         }
         
         .login-banner-buttons {
@@ -227,83 +144,248 @@
         }
         
         .login-banner-btn {
-            padding: 8px 20px;
+            padding: 10px 24px;
             border: none;
-            border-radius: 8px;
-            font-weight: 600;
+            border-radius: 10px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .login-banner-btn.signup {
-            background: linear-gradient(135deg, #9f54ff, #2effbf);
-            color: #000;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
         }
         
         .login-banner-btn.signin {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(139, 92, 246, 0.15);
+            color: #a78bfa;
+            border: 1px solid rgba(139, 92, 246, 0.3);
         }
         
         .login-banner-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(159, 84, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
         }
         
-        /* Main Content */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10500;
+        }
+        
+        #overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        /* Enhanced sidebar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85vw;
+            max-width: 360px;
+            height: 100vh;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(30px) saturate(180%);
+            padding: 90px 25px 25px;
+            z-index: 11000;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid rgba(139, 92, 246, 0.2);
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+        }
+        
+        .navbar.active {
+            right: 0;
+        }
+        
+        .navbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .navbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .navbar::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.5);
+            border-radius: 3px;
+        }
+        
+        ul.nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        ul.nav-links li a {
+            color: #d1d5db;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 14px 18px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 0.95rem;
+        }
+        
+        ul.nav-links li a i {
+            width: 22px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        ul.nav-links li a:hover {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.15));
+            color: #fff;
+            transform: translateX(8px);
+            border-color: rgba(139, 92, 246, 0.3);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+        }
+        
+        ul.nav-links li a.active {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+        
+        .user-info {
+            padding: 20px;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.08));
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .user-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 1.8rem;
+            color: #fff;
+            font-weight: 800;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+            border: 3px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-name {
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+        
+        .user-email {
+            font-size: 0.85rem;
+            color: #9ca3af;
+        }
+        
+        /* Main content */
         .main-content {
-            padding-top: 80px;
+            padding-top: 100px;
             min-height: 100vh;
+            padding-bottom: 60px;
         }
         
-        /* <CHANGE> Adjust main-content padding when banner is shown */
         .main-content.with-banner {
-            padding-top: 150px;
+            padding-top: 180px;
         }
         
+        /* Gradient heading */
         h1#heading {
             text-align: center;
-            color: #9f54ff;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 30px 0;
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 50%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3rem;
+            font-weight: 900;
+            margin: 40px 0;
             position: relative;
             display: inline-block;
             width: 100%;
+            letter-spacing: -1px;
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         h1#heading::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -15px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, #9f54ff, #2effbf);
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, #8b5cf6, #ec4899, #3b82f6);
             border-radius: 2px;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
         }
         
         /* Marquee */
         .marquee-container {
-            background: rgba(159, 84, 255, 0.1);
-            padding: 15px 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.08));
+            padding: 18px 0;
             text-align: center;
-            margin-bottom: 30px;
-            border-top: 1px solid rgba(159, 84, 255, 0.2);
-            border-bottom: 1px solid rgba(159, 84, 255, 0.2);
+            margin-bottom: 40px;
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
             overflow: hidden;
             position: relative;
         }
         
         .marquee-text {
-            color: #2effbf;
-            font-weight: 600;
-            font-size: 1.1rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            font-size: 1.15rem;
             display: inline-block;
             white-space: nowrap;
             animation: marquee 20s linear infinite;
@@ -318,93 +400,103 @@
         
         /* Dashboard */
         #dashboard {
-            max-width: 1200px;
-            margin: 0 auto 40px;
-            background: rgba(26, 26, 46, 0.6);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(159, 84, 255, 0.2);
+            max-width: 1300px;
+            margin: 0 auto 50px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(59, 130, 246, 0.03));
+            backdrop-filter: blur(20px) saturate(180%);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(139, 92, 246, 0.15);
+            animation: fadeInUp 0.6s ease 0.2s both;
         }
         
         #dashboard h2 {
-            color: #2effbf;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            margin-bottom: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
+            font-weight: 800;
         }
         
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
         }
         
         .dashboard-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(59, 130, 246, 0.05));
+            padding: 25px;
+            border-radius: 18px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
         }
         
         .dashboard-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(46, 255, 191, 0.1);
-            border-color: rgba(46, 255, 191, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.25);
+            border-color: rgba(139, 92, 246, 0.4);
         }
         
         .dashboard-label {
-            color: #aaa;
+            color: #9ca3af;
             font-size: 0.9rem;
-            margin-bottom: 5px;
-            text-align: center;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
         }
         
         .dashboard-value {
-            color: #2effbf;
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-align: center;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            font-weight: 900;
         }
         
         /* Bot Container */
         #botContainer {
-            max-width: 1200px;
-            margin: 0 auto 40px;
+            max-width: 1300px;
+            margin: 0 auto 50px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
             gap: 30px;
-            padding: 0 20px;
+            padding: 0 25px;
         }
         
-        /* Bot Cards */
+        /* Premium Bot Cards */
         .bot-card {
-            background: rgba(26, 26, 46, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(159, 84, 255, 0.2);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(59, 130, 246, 0.03));
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 24px;
+            padding: 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(139, 92, 246, 0.15);
             text-align: center;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .bot-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(159, 84, 255, 0.2);
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.4);
         }
         
         .bot-card.active {
-            border-color: #2effbf;
-            box-shadow: 0 0 20px rgba(46, 255, 191, 0.3);
+            border-color: #3b82f6;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
         }
         
         .bot-card::before {
@@ -414,8 +506,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(46, 255, 191, 0.1), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+            transition: left 0.6s;
         }
         
         .bot-card.active::before {
@@ -430,76 +522,84 @@
         
         .mining-indicator {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 12px;
-            height: 12px;
+            top: 20px;
+            right: 20px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            background-color: #444;
+            background-color: #374151;
+            z-index: 2;
         }
         
         .mining-indicator.active {
-            background-color: #2effbf;
-            box-shadow: 0 0 10px #2effbf;
+            background-color: #3b82f6;
+            box-shadow: 0 0 15px #3b82f6;
             animation: pulse 1.5s infinite;
         }
         
         @keyframes pulse {
             0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.7; }
+            50% { transform: scale(1.3); opacity: 0.7; }
             100% { transform: scale(1); opacity: 1; }
         }
         
         .bot-image-container {
             position: relative;
             width: 100%;
-            height: 180px;
-            border-radius: 15px;
+            height: 200px;
+            border-radius: 24px 24px 0 0;
             overflow: hidden;
-            margin-bottom: 20px;
         }
         
         .bot-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .bot-card:hover .bot-image {
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
         
         .bot-badge {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            background: linear-gradient(135deg, #9f54ff, #2effbf);
-            color: #000;
-            font-weight: 600;
-            padding: 5px 12px;
+            top: 15px;
+            left: 15px;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            color: #fff;
+            font-weight: 800;
+            padding: 8px 16px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+        
+        .bot-card-content {
+            padding: 30px 25px;
         }
         
         .bot-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
+            font-size: 1.7rem;
+            font-weight: 900;
+            margin-bottom: 20px;
             color: #fff;
             text-align: center;
+            letter-spacing: -0.5px;
         }
         
         .bot-details {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
         .bot-detail {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.1);
         }
         
         .bot-detail:last-child {
@@ -507,99 +607,116 @@
         }
         
         .bot-detail-label {
-            color: #aaa;
+            color: #9ca3af;
+            font-weight: 500;
         }
         
         .bot-detail-value {
-            color: #2effbf;
-            font-weight: 600;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
         }
         
         .earnings-progress {
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            margin: 15px 0;
+            height: 10px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 5px;
+            margin: 20px 0;
             overflow: hidden;
         }
         
         .earnings-bar {
             height: 100%;
-            background: linear-gradient(90deg, #9f54ff, #2effbf);
+            background: linear-gradient(90deg, #8b5cf6, #3b82f6);
             width: 0%;
-            transition: width 0.5s ease;
-            border-radius: 4px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
         }
         
         .bot-stats {
             display: flex;
             justify-content: space-between;
-            margin: 15px 0;
-            font-size: 0.9rem;
+            margin: 20px 0;
+            gap: 15px;
         }
         
         .stat-item {
             text-align: center;
             flex: 1;
+            padding: 15px;
+            background: rgba(139, 92, 246, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(139, 92, 246, 0.1);
         }
         
         .stat-label {
-            color: #aaa;
-            margin-bottom: 5px;
+            color: #9ca3af;
+            margin-bottom: 8px;
             text-align: center;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .stat-value {
-            color: #2effbf;
-            font-weight: 600;
-            font-size: 1.1rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            font-size: 1.2rem;
             text-align: center;
         }
         
         .bot-actions {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 25px;
         }
         
         .buy-btn,
         .claim-btn,
         .btn {
             flex: 1;
-            padding: 12px 20px;
+            padding: 14px 24px;
             border: none;
-            border-radius: 10px;
-            font-weight: 600;
+            border-radius: 12px;
+            font-weight: 800;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
         
         .buy-btn {
-            background: linear-gradient(135deg, #9f54ff, #2effbf);
-            color: #000;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
         }
         
         .buy-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(159, 84, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.5);
         }
         
         .claim-btn {
-            background: linear-gradient(135deg, #2effbf, #9f54ff);
-            color: #000;
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
         
         .claim-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(46, 255, 191, 0.3);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.5);
         }
         
         .claim-btn[disabled] {
-            background: #444;
-            color: #888;
+            background: #374151;
+            color: #6b7280;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
@@ -611,17 +728,17 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 30px;
-            border-radius: 20px;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(30px) saturate(180%);
+            padding: 40px;
+            border-radius: 24px;
             z-index: 12000;
-            transition: transform 0.3s ease;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(159, 84, 255, 0.3);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(139, 92, 246, 0.3);
             text-align: center;
             width: 90%;
-            max-width: 450px;
+            max-width: 480px;
         }
         
         .modal.active {
@@ -629,50 +746,47 @@
         }
         
         .modal h3 {
-            color: #2effbf;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            margin-bottom: 25px;
             text-align: center;
+            font-weight: 900;
         }
         
         .till-number {
-            color: #9f54ff;
-            font-weight: 700;
-            font-size: 2rem;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(159, 84, 255, 0.1);
-            border-radius: 10px;
-            border: 1px dashed rgba(159, 84, 255, 0.3);
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            font-size: 2.5rem;
+            margin: 25px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.08));
+            border-radius: 16px;
+            border: 2px dashed rgba(139, 92, 246, 0.4);
             text-align: center;
         }
         
         .modal-actions {
             display: flex;
             gap: 15px;
-            margin-top: 25px;
-        }
-        
-        .btn {
-            flex: 1;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
+            margin-top: 30px;
         }
         
         .confirm-pay {
-            background: linear-gradient(135deg, #2effbf, #9f54ff);
-            color: #000;
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
         
         .cancel-pay {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ddd;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(139, 92, 246, 0.1);
+            color: #a78bfa;
+            border: 1px solid rgba(139, 92, 246, 0.3);
         }
         
         .btn:hover {
@@ -683,7 +797,8 @@
             position: fixed;
             top: 0;
             left: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
             width: 100vw;
             height: 100vh;
             z-index: 11000;
@@ -694,14 +809,62 @@
             display: block;
         }
         
+        /* Login redirect notification */
+        .login-redirect-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(30px) saturate(180%);
+            padding: 40px;
+            border-radius: 24px;
+            z-index: 12000;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 480px;
+        }
+        
+        .login-redirect-notification.active {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .login-redirect-notification h3 {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+        
+        .login-redirect-notification p {
+            margin-bottom: 20px;
+            color: #d1d5db;
+            font-size: 1.05rem;
+        }
+        
+        #redirectCountdown {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            font-size: 1.3rem;
+        }
+        
         /* Loading Spinner */
         .loading-spinner {
             display: none;
             width: 50px;
             height: 50px;
-            border: 4px solid rgba(159, 84, 255, 0.2);
+            border: 4px solid rgba(139, 92, 246, 0.2);
             border-radius: 50%;
-            border-top-color: #9f54ff;
+            border-top-color: #8b5cf6;
             animation: spin 1s ease-in-out infinite;
             margin: 20px auto;
         }
@@ -713,19 +876,19 @@
         /* Notification */
         .notification {
             position: fixed;
-            top: 100px;
-            right: 20px;
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(20px);
-            border-left: 4px solid #2effbf;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            top: 120px;
+            right: 25px;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(30px) saturate(180%);
+            border-left: 4px solid #3b82f6;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             transform: translateX(120%);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 12000;
-            max-width: 350px;
-            border: 1px solid rgba(46, 255, 191, 0.2);
+            max-width: 380px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
         }
         
         .notification.show {
@@ -733,59 +896,28 @@
         }
         
         .notification-title {
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #2effbf;
-            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.2rem;
         }
         
         .notification-message {
-            color: #ddd;
-            line-height: 1.4;
-        }
-        
-        /* Login Redirect Notification */
-        .login-redirect-notification {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 30px;
-            border-radius: 20px;
-            z-index: 12000;
-            transition: transform 0.3s ease;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(159, 84, 255, 0.3);
-            text-align: center;
-            width: 90%;
-            max-width: 450px;
-        }
-        
-        .login-redirect-notification.active {
-            transform: translate(-50%, -50%) scale(1);
-        }
-        
-        .login-redirect-notification h3 {
-            color: #2effbf;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .login-redirect-notification p {
-            margin-bottom: 20px;
-            color: #ddd;
+            color: #d1d5db;
+            line-height: 1.5;
         }
         
         /* Footer */
         footer {
             text-align: center;
-            padding: 30px 20px;
-            color: #888;
-            background: rgba(10, 10, 10, 0.5);
-            border-top: 1px solid rgba(159, 84, 255, 0.1);
+            padding: 40px 20px;
+            color: #6b7280;
+            background: rgba(10, 10, 15, 0.5);
+            border-top: 1px solid rgba(139, 92, 246, 0.1);
+            font-size: 0.9rem;
         }
         
         /* Responsive */
@@ -800,15 +932,27 @@
             }
             
             h1#heading {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
             
             .main-content.with-banner {
-                padding-top: 180px;
+                padding-top: 200px;
             }
             
             .login-banner-buttons {
                 flex-direction: row;
+            }
+            
+            #brand-bar {
+                padding: 15px 20px;
+            }
+            
+            #brand-bar h1 {
+                font-size: 1.5rem;
+            }
+            
+            .bot-stats {
+                flex-direction: column;
             }
         }
     </style>
@@ -822,16 +966,16 @@
         </button>
     </div>
     
-    <!-- <CHANGE> Added login banner that shows when user is not logged in -->
+    <!-- Login banner -->
     <div class="login-banner" id="loginBanner">
         <div class="login-banner-text">
             <i class="fas fa-info-circle"></i> Not logged in? Sign up or Sign in to purchase mining bots!
         </div>
         <div class="login-banner-buttons">
-            <a href="signup.html" class="login-banner-btn signup">
+            <a href="login.html" class="login-banner-btn signup">
                 <i class="fas fa-user-plus"></i> Sign Up
             </a>
-            <a href="index.html" class="login-banner-btn signin">
+            <a href="login.html" class="login-banner-btn signin">
                 <i class="fas fa-sign-in-alt"></i> Sign In
             </a>
         </div>
@@ -845,17 +989,17 @@
             <div class="user-email" id="userEmail">user@example.com</div>
         </div>
         <ul class="nav-links">
-            <li><a href="home.html" class="active"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="../Components/account.html"><i class="fas fa-user"></i> My Account</a></li>
-            <li><a href="../Components/bots.html"><i class="fas fa-robot"></i> Bots</a></li>
-            <li><a href="../Components/settings.html"><i class="fas fa-cog"></i> Settings</a></li>
-            <li><a href="../Components/Refferals.html"><i class="fas fa-users"></i> Referrals</a></li>
-            <li><a href="../Components/about.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="account.html"><i class="fas fa-user"></i> My Account</a></li>
+            <li><a href="bots.html" class="active"><i class="fas fa-robot"></i> Bots</a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="referrals.html"><i class="fas fa-users"></i> Referrals</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
             <li>
                 <a href="#" id="logout" style="display: none;">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
-                <a href="index.html" id="loginLink">
+                <a href="login.html" id="loginLink">
                     <i class="fas fa-sign-in-alt"></i> Login
                 </a>
             </li>
@@ -864,7 +1008,6 @@
 
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
-        <!-- Page Heading -->
         <h1 id="heading">Available Mining Bots</h1>
 
         <!-- Marquee -->
@@ -903,15 +1046,13 @@
 
     <!-- Payment Modal -->
     <div class="modal" id="paymentModal">
-        <div class="modal-content">
-            <h3><i class="fas fa-shopping-cart"></i> Confirm Bot Purchase</h3>
-            <p>Pay via M-Pesa Till Number:</p>
-            <p class="till-number">523698</p>
-            <div class="loading-spinner" id="paymentLoading"></div>
-            <div class="modal-actions">
-                <button class="btn confirm-pay" id="confirmPaymentBtn">Confirm Payment</button>
-                <button class="btn cancel-pay" id="cancelPaymentBtn">Cancel</button>
-            </div>
+        <h3><i class="fas fa-shopping-cart"></i> Confirm Bot Purchase</h3>
+        <p style="color: #d1d5db; margin-bottom: 10px;">Pay via M-Pesa Till Number:</p>
+        <div class="till-number">523698</div>
+        <div class="loading-spinner" id="paymentLoading"></div>
+        <div class="modal-actions">
+            <button class="btn confirm-pay" id="confirmPaymentBtn">Confirm Payment</button>
+            <button class="btn cancel-pay" id="cancelPaymentBtn">Cancel</button>
         </div>
     </div>
     <div class="overlay" id="modalOverlay"></div>
@@ -921,8 +1062,10 @@
         <h3><i class="fas fa-lock"></i> Login Required</h3>
         <p>You need to login or create an account to purchase mining bots.</p>
         <p>You will be redirected to the login page in <span id="redirectCountdown">5</span> seconds.</p>
-        <button class="btn confirm-pay" id="continueToLogin">Continue to Login</button>
-        <button class="btn cancel-pay" id="cancelRedirect">Cancel</button>
+        <div class="modal-actions">
+            <button class="btn confirm-pay" id="continueToLogin">Continue to Login</button>
+            <button class="btn cancel-pay" id="cancelRedirect">Cancel</button>
+        </div>
     </div>
     <div class="overlay" id="loginRedirectOverlay"></div>
 
@@ -934,26 +1077,11 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2025 FlipMarket. All rights reserved.</p>
+        <p>&copy; 2025 FlipMarket. All rights reserved. | Powered by Next-Gen Mining Technology</p>
     </footer>
 
-    <!-- Script -->
     <script>
-        // ========================================
-        // CONFIGURATION
-        // ========================================
-        
-        // API Configuration - Replace with your actual API URL
-        const API_BASE_URL = "https://your-api-domain.com/api";
-        
-        // Set to true to use mock data for development, false for production
-        const USE_MOCK_DATA = true;
-        
-        // ========================================
-        // BOT DATA
-        // ========================================
-        
-        // Bot data with image URLs (prices in USD)
+        // Bot data
         const botTypes = [
             {
                 id: 1,
@@ -977,7 +1105,7 @@
                 price: 40,
                 dailyEarning: 2.80,
                 totalEarning: 84,
-                image: "https://images.unsplash.com/photo-1577538926988-7926820ed209?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c21hbGwlMjBzZXJ2ZXJ8ZW58MHx8MHx8fDA%3D"
+                image: "https://images.unsplash.com/photo-1577538926988-7926820ed209?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0"
             },
             {
                 id: 4,
@@ -985,7 +1113,7 @@
                 price: 70,
                 dailyEarning: 4.90,
                 totalEarning: 147,
-                image: "https://plus.unsplash.com/premium_photo-1664297989345-f4ff2063b212?q=80&w=1098&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                image: "https://plus.unsplash.com/premium_photo-1664297989345-f4ff2063b212?q=80&w=1098&auto=format&fit=crop&ixlib=rb-4.1.0"
             },
             {
                 id: 5,
@@ -993,7 +1121,7 @@
                 price: 100,
                 dailyEarning: 7.00,
                 totalEarning: 210,
-                image: "https://media.istockphoto.com/id/1040386538/photo/hard-drives-in-computer-monitoring-recording-server.jpg?s=2048x2048&w=is&k=20&c=lin3Auj8YIhiYEQ51n3YjMDqTldlTJ6aYgmwd9yRrTg="
+                image: "https://media.istockphoto.com/id/1040386538/photo/hard-drives-in-computer-monitoring-recording-server.jpg?s=2048x2048&w=is&k=20"
             },
             {
                 id: 6,
@@ -1001,7 +1129,7 @@
                 price: 150,
                 dailyEarning: 10.50,
                 totalEarning: 315,
-                image: "https://media.istockphoto.com/id/2181288788/photo/servers-in-server-rooms-corporate-networks.jpg?s=612x612&w=0&k=20&c=9FH3f6lkYFZUUWb2NNUyOeftLvioza-C96wdqjXlySo="
+                image: "https://media.istockphoto.com/id/2181288788/photo/servers-in-server-rooms-corporate-networks.jpg?s=612x612&w=0&k=20"
             },
             {
                 id: 7,
@@ -1009,7 +1137,7 @@
                 price: 300,
                 dailyEarning: 21.00,
                 totalEarning: 630,
-                image: "https://images.unsplash.com/photo-1548544027-1a96c4c24c7a?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                image: "https://images.unsplash.com/photo-1548544027-1a96c4c24c7a?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0"
             },
             {
                 id: 8,
@@ -1017,32 +1145,19 @@
                 price: 800,
                 dailyEarning: 60.00,
                 totalEarning: 1800,
-                image: "https://media.istockphoto.com/id/1860756412/photo/server-computer-should-be-high-performance-stable-able-to-serve-a-large-number-of-users.jpg?s=2048x2048&w=is&k=20&c=SyVTCXAcNT_8ZVWlp7Rs5SieM9he59MNpV69PXPHRAc="
+                image: "https://media.istockphoto.com/id/1860756412/photo/server-computer-should-be-high-performance-stable.jpg?s=2048x2048&w=is&k=20"
             }
         ];
 
-        // ========================================
-        // USER DATA
-        // ========================================
-        
-        // User data (simulating localStorage)
         let userData = {
             isLoggedIn: false,
             balance: 0,
             bots: [],
             totalClaimed: 0,
             dailyRate: 0,
-            userInfo: {
-                name: '',
-                email: '',
-                avatar: ''
-            }
+            userInfo: { name: '', email: '', avatar: '' }
         };
 
-        // ========================================
-        // DOM ELEMENTS
-        // ========================================
-        
         const hamburgerBtn = document.getElementById("hamburger-btn");
         const navbar = document.getElementById("navbar");
         const overlay = document.getElementById("overlay");
@@ -1051,50 +1166,30 @@
         const modalOverlay = document.getElementById("modalOverlay");
         const confirmPaymentBtn = document.getElementById("confirmPaymentBtn");
         const cancelPaymentBtn = document.getElementById("cancelPaymentBtn");
-        const paymentLoading = document.getElementById("paymentLoading");
         const notification = document.getElementById("notification");
-        const notificationTitle = document.getElementById("notificationTitle");
-        const notificationMessage = document.getElementById("notificationMessage");
         const dashboard = document.getElementById("dashboard");
-        const userInfo = document.getElementById("userInfo");
-        const userAvatar = document.getElementById("userAvatar");
-        const userName = document.getElementById("userName");
-        const userEmail = document.getElementById("userEmail");
         const loginRedirectNotification = document.getElementById("loginRedirectNotification");
         const loginRedirectOverlay = document.getElementById("loginRedirectOverlay");
         const redirectCountdown = document.getElementById("redirectCountdown");
         const continueToLogin = document.getElementById("continueToLogin");
         const cancelRedirect = document.getElementById("cancelRedirect");
-        // <CHANGE> Added login banner elements
         const loginBanner = document.getElementById("loginBanner");
         const mainContent = document.getElementById("mainContent");
         
         let currentBot = null;
         let redirectTimer = null;
 
-        // ========================================
-        // NAVIGATION
-        // ========================================
-        
-        // Toggle navbar
+        // Navigation
         hamburgerBtn.addEventListener("click", () => {
             navbar.classList.toggle("active");
             overlay.classList.toggle("active");
-            
-            const isActive = navbar.classList.contains("active");
-            hamburgerBtn.setAttribute("aria-expanded", isActive);
-            navbar.setAttribute("aria-hidden", !isActive);
         });
         
-        // Close navbar when clicking overlay
         overlay.addEventListener("click", () => {
             navbar.classList.remove("active");
             overlay.classList.remove("active");
-            hamburgerBtn.setAttribute("aria-expanded", "false");
-            navbar.setAttribute("aria-hidden", "true");
         });
 
-        // Logout
         document.getElementById("logout").addEventListener("click", (e) => {
             e.preventDefault();
             userData.isLoggedIn = false;
@@ -1104,370 +1199,244 @@
             showNotification("Logged Out", "You have been successfully logged out.");
         });
 
-        // ========================================
-        // INITIALIZATION
-        // ========================================
-        
-        // Initialize the app
         function init() {
-            // Load user data from localStorage
             const savedData = localStorage.getItem("flipMarketUserData");
             if (savedData) {
                 userData = JSON.parse(savedData);
             }
-            
-            // Check if user is logged in
             checkAuthStatus();
-            
-            // Render bot cards (always show bots)
             renderBotCards();
-            
-            // Start mining simulation
             startMiningSimulation();
         }
 
-        // ========================================
-        // AUTHENTICATION FUNCTIONS
-        // ========================================
-        
-        // <CHANGE> Modified checkAuthStatus to show/hide login banner
         function checkAuthStatus() {
             if (userData.isLoggedIn) {
-                // Hide login banner
                 loginBanner.classList.remove("show");
                 mainContent.classList.remove("with-banner");
-                
-                // Show user info in navbar
-                userInfo.style.display = "block";
-                userAvatar.textContent = userData.userInfo.name.charAt(0).toUpperCase();
-                userName.textContent = userData.userInfo.name;
-                userEmail.textContent = userData.userInfo.email;
-                
-                // Show logout link, hide login link
+                document.getElementById("userInfo").style.display = "block";
+                document.getElementById("userAvatar").textContent = userData.userInfo.name.charAt(0).toUpperCase();
+                document.getElementById("userName").textContent = userData.userInfo.name;
+                document.getElementById("userEmail").textContent = userData.userInfo.email;
                 document.getElementById("logout").style.display = "block";
                 document.getElementById("loginLink").style.display = "none";
-                
-                // Show dashboard
                 dashboard.style.display = "block";
-                
-                // Update dashboard
                 updateDashboard();
             } else {
-                // Show login banner
                 loginBanner.classList.add("show");
                 mainContent.classList.add("with-banner");
-                
-                // Hide user info
-                userInfo.style.display = "none";
-                
-                // Show login link, hide logout link
+                document.getElementById("userInfo").style.display = "none";
                 document.getElementById("logout").style.display = "none";
                 document.getElementById("loginLink").style.display = "block";
-                
-                // Hide dashboard
                 dashboard.style.display = "none";
             }
         }
 
-        // Update dashboard
         function updateDashboard() {
             document.getElementById("balance").textContent = `$${userData.balance.toFixed(2)}`;
             document.getElementById("bot-count").textContent = userData.bots.length;
             document.getElementById("total-claimed").textContent = `$${userData.totalClaimed.toFixed(2)}`;
-            
-            // Calculate daily rate
             let dailyRate = 0;
             userData.bots.forEach(bot => {
-                if (bot.active) {
-                    dailyRate += bot.dailyEarning;
-                }
+                if (bot.active) dailyRate += bot.dailyEarning;
             });
             userData.dailyRate = dailyRate;
             document.getElementById("daily-rate").textContent = `$${dailyRate.toFixed(2)}/day`;
-            
-            // Save updated data
             saveUserData();
         }
 
-        // Save user data to localStorage
         function saveUserData() {
             localStorage.setItem("flipMarketUserData", JSON.stringify(userData));
         }
 
-        // ========================================
-        // UI FUNCTIONS
-        // ========================================
-        
-        // <CHANGE> Modified renderBotCards to always show all bots
         function renderBotCards() {
             botContainer.innerHTML = "";
-            
-            // Always show all bot types
             botTypes.forEach(botType => {
-                // Check if user owns this bot
                 const userBot = userData.bots.find(b => b.id === botType.id);
-                
                 const card = document.createElement("div");
                 card.className = `bot-card ${userBot && userBot.active ? "active" : ""}`;
                 
-                // Calculate days left
-                let daysLeft = 30;
-                let earnings = 0;
-                let progress = 0;
-                
+                let daysLeft = 30, earnings = 0, progress = 0;
                 if (userBot) {
                     const now = new Date();
                     const timeDiff = now - new Date(userBot.purchaseDate);
                     const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-                    daysLeft = Math.max(0, 30 - daysDiff);
-                    
-                    // Calculate earnings
-                    earnings = Math.min(userBot.dailyEarning * daysDiff, userBot.totalEarning);
-                    progress = Math.min(100, (earnings / userBot.totalEarning) * 100);
+                    daysLeft = Math.max(30 - daysDiff, 0);
+                    earnings = Math.min(userBot.claimed + (daysDiff * botType.dailyEarning), botType.totalEarning);
+                    progress = (earnings / botType.totalEarning) * 100;
                 }
                 
                 card.innerHTML = `
-                    <div class="mining-indicator ${userBot && userBot.active ? "active" : ""}"></div>
+                    <div class="mining-indicator ${userBot && userBot.active ? 'active' : ''}"></div>
                     <div class="bot-image-container">
-                        <img src="${botType.image}" alt="${botType.name}" class="bot-image" />
-                        <div class="bot-badge">${userBot ? "ACTIVE" : "NEW"}</div>
+                        <img class="bot-image" src="${botType.image}" alt="${botType.name}">
+                        <div class="bot-badge">${userBot ? 'OWNED' : 'AVAILABLE'}</div>
                     </div>
-                    <h3 class="bot-title">${botType.name}</h3>
-                    <div class="bot-details">
-                        <div class="bot-detail">
-                            <span class="bot-detail-label">Mining Power:</span>
-                            <span class="bot-detail-value">$${botType.dailyEarning.toFixed(2)}/day</span>
-                        </div>
-                        <div class="bot-detail">
-                            <span class="bot-detail-label">Total Potential:</span>
-                            <span class="bot-detail-value">$${botType.totalEarning.toFixed(2)}</span>
-                        </div>
-                        <div class="bot-detail">
-                            <span class="bot-detail-label">Contract Duration:</span>
-                            <span class="bot-detail-value countdown">30 days</span>
-                        </div>
-                    </div>
-                    
-                    ${userBot ? `
-                        <div class="earnings-progress">
-                            <div class="earnings-bar" style="width: ${progress}%"></div>
-                        </div>
-                        <div class="bot-stats">
-                            <div class="stat-item">
-                                <div class="stat-label">Mined</div>
-                                <div class="stat-value">$${earnings.toFixed(2)}</div>
+                    <div class="bot-card-content">
+                        <h3 class="bot-title">${botType.name}</h3>
+                        <div class="bot-details">
+                            <div class="bot-detail">
+                                <span class="bot-detail-label">Price:</span>
+                                <span class="bot-detail-value">$${botType.price}</span>
                             </div>
-                            <div class="stat-item">
-                                <div class="stat-label">Remaining</div>
-                                <div class="stat-value">$${(botType.totalEarning - earnings).toFixed(2)}</div>
+                            <div class="bot-detail">
+                                <span class="bot-detail-label">Daily Earning:</span>
+                                <span class="bot-detail-value">$${botType.dailyEarning}/day</span>
+                            </div>
+                            <div class="bot-detail">
+                                <span class="bot-detail-label">Total Earning:</span>
+                                <span class="bot-detail-value">$${botType.totalEarning}</span>
                             </div>
                         </div>
-                        <div class="bot-actions">
-                            <button class="claim-btn ${earnings > 0 ? "" : "disabled"}" data-id="${botType.id}" ${earnings > 0 ? "" : "disabled"}>
-                                ${earnings > 0 ? "Claim Earnings" : "No Earnings"}
-                            </button>
-                        </div>
-                    ` : `
-                        <div class="bot-actions">
-                            <button class="buy-btn" data-id="${botType.id}">Buy for $${botType.price}</button>
-                        </div>
-                    `}
+                        ${userBot ? `
+                            <div class="earnings-progress">
+                                <div class="earnings-bar" style="width: ${progress}%"></div>
+                            </div>
+                            <div class="bot-stats">
+                                <div class="stat-item">
+                                    <div class="stat-label">Earnings</div>
+                                    <div class="stat-value">$${earnings.toFixed(2)}</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Days Left</div>
+                                    <div class="stat-value">${daysLeft}</div>
+                                </div>
+                            </div>
+                            <div class="bot-actions">
+                                <button class="claim-btn" data-bot-id="${botType.id}" ${earnings <= userBot.claimed ? 'disabled' : ''}>
+                                    <i class="fas fa-coins"></i> Claim Earnings
+                                </button>
+                            </div>
+                        ` : `
+                            <div class="bot-actions">
+                                <button class="buy-btn" data-bot-id="${botType.id}">
+                                    <i class="fas fa-shopping-cart"></i> Buy Bot
+                                </button>
+                            </div>
+                        `}
+                    </div>
                 `;
-                
                 botContainer.appendChild(card);
             });
-            
-            // Add event listeners to buttons
+
             document.querySelectorAll(".buy-btn").forEach(btn => {
-                btn.addEventListener("click", function() {
-                    // <CHANGE> Check login status when buy button is clicked
+                btn.addEventListener("click", (e) => {
+                    const botId = parseInt(e.currentTarget.dataset.botId);
                     if (!userData.isLoggedIn) {
-                        showLoginRedirectNotification();
-                        return;
+                        showLoginRedirect();
+                    } else {
+                        buyBot(botId);
                     }
-                    
-                    const botId = parseInt(this.getAttribute("data-id"));
-                    currentBot = botTypes.find(b => b.id === botId);
-                    showPaymentModal();
                 });
             });
-            
-            document.querySelectorAll(".claim-btn:not([disabled])").forEach(btn => {
-                btn.addEventListener("click", function() {
-                    // <CHANGE> Check login status when claim button is clicked
+
+            document.querySelectorAll(".claim-btn").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    const botId = parseInt(e.currentTarget.dataset.botId);
                     if (!userData.isLoggedIn) {
-                        showLoginRedirectNotification();
-                        return;
+                        showLoginRedirect();
+                    } else {
+                        claimEarnings(botId);
                     }
-                    
-                    const botId = parseInt(this.getAttribute("data-id"));
-                    claimEarnings(botId);
                 });
             });
         }
 
-        // Show payment modal
-        function showPaymentModal() {
+        function buyBot(botId) {
+            currentBot = botTypes.find(b => b.id === botId);
             paymentModal.classList.add("active");
             modalOverlay.classList.add("active");
-            paymentLoading.style.display = "none";
-            confirmPaymentBtn.style.display = "block";
         }
 
-        // Hide payment modal
-        function hidePaymentModal() {
+        confirmPaymentBtn.addEventListener("click", () => {
+            if (currentBot) {
+                userData.bots.push({
+                    id: currentBot.id,
+                    purchaseDate: new Date().toISOString(),
+                    claimed: 0,
+                    active: true
+                });
+                saveUserData();
+                paymentModal.classList.remove("active");
+                modalOverlay.classList.remove("active");
+                showNotification("Success", `${currentBot.name} purchased successfully!`);
+                renderBotCards();
+                updateDashboard();
+                currentBot = null;
+            }
+        });
+
+        cancelPaymentBtn.addEventListener("click", () => {
             paymentModal.classList.remove("active");
             modalOverlay.classList.remove("active");
             currentBot = null;
+        });
+
+        function claimEarnings(botId) {
+            const userBot = userData.bots.find(b => b.id === botId);
+            const botType = botTypes.find(b => b.id === botId);
+            if (userBot && botType) {
+                const now = new Date();
+                const timeDiff = now - new Date(userBot.purchaseDate);
+                const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                const earnings = Math.min(daysDiff * botType.dailyEarning, botType.totalEarning);
+                const claimAmount = earnings - userBot.claimed;
+                
+                if (claimAmount > 0) {
+                    userData.balance += claimAmount;
+                    userData.totalClaimed += claimAmount;
+                    userBot.claimed = earnings;
+                    saveUserData();
+                    showNotification("Claimed", `Successfully claimed $${claimAmount.toFixed(2)}!`);
+                    renderBotCards();
+                    updateDashboard();
+                }
+            }
         }
 
-        // Show login redirect notification
-        function showLoginRedirectNotification() {
+        function showLoginRedirect() {
             loginRedirectNotification.classList.add("active");
             loginRedirectOverlay.classList.add("active");
-            
-            // Start countdown
-            let secondsLeft = 5;
-            redirectCountdown.textContent = secondsLeft;
+            let countdown = 5;
+            redirectCountdown.textContent = countdown;
             
             redirectTimer = setInterval(() => {
-                secondsLeft--;
-                redirectCountdown.textContent = secondsLeft;
-                
-                if (secondsLeft <= 0) {
+                countdown--;
+                redirectCountdown.textContent = countdown;
+                if (countdown <= 0) {
                     clearInterval(redirectTimer);
-                    // Redirect to login page
-                    window.location.href = "index.html";
+                    window.location.href = "login.html";
                 }
             }, 1000);
         }
 
-        // Hide login redirect notification
-        function hideLoginRedirectNotification() {
+        continueToLogin.addEventListener("click", () => {
+            clearInterval(redirectTimer);
+            window.location.href = "login.html";
+        });
+
+        cancelRedirect.addEventListener("click", () => {
+            clearInterval(redirectTimer);
             loginRedirectNotification.classList.remove("active");
             loginRedirectOverlay.classList.remove("active");
-            
-            if (redirectTimer) {
-                clearInterval(redirectTimer);
-                redirectTimer = null;
-            }
-        }
+        });
 
-        // Show notification
         function showNotification(title, message) {
-            notificationTitle.textContent = title;
-            notificationMessage.textContent = message;
+            document.getElementById("notificationTitle").textContent = title;
+            document.getElementById("notificationMessage").textContent = message;
             notification.classList.add("show");
-            
-            setTimeout(() => {
-                notification.classList.remove("show");
-            }, 4000);
+            setTimeout(() => notification.classList.remove("show"), 4000);
         }
 
-        // ========================================
-        // BOT FUNCTIONS
-        // ========================================
-        
-        // Confirm payment
-        confirmPaymentBtn.addEventListener("click", async function() {
-            // Show loading
-            paymentLoading.style.display = "block";
-            confirmPaymentBtn.style.display = "none";
-            
-            // Simulate payment processing
-            setTimeout(() => {
-                // Add bot to user's bots
-                const newBot = {
-                    ...currentBot,
-                    purchaseDate: new Date().toISOString(),
-                    active: true,
-                    totalClaimed: 0
-                };
-                
-                userData.bots.push(newBot);
-                
-                // Update dashboard
-                updateDashboard();
-                
-                // Re-render bot cards
-                renderBotCards();
-                
-                // Hide modal
-                hidePaymentModal();
-                
-                // Show notification
-                showNotification("Purchase Successful", `Your ${currentBot.name} is now mining!`);
-            }, 2000);
-        });
-
-        // Cancel payment
-        cancelPaymentBtn.addEventListener("click", hidePaymentModal);
-        modalOverlay.addEventListener("click", hidePaymentModal);
-
-        // Continue to login button
-        continueToLogin.addEventListener("click", () => {
-            window.location.href = "index.html";
-        });
-
-        // Cancel redirect button
-        cancelRedirect.addEventListener("click", hideLoginRedirectNotification);
-        loginRedirectOverlay.addEventListener("click", hideLoginRedirectNotification);
-
-        // Claim earnings
-        async function claimEarnings(botId) {
-            const bot = userData.bots.find(b => b.id === botId);
-            if (!bot) return;
-            
-            const now = new Date();
-            const timeDiff = now - new Date(bot.purchaseDate);
-            const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-            const earnings = Math.min(bot.dailyEarning * daysDiff, bot.totalEarning) - bot.totalClaimed;
-            
-            if (earnings <= 0) {
-                showNotification("No Earnings", "You don't have any earnings to claim yet.");
-                return;
-            }
-            
-            // Update user data
-            userData.balance += earnings;
-            bot.totalClaimed += earnings;
-            userData.totalClaimed += earnings;
-            
-            // Check if bot has expired
-            if (bot.totalClaimed >= bot.totalEarning) {
-                bot.active = false;
-                showNotification("Bot Expired", "Your mining bot has completed its cycle.");
-            }
-            
-            // Update dashboard
-            updateDashboard();
-            
-            // Re-render bot cards
-            renderBotCards();
-            
-            // Show notification
-            showNotification("Earnings Claimed", `You've successfully claimed $${earnings.toFixed(2)}!`);
-        }
-
-        // ========================================
-        // MINING SIMULATION
-        // ========================================
-        
-        // Start mining simulation (update earnings in real-time)
         function startMiningSimulation() {
             setInterval(() => {
-                if (userData.isLoggedIn && userData.bots.length > 0) {
+                if (userData.isLoggedIn) {
                     renderBotCards();
+                    updateDashboard();
                 }
-            }, 60000); // Update every minute
+            }, 60000);
         }
 
-        // ========================================
-        // START APPLICATION
-        // ========================================
-        
-        // Initialize when DOM is ready
-        document.addEventListener("DOMContentLoaded", init);
+        init();
     </script>
 </body>
 </html>

@@ -7,10 +7,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     /* Reset & base */
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
       color: #e0e0e0;
       overflow-x: hidden;
       min-height: 100vh;
@@ -24,9 +29,10 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: url('https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
-      opacity: 0.05;
-      z-index: -1;
+      background: radial-gradient(circle at 20% 50%, rgba(159, 84, 255, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(46, 255, 191, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
     }
 
     /* Brand bar */
@@ -37,15 +43,17 @@
       z-index: 11001;
       user-select: none;
     }
+    
     #brand-bar h1 {
       color: #9f54ff;
       font-size: 1.8rem;
       margin: 0;
       font-weight: bold;
-      transition: color 0.3s ease, text-shadow 0.3s ease;
+      transition: color 0.3s ease;
       display: flex;
       align-items: center;
       gap: 10px;
+      text-shadow: 0 0 20px rgba(159, 84, 255, 0.5);
     }
     
     #brand-bar h1 i {
@@ -60,19 +68,24 @@
       font-size: 1.5rem;
       cursor: pointer;
       color: #9f54ff;
-      background: transparent;
-      border: none;
-      padding: 8px;
+      background: rgba(159, 84, 255, 0.1);
+      border: 1px solid rgba(159, 84, 255, 0.3);
+      padding: 10px 12px;
       margin: 0;
       line-height: 1;
-      transition: color 0.3s ease;
+      transition: all 0.3s ease;
       z-index: 11001;
-      border-radius: 8px;
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
     }
+    
     #hamburger-btn:hover {
       color: #2effbf;
-      background: rgba(159, 84, 255, 0.1);
+      background: rgba(46, 255, 191, 0.1);
+      border-color: rgba(46, 255, 191, 0.3);
+      transform: scale(1.05);
     }
+    
     #hamburger-btn:focus {
       outline: none;
     }
@@ -84,12 +97,14 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.8);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease;
       z-index: 10500;
+      backdrop-filter: blur(5px);
     }
+    
     #overlay.active {
       opacity: 1;
       pointer-events: auto;
@@ -103,7 +118,7 @@
       width: 80vw;
       max-width: 320px;
       height: 100vh;
-      background: rgba(10, 10, 10, 0.95);
+      background: rgba(15, 12, 41, 0.95);
       backdrop-filter: blur(20px);
       padding: 80px 20px 20px;
       box-sizing: border-box;
@@ -112,8 +127,9 @@
       z-index: 11000;
       transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       overflow-y: auto;
-      border-left: 1px solid rgba(159, 84, 255, 0.2);
+      border-left: 1px solid rgba(159, 84, 255, 0.3);
     }
+    
     .navbar.active {
       right: 0;
     }
@@ -132,8 +148,8 @@
       color: #ddd;
       text-decoration: none;
       font-weight: 600;
-      padding: 12px 16px;
-      border-radius: 10px;
+      padding: 14px 18px;
+      border-radius: 12px;
       background: rgba(255, 255, 255, 0.05);
       transition: all 0.3s ease;
       display: flex;
@@ -142,31 +158,37 @@
       opacity: 0;
       transform: translateX(20px);
       pointer-events: none;
+      border: 1px solid transparent;
     }
     
     ul.nav-links li a i {
       width: 20px;
       text-align: center;
+      font-size: 1.1rem;
     }
     
     ul.nav-links li a:hover,
     ul.nav-links li a.active {
-      background: linear-gradient(135deg, #9f54ff, #2effbf);
-      color: #000;
+      background: linear-gradient(135deg, rgba(159, 84, 255, 0.3), rgba(46, 255, 191, 0.3));
+      color: #2effbf;
       transform: translateX(5px);
+      border-color: rgba(46, 255, 191, 0.5);
+      box-shadow: 0 5px 15px rgba(159, 84, 255, 0.3);
     }
+    
     .navbar.active ul.nav-links li a {
       animation: slideFadeIn 0.3s forwards;
     }
-    ul.nav-links li:nth-child(1) a { animation-delay: 0.3s; }
-    ul.nav-links li:nth-child(2) a { animation-delay: 0.45s; }
-    ul.nav-links li:nth-child(3) a { animation-delay: 0.6s; }
-    ul.nav-links li:nth-child(4) a { animation-delay: 0.75s; }
-    ul.nav-links li:nth-child(5) a { animation-delay: 0.9s; }
-    ul.nav-links li:nth-child(6) a { animation-delay: 1.05s; }
-    ul.nav-links li:nth-child(7) a { animation-delay: 1.2s; }
-    ul.nav-links li:nth-child(8) a { animation-delay: 1.35s; }
-    ul.nav-links li:nth-child(9) a { animation-delay: 1.5s; }
+    
+    ul.nav-links li:nth-child(1) a { animation-delay: 0.05s; }
+    ul.nav-links li:nth-child(2) a { animation-delay: 0.1s; }
+    ul.nav-links li:nth-child(3) a { animation-delay: 0.15s; }
+    ul.nav-links li:nth-child(4) a { animation-delay: 0.2s; }
+    ul.nav-links li:nth-child(5) a { animation-delay: 0.25s; }
+    ul.nav-links li:nth-child(6) a { animation-delay: 0.3s; }
+    ul.nav-links li:nth-child(7) a { animation-delay: 0.35s; }
+    ul.nav-links li:nth-child(8) a { animation-delay: 0.4s; }
+    ul.nav-links li:nth-child(9) a { animation-delay: 0.45s; }
 
     @keyframes slideFadeIn {
       to {
@@ -178,51 +200,67 @@
 
     /* Main content */
     .main-content {
-      padding-top: 80px;
+      padding-top: 100px;
+      padding-bottom: 60px;
       min-height: 100vh;
       max-width: 1200px;
       margin: 0 auto;
       padding-left: 20px;
       padding-right: 20px;
-    }
-    
-    h1 {
-      text-align: center;
-      color: #9f54ff;
-      font-size: 2.5rem;
-      margin: 30px 0;
       position: relative;
-      display: inline-block;
-      width: 100%;
+      z-index: 1;
     }
     
-    h1::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      height: 3px;
-      background: linear-gradient(90deg, #9f54ff, #2effbf);
-      border-radius: 2px;
+    .page-title {
+      text-align: center;
+      color: #fff;
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #9f54ff, #2effbf);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(159, 84, 255, 0.3);
+    }
+    
+    .page-subtitle {
+      text-align: center;
+      color: #aaa;
+      font-size: 1.1rem;
+      margin-bottom: 40px;
     }
 
     /* Referral Link Section */
     .referral-section {
-      background: rgba(26, 26, 46, 0.6);
-      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
       border-radius: 20px;
-      padding: 30px;
+      padding: 35px;
       margin-bottom: 40px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(159, 84, 255, 0.2);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(159, 84, 255, 0.3);
       transition: all 0.3s ease;
     }
     
     .referral-section:hover {
       transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(159, 84, 255, 0.2);
+      box-shadow: 0 15px 50px rgba(159, 84, 255, 0.4);
+      border-color: rgba(46, 255, 191, 0.5);
+    }
+    
+    .section-title {
+      color: #9f54ff;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .section-title i {
+      color: #2effbf;
     }
     
     .referral-link-container {
@@ -234,47 +272,58 @@
     
     .referral-link {
       flex: 1;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      padding: 15px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(46, 255, 191, 0.3);
+      border-radius: 12px;
+      padding: 18px;
       color: #2effbf;
-      font-family: monospace;
-      font-size: 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
       word-break: break-all;
       transition: all 0.3s ease;
+    }
+    
+    .referral-link:hover {
+      background: rgba(0, 0, 0, 0.5);
+      border-color: rgba(46, 255, 191, 0.5);
     }
     
     .copy-btn {
       background: linear-gradient(135deg, #9f54ff, #2effbf);
       color: #000;
       border: none;
-      border-radius: 10px;
-      padding: 15px 20px;
-      font-weight: 600;
+      border-radius: 12px;
+      padding: 18px 25px;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      font-size: 1rem;
+      white-space: nowrap;
     }
     
     .copy-btn:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(159, 84, 255, 0.3);
+      box-shadow: 0 10px 25px rgba(159, 84, 255, 0.5);
+    }
+    
+    .copy-btn:active {
+      transform: translateY(-1px);
     }
     
     .referral-info {
-      margin-top: 20px;
+      margin-top: 30px;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
     }
     
     .info-card {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(0, 0, 0, 0.3);
       border-radius: 15px;
-      padding: 20px;
+      padding: 25px;
       border: 1px solid rgba(255, 255, 255, 0.1);
       transition: all 0.3s ease;
       text-align: center;
@@ -282,41 +331,48 @@
     
     .info-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(46, 255, 191, 0.1);
-      border-color: rgba(46, 255, 191, 0.3);
+      box-shadow: 0 10px 30px rgba(46, 255, 191, 0.2);
+      border-color: rgba(46, 255, 191, 0.4);
+      background: rgba(0, 0, 0, 0.5);
     }
     
     .info-card i {
-      font-size: 2rem;
+      font-size: 2.5rem;
       color: #2effbf;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      text-shadow: 0 0 20px rgba(46, 255, 191, 0.5);
     }
     
     .info-card h3 {
       color: #9f54ff;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+      font-weight: 600;
     }
     
     .info-card p {
-      color: #ddd;
+      color: #ccc;
       margin: 0;
+      line-height: 1.5;
+      font-size: 0.95rem;
     }
 
     /* Referred Users Table */
     .referred-users {
-      background: rgba(26, 26, 46, 0.6);
-      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
       border-radius: 20px;
-      padding: 30px;
+      padding: 35px;
       margin-bottom: 40px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(159, 84, 255, 0.2);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(159, 84, 255, 0.3);
       transition: all 0.3s ease;
     }
     
     .referred-users:hover {
       transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(159, 84, 255, 0.2);
+      box-shadow: 0 15px 50px rgba(159, 84, 255, 0.4);
+      border-color: rgba(46, 255, 191, 0.5);
     }
     
     table {
@@ -326,30 +382,53 @@
     }
     
     th, td {
-      padding: 15px;
+      padding: 18px;
       text-align: left;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     th {
       color: #2effbf;
-      font-weight: 600;
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    td {
+      color: #ddd;
     }
     
     tr:hover {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(159, 84, 255, 0.1);
+    }
+    
+    tbody tr {
+      transition: all 0.2s ease;
     }
     
     .empty-state {
       text-align: center;
-      padding: 40px;
+      padding: 60px 20px;
       color: #aaa;
     }
     
     .empty-state i {
-      font-size: 3rem;
+      font-size: 4rem;
       color: #9f54ff;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
+      opacity: 0.7;
+    }
+    
+    .empty-state h3 {
+      color: #ddd;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .empty-state p {
+      color: #999;
+      font-size: 1rem;
     }
     
     /* Loading State */
@@ -357,12 +436,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 40px;
+      padding: 60px;
     }
     
     .spinner {
-      width: 40px;
-      height: 40px;
+      width: 50px;
+      height: 50px;
       border: 4px solid rgba(159, 84, 255, 0.2);
       border-radius: 50%;
       border-top-color: #9f54ff;
@@ -378,17 +457,17 @@
       position: fixed;
       top: 100px;
       right: 20px;
-      background: rgba(26, 26, 46, 0.95);
-      backdrop-filter: blur(20px);
+      background: rgba(15, 12, 41, 0.95);
+      backdrop-filter: blur(30px);
       border-left: 4px solid #2effbf;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      padding: 20px 25px;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
       transform: translateX(120%);
       transition: transform 0.3s ease;
       z-index: 12000;
       max-width: 350px;
-      border: 1px solid rgba(46, 255, 191, 0.2);
+      border: 1px solid rgba(46, 255, 191, 0.3);
     }
     
     .notification.show {
@@ -400,11 +479,15 @@
       margin-bottom: 8px;
       color: #2effbf;
       font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     
     .notification-message {
       color: #ddd;
-      line-height: 1.4;
+      line-height: 1.5;
+      font-size: 0.95rem;
     }
     
     /* Footer */
@@ -412,12 +495,24 @@
       text-align: center;
       padding: 30px 20px;
       color: #888;
-      background: rgba(10, 10, 10, 0.5);
-      border-top: 1px solid rgba(159, 84, 255, 0.1);
+      background: rgba(15, 12, 41, 0.8);
+      border-top: 1px solid rgba(159, 84, 255, 0.2);
+      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 1;
+    }
+    
+    footer p {
+      margin: 0;
+      font-size: 0.95rem;
     }
     
     /* Responsive */
     @media (max-width: 768px) {
+      .page-title {
+        font-size: 2rem;
+      }
+      
       .referral-link-container {
         flex-direction: column;
       }
@@ -427,19 +522,32 @@
         justify-content: center;
       }
       
+      .referral-section,
+      .referred-users {
+        padding: 25px;
+      }
+      
       table {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
       }
       
       th, td {
-        padding: 10px;
+        padding: 12px 8px;
+      }
+      
+      .info-card {
+        padding: 20px;
       }
     }
     
     @media (max-width: 400px) {
       .navbar {
-        width: 55vw;
+        width: 85vw;
         max-width: none;
+      }
+      
+      #brand-bar h1 {
+        font-size: 1.5rem;
       }
     }
   </style>
@@ -465,15 +573,13 @@
   <nav class="navbar" id="navbar" aria-hidden="true">
     <ul class="nav-links">
       <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
-      <li><a href="../Components/account.html"><i class="fas fa-user"></i> My Account</a></li>
-      <li><a href="../Components/bots.html"><i class="fas fa-robot"></i> Bots</a></li>
-      <li><a href="../Components/"><i class="fas fa-cog"></i> Settings</a></li>
-      <li><a href="../Components/Refferals.html" class="active"><i class="fas fa-users"></i> Referrals</a></li>
-      <li><a href="../Components/about.html"><i class="fas fa-info-circle"></i> About</a></li>
-      <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
-      <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ / Help</a></li>
-      <li>
-        <a href="https://emannuh254.github.io/login-page/index.html" id="logout">
+      <li><a href="account.html"><i class="fas fa-user"></i> My Account</a></li>
+      <li><a href="bots.html"><i class="fas fa-robot"></i> Bots</a></li>
+      <li><a href="referrals.html" class="active"><i class="fas fa-users"></i> Referrals</a></li>
+      <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+      <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+        <li>
+        <a href="#" id="logout">
           <i class="fas fa-sign-out-alt"></i> Logout
         </a>
       </li>
@@ -482,15 +588,16 @@
 
   <!-- Main Content -->
   <div class="main-content">
-    <h1>Referral Program</h1>
+    <h1 class="page-title">Referral Program</h1>
+    <p class="page-subtitle">Share your link and earn rewards for every new user!</p>
     
     <!-- Referral Link Section -->
     <div class="referral-section">
-      <h2>Your Referral Link</h2>
+      <h2 class="section-title"><i class="fas fa-link"></i> Your Referral Link</h2>
       <div class="referral-link-container">
         <div class="referral-link" id="referralLink">Loading...</div>
         <button class="copy-btn" onclick="copyReferral()">
-          <i class="fas fa-copy"></i> Copy
+          <i class="fas fa-copy"></i> Copy Link
         </button>
       </div>
       
@@ -515,7 +622,7 @@
     
     <!-- Referred Users Section -->
     <div class="referred-users">
-      <h2>Referred Users</h2>
+      <h2 class="section-title"><i class="fas fa-users"></i> Referred Users</h2>
       <div id="tableContainer">
         <div class="loading">
           <div class="spinner"></div>
@@ -526,7 +633,7 @@
 
   <!-- Notification -->
   <div class="notification" id="notification">
-    <div class="notification-title" id="notificationTitle">Success</div>
+    <div class="notification-title" id="notificationTitle"><i class="fas fa-check-circle"></i> Success</div>
     <div class="notification-message" id="notificationMessage">Your action was completed successfully!</div>
   </div>
 
@@ -535,7 +642,14 @@
     <p>&copy; 2025 FlipMarket. All rights reserved.</p>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    // Initialize Supabase
+    const supabase = window.supabase.createClient(
+      'https://abbphkbterjqdvusjlku.supabase.co',
+      'sb_publishable_hvg3X2B1GSphXDiO9j5BQQ_rky36JgI'
+    );
+
     // Navbar functionality
     const hamburgerBtn = document.getElementById("hamburger-btn");
     const navbar = document.getElementById("navbar");
@@ -566,7 +680,18 @@
     overlay.addEventListener("click", closeNavbar);
 
     document.querySelectorAll(".nav-links li a").forEach(link => {
-      link.addEventListener("click", closeNavbar);
+      link.addEventListener("click", (e) => {
+        if (e.target.id !== 'logout') {
+          closeNavbar();
+        }
+      });
+    });
+
+    // Logout functionality
+    document.getElementById('logout').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await supabase.auth.signOut();
+      window.location.href = '../index.html';
     });
 
     // Show notification
@@ -575,7 +700,7 @@
       const notificationTitle = document.getElementById("notificationTitle");
       const notificationMessage = document.getElementById("notificationMessage");
       
-      notificationTitle.textContent = title;
+      notificationTitle.innerHTML = `<i class="fas fa-check-circle"></i> ${title}`;
       notificationMessage.textContent = message;
       notification.classList.add("show");
       
@@ -608,57 +733,39 @@
     // Load referral data
     async function loadReferralData() {
       try {
-        // In a real implementation, this would be an API call
-        // const res = await fetch("/api/referral-data");
-        // if (!res.ok) throw new Error("Network error");
-        // const data = await res.json();
+        // Check authentication
+        const { data: { session } } = await supabase.auth.getSession();
         
-        // Simulating API response with demo data
-        const data = {
-          user: {
-            name: "John Doe",
-            email: "john.doe@example.com"
-          },
-          referralLink: "https://flipmarket.com/signup?ref=123456789",
-          referredUsers: [
-            { name: "Alice Johnson", email: "alice@example.com", dateJoined: "2023-10-15" },
-            { name: "Bob Smith", email: "bob@example.com", dateJoined: "2023-10-20" },
-            { name: "Carol Williams", email: "carol@example.com", dateJoined: "2023-11-05" }
-          ]
-        };
-        
-        // Update user info
-        document.getElementById("referralLink").textContent = data.referralLink;
-        
-        // Update referred users table
-        const tableContainer = document.getElementById("tableContainer");
-        
-        if (data.referredUsers.length === 0) {
+        if (!session) {
+          // User not logged in - show empty state with message
+          const tableContainer = document.getElementById("tableContainer");
           tableContainer.innerHTML = `
             <div class="empty-state">
-              <i class="fas fa-user-friends"></i>
-              <h3>No referred users yet</h3>
-              <p>Share your referral link to start earning!</p>
+              <i class="fas fa-user-lock"></i>
+              <h3>Login Required</h3>
+              <p>Please login to view your referral data</p>
             </div>
           `;
-        } else {
-          tableContainer.innerHTML = `
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Date Joined</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${data.referredUsers
-                  .map(u => `<tr><td>${u.name}</td><td>${u.email}</td><td>${u.dateJoined}</td></tr>`)
-                  .join("")}
-              </tbody>
-            </table>
-          `;
+          document.getElementById("referralLink").textContent = "Login to get your referral link";
+          return;
         }
+        
+        // Generate referral link based on user ID
+        const userId = session.user.id;
+        const referralLink = `https://flipmarket.com/signup?ref=${userId}`;
+        document.getElementById("referralLink").textContent = referralLink;
+        
+        // In a real implementation, this would fetch from your database
+        // For now, showing demo data
+        const tableContainer = document.getElementById("tableContainer");
+        tableContainer.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-user-friends"></i>
+            <h3>No referred users yet</h3>
+            <p>Share your referral link to start earning!</p>
+          </div>
+        `;
+        
       } catch (error) {
         console.error("Error loading referral data:", error);
         const tableContainer = document.getElementById("tableContainer");
