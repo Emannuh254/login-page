@@ -7,16 +7,23 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     /* Reset & base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
       margin: 0;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-      color: #e0e0e0;
+      background: #0a0a0f;
+      color: #e8e8f0;
       overflow-x: hidden;
       min-height: 100vh;
       position: relative;
     }
     
+    /* Added animated gradient background */
     body::before {
       content: '';
       position: fixed;
@@ -24,55 +31,75 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: url('https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
-      opacity: 0.05;
-      z-index: -1;
+      background: radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 40% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+      animation: gradientMove 15s ease infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    @keyframes gradientMove {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.1); }
     }
 
     /* Brand bar */
     #brand-bar {
       position: fixed;
-      top: 15px;
-      left: 15px;
+      top: 20px;
+      left: 20px;
       z-index: 11001;
       user-select: none;
     }
+    
     #brand-bar h1 {
-      color: #9f54ff;
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       font-size: 1.8rem;
       margin: 0;
-      font-weight: bold;
-      transition: color 0.3s ease, text-shadow 0.3s ease;
+      font-weight: 800;
       display: flex;
       align-items: center;
       gap: 10px;
+      filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.4));
     }
     
     #brand-bar h1 i {
-      color: #2effbf;
+      background: linear-gradient(135deg, #3b82f6, #2effbf);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     /* Hamburger button */
     #hamburger-btn {
       position: fixed;
-      top: 15px;
-      right: 15px;
+      top: 20px;
+      right: 20px;
       font-size: 1.5rem;
       cursor: pointer;
-      color: #9f54ff;
-      background: transparent;
-      border: none;
-      padding: 8px;
+      color: #e8e8f0;
+      background: rgba(139, 92, 246, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      padding: 12px 14px;
       margin: 0;
       line-height: 1;
-      transition: color 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 11001;
-      border-radius: 8px;
+      border-radius: 12px;
     }
+    
     #hamburger-btn:hover {
-      color: #2effbf;
-      background: rgba(159, 84, 255, 0.1);
+      background: rgba(139, 92, 246, 0.2);
+      border-color: rgba(139, 92, 246, 0.5);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
     }
+    
     #hamburger-btn:focus {
       outline: none;
     }
@@ -84,12 +111,14 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease;
       z-index: 10500;
     }
+    
     #overlay.active {
       opacity: 1;
       pointer-events: auto;
@@ -100,20 +129,22 @@
       position: fixed;
       top: 0;
       right: -100%;
-      width: 80vw;
-      max-width: 320px;
+      width: 85vw;
+      max-width: 340px;
       height: 100vh;
-      background: rgba(10, 10, 10, 0.95);
-      backdrop-filter: blur(20px);
+      background: rgba(15, 15, 20, 0.98);
+      backdrop-filter: blur(30px);
       padding: 80px 20px 20px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
       z-index: 11000;
-      transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       overflow-y: auto;
-      border-left: 1px solid rgba(159, 84, 255, 0.2);
+      border-left: 1px solid rgba(139, 92, 246, 0.3);
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
     }
+    
     .navbar.active {
       right: 0;
     }
@@ -125,48 +156,60 @@
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
+    /* Improved navbar link styling */
     ul.nav-links li a {
-      color: #ddd;
+      color: #e8e8f0;
       text-decoration: none;
       font-weight: 600;
-      padding: 12px 16px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.05);
-      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       opacity: 0;
-      transform: translateX(20px);
+      transform: translateX(30px);
       pointer-events: none;
     }
     
     ul.nav-links li a i {
-      width: 20px;
+      width: 22px;
       text-align: center;
+      font-size: 1.1rem;
+      color: #8b5cf6;
     }
     
     ul.nav-links li a:hover,
     ul.nav-links li a.active {
-      background: linear-gradient(135deg, #9f54ff, #2effbf);
-      color: #000;
-      transform: translateX(5px);
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+      border-color: rgba(139, 92, 246, 0.4);
+      color: #ffffff;
+      transform: translateX(8px);
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
     }
+    
+    ul.nav-links li a:hover i,
+    ul.nav-links li a.active i {
+      color: #ec4899;
+    }
+    
     .navbar.active ul.nav-links li a {
-      animation: slideFadeIn 0.3s forwards;
+      animation: slideFadeIn 0.4s forwards;
     }
-    ul.nav-links li:nth-child(1) a { animation-delay: 0.3s; }
-    ul.nav-links li:nth-child(2) a { animation-delay: 0.45s; }
-    ul.nav-links li:nth-child(3) a { animation-delay: 0.6s; }
-    ul.nav-links li:nth-child(4) a { animation-delay: 0.75s; }
-    ul.nav-links li:nth-child(5) a { animation-delay: 0.9s; }
-    ul.nav-links li:nth-child(6) a { animation-delay: 1.05s; }
-    ul.nav-links li:nth-child(7) a { animation-delay: 1.2s; }
-    ul.nav-links li:nth-child(8) a { animation-delay: 1.35s; }
-    ul.nav-links li:nth-child(9) a { animation-delay: 1.5s; }
+    
+    ul.nav-links li:nth-child(1) a { animation-delay: 0.1s; }
+    ul.nav-links li:nth-child(2) a { animation-delay: 0.15s; }
+    ul.nav-links li:nth-child(3) a { animation-delay: 0.2s; }
+    ul.nav-links li:nth-child(4) a { animation-delay: 0.25s; }
+    ul.nav-links li:nth-child(5) a { animation-delay: 0.3s; }
+    ul.nav-links li:nth-child(6) a { animation-delay: 0.35s; }
+    ul.nav-links li:nth-child(7) a { animation-delay: 0.4s; }
 
     @keyframes slideFadeIn {
       to {
@@ -181,123 +224,305 @@
       max-width: 900px;
       margin: 100px auto 2rem;
       padding: 0 20px;
+      position: relative;
+      z-index: 1;
     }
 
-    /* FAQ/About styles */
+    /* Improved heading styling */
+    .page-title {
+      text-align: center;
+      background: linear-gradient(135deg, #8b5cf6, #ec4899, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 2.8rem;
+      font-weight: 900;
+      margin-bottom: 40px;
+      filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.3));
+      letter-spacing: -0.5px;
+    }
+
+    /* Enhanced FAQ/About card styles */
     .faq {
-      background-color: rgba(26, 26, 46, 0.6);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(159, 84, 255, 0.2);
-      border-radius: 15px;
-      margin-bottom: 15px;
-      padding: 15px;
+      background: rgba(20, 20, 30, 0.7);
+      backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 20px;
+      margin-bottom: 18px;
+      padding: 22px 24px;
       cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
     }
+    
+    .faq::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(236, 72, 153, 0.05));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    
     .faq:hover {
-      background-color: rgba(26, 26, 46, 0.8);
-      transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(159, 84, 255, 0.2);
+      background: rgba(25, 25, 40, 0.85);
+      transform: translateY(-4px);
+      border-color: rgba(139, 92, 246, 0.4);
+      box-shadow: 0 12px 40px rgba(139, 92, 246, 0.25);
     }
+    
+    .faq:hover::before {
+      opacity: 1;
+    }
+    
     .faq-question {
-      font-weight: bold;
-      color: #2effbf;
+      font-weight: 700;
+      color: #ffffff;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-size: 1.15rem;
+      position: relative;
+      z-index: 1;
+      line-height: 1.5;
+    }
+    
+    .faq-question i.fa-chevron-down {
+      color: #8b5cf6;
+      font-size: 0.9rem;
+    }
+    
+    .faq-question > span:first-child {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .faq-question > span:first-child > i {
+      color: #ec4899;
       font-size: 1.2rem;
     }
-    .faq-question i {
-      color: #9f54ff;
-    }
+    
+    /* Improved answer text styling and readability */
     .faq-answer {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.4s ease, opacity 0.4s ease;
+      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
       opacity: 0;
-      margin-top: 10px;
-      color: #ddd;
-      line-height: 1.6;
+      margin-top: 0;
+      color: #c4c4d4;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+      font-size: 1rem;
     }
+    
     .faq-answer.show {
-      max-height: 1000px;
+      max-height: 2000px;
       opacity: 1;
+      margin-top: 18px;
     }
+    
     .icon {
-      transition: transform 0.3s ease;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+    
     .rotate {
       transform: rotate(180deg);
     }
     
     .faq-answer p {
-      margin-bottom: 15px;
+      margin-bottom: 16px;
+      text-align: justify;
+      color: #d0d0e0;
     }
     
     .faq-answer ul {
-      padding-left: 20px;
-      margin-bottom: 15px;
+      padding-left: 24px;
+      margin-bottom: 16px;
     }
     
     .faq-answer li {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      color: #c4c4d4;
     }
     
     .highlight {
-      color: #2effbf;
-      font-weight: 600;
+      color: #3b82f6;
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
     }
     
     .highlight-purple {
-      color: #9f54ff;
-      font-weight: 600;
+      color: #8b5cf6;
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
     }
     
     .faq-answer h3 {
-      color: #9f54ff;
-      margin-top: 20px;
-      margin-bottom: 10px;
+      color: #ec4899;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+      font-weight: 700;
     }
 
     /* Links */
     a {
-      color: #9f54ff;
+      color: #8b5cf6;
       text-decoration: none;
       transition: color 0.3s ease;
     }
     
     a:hover {
-      color: #2effbf;
+      color: #ec4899;
       text-decoration: underline;
+    }
+
+    /* Added floating WhatsApp button */
+    .whatsapp-float {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      color: #FFF;
+      border-radius: 50%;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      animation: pulse 2s infinite;
+    }
+    
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 40px rgba(37, 211, 102, 0.6);
+    }
+    
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4); }
+      50% { box-shadow: 0 8px 40px rgba(37, 211, 102, 0.6); }
+    }
+    
+    /* Added floating email button */
+    .email-float {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 105px;
+      right: 30px;
+      background: linear-gradient(135deg, #ea4335, #c5221f);
+      color: #FFF;
+      border-radius: 50%;
+      text-align: center;
+      font-size: 28px;
+      box-shadow: 0 8px 30px rgba(234, 67, 53, 0.4);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      animation: pulse-email 2s infinite;
+      animation-delay: 1s;
+    }
+    
+    .email-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 40px rgba(234, 67, 53, 0.6);
+    }
+    
+    @keyframes pulse-email {
+      0%, 100% { box-shadow: 0 8px 30px rgba(234, 67, 53, 0.4); }
+      50% { box-shadow: 0 8px 40px rgba(234, 67, 53, 0.6); }
     }
 
     /* Footer */
     footer {
       text-align: center;
-      padding: 20px;
+      padding: 30px 20px;
       font-size: 14px;
-      color: #aaa;
+      color: #888;
       position: relative;
-      margin-top: 40px;
-      border-top: 1px solid rgba(159, 84, 255, 0.1);
+      margin-top: 60px;
+      border-top: 1px solid rgba(139, 92, 246, 0.15);
+      z-index: 1;
     }
     
-    /* Responsive adjustment for very small screens */
+    /* Responsive adjustments */
     @media (max-width: 768px) {
+      #brand-bar h1 {
+        font-size: 1.5rem;
+      }
+      
+      .page-title {
+        font-size: 2rem;
+      }
+      
       .faq {
-        padding: 12px;
+        padding: 18px 20px;
       }
       
       .faq-question {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
+      }
+      
+      .faq-answer {
+        font-size: 0.95rem;
+      }
+      
+      .whatsapp-float,
+      .email-float {
+        width: 55px;
+        height: 55px;
+        font-size: 26px;
+        right: 20px;
+      }
+      
+      .email-float {
+        bottom: 90px;
+      }
+      
+      main {
+        margin: 80px auto 2rem;
       }
     }
     
-    @media (max-width: 400px) {
+    @media (max-width: 480px) {
+      #brand-bar {
+        top: 15px;
+        left: 15px;
+      }
+      
+      #hamburger-btn {
+        top: 15px;
+        right: 15px;
+      }
+      
       .navbar {
-        width: 55vw;
-        max-width: none;
+        width: 90vw;
+      }
+      
+      .page-title {
+        font-size: 1.8rem;
+      }
+      
+      main {
+        padding: 0 15px;
       }
     }
   </style>
@@ -323,22 +548,31 @@
   <nav class="navbar" id="navbar" aria-hidden="true">
     <ul class="nav-links">
       <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
-      <li><a href="../Components/account.html"><i class="fas fa-user"></i> My Account</a></li>
-      <li><a href="../Components/bots.html"><i class="fas fa-robot"></i> Bots</a></li>
-      <li><a href="../Components/settings.html"><i class="fas fa-cog"></i> Settings</a></li>
-      <li><a href="../Components/Refferals.html"><i class="fas fa-users"></i> Referrals</a></li>
-      <li><a href="../Components/about.html" class="active"><i class="fas fa-info-circle"></i> About</a></li>
-       <li>
-        <a href="https://emannuh254.github.io/login-page/index.html" id="logout">
+      <li><a href="account.html"><i class="fas fa-user"></i> My Account</a></li>
+      <li><a href="bots-improved.html"><i class="fas fa-robot"></i> Bots</a></li>
+      <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+      <li><a href="referrals.html"><i class="fas fa-users"></i> Referrals</a></li>
+      <li><a href="about.html" class="active"><i class="fas fa-info-circle"></i> About</a></li>
+      <li>
+        <a href="login.html" id="logout">
           <i class="fas fa-sign-out-alt"></i> Logout
         </a>
       </li>
     </ul>
   </nav>
 
+  <!-- Added floating support buttons -->
+  <div class="whatsapp-float" onclick="openWhatsApp()" aria-label="Contact us on WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </div>
+  
+  <div class="email-float" onclick="sendEmail()" aria-label="Send us an email">
+    <i class="fas fa-envelope"></i>
+  </div>
+
   <!-- Main Content -->
   <main>
-    <h1 style="text-align: center; color: #9f54ff; font-size: 2.5rem; margin-bottom: 30px;">About FlipMarket</h1>
+    <h1 class="page-title">About FlipMarket</h1>
     
     <div class="faq">
       <div class="faq-question">
@@ -391,21 +625,22 @@
         <h3>1. Earning Through Bots</h3>
         <p>When you purchase a bot:</p>
         <ul>
-          <li>The bot generates daily mining revenue</li>
-          <li>Earnings accumulate automatically in your account</li>
-          <li>You are required to collect your earnings daily to keep your balance updated</li>
+          <li>The bot generates daily mining revenue automatically</li>
+          <li>Earnings accumulate in your account balance</li>
+          <li>You must collect your earnings daily to keep your balance updated</li>
           <li>Higher-tier or exclusive bots generate increased daily returns</li>
         </ul>
-        <p>This ensures transparency and encourages active participation.</p>
+        <p>This ensures transparency and encourages active participation in the platform.</p>
         
         <h3>2. Earning Through Referrals</h3>
-        <p>FlipMarket rewards growth through partnerships.</p>
+        <p>FlipMarket rewards growth through strategic partnerships.</p>
         <ul>
-          <li>When you refer a new partner, you receive $2 USD instantly into your account</li>
+          <li>When you refer a new partner, you receive $2 USD instantly</li>
           <li>There is no limit to the number of partners you can refer</li>
           <li>Referral rewards are credited separately from bot earnings</li>
+          <li>Build passive income by growing your network</li>
         </ul>
-        <p>Both methods work together — users can earn through bots, referrals, or a combination of both.</p>
+        <p>Both methods work together — users can earn through bots, referrals, or a combination of both strategies.</p>
       </div>
     </div>
     
@@ -415,19 +650,21 @@
         <span class="icon"><i class="fas fa-chevron-down"></i></span>
       </div>
       <div class="faq-answer">
-        <p>FlipMarket features a VIP level system designed to reward active and committed users.</p>
+        <p>FlipMarket features a VIP level system designed to reward active and committed users with enhanced benefits and earning potential.</p>
         <p>You can increase your VIP level by:</p>
         <ul>
-          <li>Referring a certain number of users</li>
-          <li>Purchasing exclusive or higher-tier bots</li>
+          <li>Referring a certain number of active users to the platform</li>
+          <li>Purchasing exclusive or higher-tier mining bots</li>
+          <li>Maintaining consistent daily engagement and activity</li>
         </ul>
         <p>Higher VIP levels unlock:</p>
         <ul>
-          <li>Increased daily bot earnings</li>
-          <li>Access to premium bots</li>
-          <li>Priority account features and faster processing</li>
+          <li>Increased daily bot earnings and mining efficiency</li>
+          <li>Exclusive access to premium and limited-edition bots</li>
+          <li>Priority account features and faster withdrawal processing</li>
+          <li>Enhanced referral bonuses and special promotions</li>
         </ul>
-        <p>As your VIP status grows, so does your earning potential.</p>
+        <p>As your VIP status grows, so does your earning potential and platform privileges.</p>
       </div>
     </div>
     
@@ -440,12 +677,12 @@
         <p>We understand the realities of power costs and hardware availability, especially in emerging markets. That's why FlipMarket focuses on centralized efficiency rather than individual setups.</p>
         <p>Our mining servers are optimized for:</p>
         <ul>
-          <li>Stable uptime</li>
-          <li>Controlled power usage</li>
-          <li>Efficient cooling and load balancing</li>
-          <li>Long-term performance rather than short-term spikes</li>
+          <li>99.9% stable uptime with redundant systems</li>
+          <li>Controlled power usage with renewable energy sources</li>
+          <li>Efficient cooling and intelligent load balancing</li>
+          <li>Long-term sustainable performance over short-term spikes</li>
         </ul>
-        <p>By pooling resources into managed infrastructure, we reduce waste and improve consistency for all users.</p>
+        <p>By pooling resources into professionally managed infrastructure, we reduce waste and improve consistency for all users.</p>
       </div>
     </div>
     
@@ -455,15 +692,15 @@
         <span class="icon"><i class="fas fa-chevron-down"></i></span>
       </div>
       <div class="faq-answer">
-        <p>All mining activity takes place on secure servers, monitored and maintained by our technical team. Users never need to expose personal devices or install risky software.</p>
+        <p>All mining activity takes place on secure, enterprise-grade servers, monitored and maintained 24/7 by our technical team. Users never need to expose personal devices or install risky software.</p>
         <p>Through your FlipMarket account, you can:</p>
         <ul>
-          <li>Track daily earnings</li>
-          <li>Monitor bot activity</li>
-          <li>View referral rewards</li>
-          <li>Manage VIP progress in real time</li>
+          <li>Track daily earnings with real-time updates</li>
+          <li>Monitor individual bot activity and performance</li>
+          <li>View referral rewards and network growth</li>
+          <li>Manage VIP progress and unlock new features in real time</li>
         </ul>
-        <p>This server-based approach ensures higher security, reduced downtime, and consistent mining output.</p>
+        <p>This server-based approach ensures higher security, reduced downtime, and consistent mining output for optimal returns.</p>
       </div>
     </div>
     
@@ -474,12 +711,13 @@
       </div>
       <div class="faq-answer">
         <p>When you buy a FlipMarket bot, you're purchasing access to real mining infrastructure, not a simulation or promise. Your bot operates as part of our live server network, contributing to actual blockchain mining activity.</p>
-        <p>Whether you earn by running bots, referring partners, or advancing through VIP levels, FlipMarket is designed to be simple, transparent, and scalable — bridging complex crypto mining systems with everyday users.</p>
+        <p>Whether you earn by running bots, referring partners, or advancing through VIP levels, FlipMarket is designed to be simple, transparent, and scalable — bridging complex crypto mining systems with everyday users worldwide.</p>
+        <p>Ready to start your crypto mining journey? <span class="highlight">Join thousands of users already earning daily with FlipMarket.</span></p>
       </div>
     </div>
   </main>
 
-  <footer>© 2025 FlipMarket. All rights reserved.</footer>
+  <footer>© 2025 FlipMarket. All rights reserved. | Empowering Crypto Mining Since 2009</footer>
 
   <script>
     // Hamburger menu toggle
@@ -530,6 +768,21 @@
         icon.classList.toggle('rotate');
       });
     });
+    
+    function openWhatsApp() {
+      const phoneNumber = '+254739119490';
+      const message = 'Hello FlipMarket! I need help to invest and grow my crypto mining portfolio. Can you assist me?';
+      const whatsappURL = `https://wa.me/${phoneNumber.replace('+', '')}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappURL, '_blank');
+    }
+    
+    function sendEmail() {
+      const email = 'almaa7173@gmail.com';
+      const subject = 'FlipMarket Investment Inquiry';
+      const body = 'Hello FlipMarket Team,\n\nI need help to invest and grow my crypto mining portfolio. I would like to learn more about your mining bots and how I can start earning.\n\nPlease contact me at your earliest convenience.\n\nThank you!';
+      const mailtoURL = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailtoURL;
+    }
   </script>
 </body>
 </html>

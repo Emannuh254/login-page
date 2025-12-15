@@ -507,6 +507,66 @@
       font-size: 0.95rem;
     }
     
+    /* Floating Support Buttons */
+    .floating-support {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 10000;
+    }
+    
+    .support-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+      animation: float 3s ease-in-out infinite;
+      text-decoration: none;
+      color: #fff;
+    }
+    
+    .whatsapp-btn {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      animation-delay: 0s;
+    }
+    
+    .gmail-btn {
+      background: linear-gradient(135deg, #EA4335, #C5221F);
+      animation-delay: 1s;
+    }
+    
+    .support-btn:hover {
+      transform: scale(1.15) translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+    
+    .whatsapp-btn:hover {
+      box-shadow: 0 10px 30px rgba(37, 211, 102, 0.6);
+    }
+    
+    .gmail-btn:hover {
+      box-shadow: 0 10px 30px rgba(234, 67, 53, 0.6);
+    }
+    
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+    
     /* Responsive */
     @media (max-width: 768px) {
       .page-title {
@@ -537,6 +597,18 @@
       
       .info-card {
         padding: 20px;
+      }
+      
+      .floating-support {
+        bottom: 20px;
+        right: 20px;
+        gap: 12px;
+      }
+      
+      .support-btn {
+        width: 55px;
+        height: 55px;
+        font-size: 1.6rem;
       }
     }
     
@@ -572,13 +644,15 @@
   <!-- Navbar -->
   <nav class="navbar" id="navbar" aria-hidden="true">
     <ul class="nav-links">
-      <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
       <li><a href="account.html"><i class="fas fa-user"></i> My Account</a></li>
       <li><a href="bots.html"><i class="fas fa-robot"></i> Bots</a></li>
-      <li><a href="referrals.html" class="active"><i class="fas fa-users"></i> Referrals</a></li>
       <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+      <li><a href="referrals.html" class="active"><i class="fas fa-users"></i> Referrals</a></li>
       <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
-        <li>
+      <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+      <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ / Help</a></li>
+      <li>
         <a href="#" id="logout">
           <i class="fas fa-sign-out-alt"></i> Logout
         </a>
@@ -629,6 +703,27 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Floating Support Buttons -->
+  <div class="floating-support">
+    <a 
+      href="https://wa.me/254739119490?text=Hello%20FlipMarket!%20I%27m%20interested%20in%20learning%20more%20about%20investment%20opportunities%20and%20how%20to%20grow%20my%20wealth%20through%20your%20platform.%20Can%20you%20help%20me%20get%20started%3F" 
+      target="_blank" 
+      class="support-btn whatsapp-btn"
+      aria-label="Contact us on WhatsApp"
+      title="Chat on WhatsApp"
+    >
+      <i class="fab fa-whatsapp"></i>
+    </a>
+    <a 
+      href="mailto:almaa7173@gmail.com?subject=Investment%20Inquiry%20-%20FlipMarket&body=Hello%20FlipMarket%20Team%2C%0A%0AI%27m%20interested%20in%20learning%20more%20about%20investment%20opportunities%20and%20how%20to%20grow%20my%20wealth%20through%20your%20platform.%20%0A%0ACould%20you%20please%20provide%20me%20with%20more%20information%20about%3A%0A-%20Available%20mining%20bots%0A-%20Investment%20plans%0A-%20Expected%20returns%0A-%20How%20to%20get%20started%0A%0AThank%20you!" 
+      class="support-btn gmail-btn"
+      aria-label="Email us"
+      title="Send us an email"
+    >
+      <i class="fas fa-envelope"></i>
+    </a>
   </div>
 
   <!-- Notification -->
@@ -691,7 +786,7 @@
     document.getElementById('logout').addEventListener('click', async (e) => {
       e.preventDefault();
       await supabase.auth.signOut();
-      window.location.href = '../index.html';
+      window.location.href = 'login.html';
     });
 
     // Show notification
