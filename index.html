@@ -427,7 +427,7 @@
                         <label>Email Address</label>
                         <div class="input-wrapper">
                             <i class="fas fa-envelope"></i>
-                            <input type="email" class="form-control" placeholder="Enter your email" required>
+                            <input type="email" id="login-email" class="form-control" placeholder="Enter your email" required>
                         </div>
                     </div>
 
@@ -473,7 +473,7 @@
                         <label>Full Name</label>
                         <div class="input-wrapper">
                             <i class="fas fa-user"></i>
-                            <input type="text" class="form-control" placeholder="Enter your full name" required>
+                            <input type="text" id="signup-name" class="form-control" placeholder="Enter your full name" required>
                         </div>
                     </div>
 
@@ -481,7 +481,7 @@
                         <label>Email Address</label>
                         <div class="input-wrapper">
                             <i class="fas fa-envelope"></i>
-                            <input type="email" class="form-control" placeholder="Enter your email" required>
+                            <input type="email" id="signup-email" class="form-control" placeholder="Enter your email" required>
                         </div>
                     </div>
 
@@ -538,7 +538,7 @@
                         <label>Email Address</label>
                         <div class="input-wrapper">
                             <i class="fas fa-envelope"></i>
-                            <input type="email" class="form-control" placeholder="Enter your email" required>
+                            <input type="email" id="forgot-email" class="form-control" placeholder="Enter your email" required>
                         </div>
                     </div>
 
@@ -555,6 +555,27 @@
             </div>
         </div>
     </div>
+    <script>
+    console.clear();
+
+    console.log(
+        "%cFLIPMARKET 🚀",
+        `
+        font-size: 40px;
+        font-weight: bold;
+        color: #9f54ff;
+        text-shadow: 2px 2px 8px rgba(159,84,255,0.6);
+        `
+    );
+
+    console.log(
+        "%cBuilt by FlipMarket\nUnauthorized copying is prohibited.",
+        `
+        font-size: 14px;
+        color: #aaa;
+        `
+    );
+    </script>
 
     <script>
         // API Configuration
@@ -644,8 +665,8 @@
         async function handleLogin(e) {
             e.preventDefault();
             const form = e.target;
-            const email = form.querySelector('input[type="email"]').value;
-            const password = form.querySelector('input[type="password"]').value;
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
             const rememberMe = document.getElementById('remember-me').checked;
 
             console.log('[Frontend] Attempting login with email:', email);
@@ -692,8 +713,8 @@
         async function handleSignup(e) {
             e.preventDefault();
             const form = e.target;
-            const name = form.querySelector('input[type="text"]').value;
-            const email = form.querySelector('input[type="email"]').value;
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
             const confirmPassword = document.getElementById('signup-password-confirm').value;
 
@@ -748,7 +769,7 @@
         async function handleForgotPassword(e) {
             e.preventDefault();
             const form = e.target;
-            const email = form.querySelector('input[type="email"]').value;
+            const email = document.getElementById('forgot-email').value;
 
             console.log('[Frontend] Password reset request for email:', email);
 
@@ -789,7 +810,7 @@
 
         // Google login placeholder (will be implemented later)
         function handleGoogleLogin() {
-            showAlert('Google sign-in  coming soon!!.', 'error');
+            showAlert('Google sign-in coming soon!', 'error');
         }
 
         // Check if user is already logged in
@@ -816,7 +837,71 @@
         }
 
         // Initialize
-        checkAuth();
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+        });
     </script>
+    <script>
+        console.clear();
+
+        const styleTitle = `
+        font-size: 42px;
+        font-weight: 900;
+        color: #9f54ff;
+        text-shadow: 0 0 12px rgba(159,84,255,0.8);
+        letter-spacing: 3px;
+        `;
+
+        const styleSub = `
+        font-size: 18px;
+        color: #00ffd5;
+        letter-spacing: 1px;
+        `;
+
+        const styleText = `
+        font-size: 14px;
+        color: #bfbfbf;
+        line-height: 1.8;
+        `;
+
+        console.log("%cFLIPMARKET MINING PROTOCOL", styleTitle);
+
+        console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color:#444;");
+
+        console.log(
+        `%cAutonomous Cryptocurrency Mining Infrastructure
+        AI-Driven Yield Optimization Bots
+        Blockchain-Native Transaction Logic
+        Distributed Profit Algorithms
+        Continuous Mining Cycles • 24/7 Runtime
+        Secure Wallet Flow • Encrypted Sessions
+        Smart Capital Allocation • Risk-Balanced Engines
+        Real-Time Bot Performance Tracking
+        Decentralized Reward Distribution
+        High-Availability Mining Nodes`,
+        styleText
+        );
+
+        console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color:#444;");
+
+        console.log(
+        "%cFlipMarket © 2025  |  Mining Intelligence Engine Active",
+        styleSub
+        );
+
+        console.log(
+        "%cWarning: This console is intended for developers.\nUnauthorized manipulation may result in restricted access.",
+        "color:#ff6b6b;font-size:13px;"
+        );
+
+        // Optional repeating signature (soft, not spammy)
+        setInterval(() => {
+        console.log(
+            "%c⛏ FLIPMARKET MINING ENGINE RUNNING...",
+            "color:#9f54ff;font-size:12px;opacity:0.6;"
+        );
+        }, 8000);
+        </script>
+
 </body>
 </html>

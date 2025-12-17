@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* [Your existing CSS styles remain the same] */
+        /* [Keep all your existing styles - they're good!] */
         * {
             margin: 0;
             padding: 0;
@@ -469,6 +469,175 @@
             color: #ff8888;
         }
         
+        /* Deposit/Withdraw Section */
+        .payment-section {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(159, 84, 255, 0.2);
+        }
+        
+        .payment-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .payment-tab {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #ddd;
+            cursor: pointer;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-tab.active {
+            background: linear-gradient(135deg, #9f54ff, #2effbf);
+            color: #000;
+            border-color: transparent;
+        }
+        
+        .payment-content {
+            display: none;
+        }
+        
+        .payment-content.active {
+            display: block;
+        }
+        
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .payment-method {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .payment-method:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(46, 255, 191, 0.3);
+        }
+        
+        .payment-method i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #2effbf;
+        }
+        
+        .payment-method h4 {
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        
+        .payment-method p {
+            color: #aaa;
+            font-size: 0.85rem;
+        }
+        
+        .payment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-group label {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #2effbf;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-primary {
+            padding: 12px;
+            background: linear-gradient(135deg, #9f54ff, #2effbf);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 255, 191, 0.3);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .hint-box {
+            background: rgba(46, 255, 191, 0.1);
+            border: 1px solid rgba(46, 255, 191, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .hint-box h4 {
+            color: #2effbf;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        .hint-box p {
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .hint-box ul {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .hint-box li {
+            margin-bottom: 5px;
+        }
+        
+        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
@@ -624,6 +793,98 @@
                 </div>
             </div>
 
+            <!-- Payment Section -->
+            <div class="payment-section">
+                <h2 class="section-title"><i class="fas fa-credit-card"></i> Deposit & Withdraw</h2>
+                
+                <div class="payment-tabs">
+                    <div class="payment-tab active" onclick="switchPaymentTab('deposit')">Deposit</div>
+                    <div class="payment-tab" onclick="switchPaymentTab('withdraw')">Withdraw</div>
+                </div>
+
+                <!-- Deposit Content -->
+                <div class="payment-content active" id="deposit-content">
+                    <div class="payment-methods">
+                        <div class="payment-method" onclick="selectPaymentMethod('mpesa')">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h4>MPESA</h4>
+                            <p>Mobile Money (Paystack)</p>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod('binance')">
+                            <i class="fab fa-binance"></i>
+                            <h4>Binance</h4>
+                            <p>USDT / BNB Smartchain</p>
+                        </div>
+                    </div>
+
+                    <div class="payment-form" id="deposit-form">
+                        <div class="form-group">
+                            <label>Amount (USD)</label>
+                            <input type="number" id="deposit-amount" placeholder="Enter amount" min="1" step="0.01">
+                        </div>
+                        <button class="btn-primary" onclick="handleDeposit()">
+                            <i class="fas fa-plus"></i> Process Deposit
+                        </button>
+                    </div>
+
+                    <div class="hint-box">
+                        <h4>How to Deposit</h4>
+                        <p>Choose your preferred payment method:</p>
+                        <ul>
+                            <li><strong>MPESA:</strong> Pay via mobile money through Paystack (available in supported regions)</li>
+                            <li><strong>Binance:</strong> Send USDT or BNB to our Binance Smart Chain wallet</li>
+                        </ul>
+                        <p style="margin-top: 10px;">Minimum deposit: $1.00 | Processing time: 1-5 minutes</p>
+                    </div>
+                </div>
+
+                <!-- Withdraw Content -->
+                <div class="payment-content" id="withdraw-content">
+                    <div class="payment-methods">
+                        <div class="payment-method" onclick="selectPaymentMethod('mpesa')">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h4>MPESA</h4>
+                            <p>Mobile Money</p>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod('binance')">
+                            <i class="fab fa-binance"></i>
+                            <h4>Binance</h4>
+                            <p>USDT / BNB Smartchain</p>
+                        </div>
+                    </div>
+
+                    <div class="payment-form" id="withdraw-form">
+                        <div class="form-group">
+                            <label>Amount (USD)</label>
+                            <input type="number" id="withdraw-amount" placeholder="Enter amount" min="5" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Method</label>
+                            <select id="withdraw-method" class="form-control">
+                                <option value="mpesa">MPESA</option>
+                                <option value="binance">Binance</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="method-details" style="display: none;">
+                            <label id="method-label">Payment Details</label>
+                            <input type="text" id="payment-details" placeholder="Enter your payment information">
+                        </div>
+                        <button class="btn-primary" onclick="handleWithdraw()">
+                            <i class="fas fa-minus"></i> Request Withdrawal
+                        </button>
+                    </div>
+
+                    <div class="hint-box">
+                        <h4>Withdrawal Information</h4>
+                        <p>Minimum withdrawal: $5.00 | Processing time: 24-48 hours</p>
+                        <p style="margin-top: 10px;">Your withdrawal request will be processed by our admin team. You'll receive confirmation via email.</p>
+                        <p style="margin-top: 10px; color: #ff8888;">
+                            <strong>Referral Requirement:</strong> Total referral deposits must be at least Ksh 2000
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <!-- My Bots Section -->
             <div class="bots-section">
                 <h2 class="section-title"><i class="fas fa-robot"></i> My Mining Bots</h2>
@@ -650,6 +911,7 @@
             </div>
         </div>
     </div>
+    
 
     <!-- Notification -->
     <div class="notification" id="notification">
@@ -918,8 +1180,211 @@
             }, 3000);
         }
 
+        // Switch payment tabs
+        function switchPaymentTab(tab) {
+            document.querySelectorAll('.payment-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.payment-content').forEach(content => content.classList.remove('active'));
+            
+            if (tab === 'deposit') {
+                document.querySelectorAll('.payment-tab')[0].classList.add('active');
+                document.getElementById('deposit-content').classList.add('active');
+            } else if (tab === 'withdraw') {
+                document.querySelectorAll('.payment-tab')[1].classList.add('active');
+                document.getElementById('withdraw-content').classList.add('active');
+            }
+        }
+
+        // Select payment method
+        function selectPaymentMethod(method) {
+            document.querySelectorAll('.payment-method').forEach(pm => pm.classList.remove('active'));
+            event.target.closest('.payment-method').classList.add('active');
+            
+            const methodDetails = document.getElementById('method-details');
+            const methodLabel = document.getElementById('method-label');
+            const paymentDetails = document.getElementById('payment-details');
+            
+            if (method === 'mpesa') {
+                methodDetails.style.display = 'block';
+                methodLabel.textContent = 'M-Pesa Phone Number';
+                paymentDetails.placeholder = 'Enter your M-Pesa phone number';
+            } else if (method === 'binance') {
+                methodDetails.style.display = 'block';
+                methodLabel.textContent = 'Binance Address';
+                paymentDetails.placeholder = 'Enter your Binance wallet address';
+            }
+        }
+
+        // Handle deposit
+        async function handleDeposit() {
+            const amount = parseFloat(document.getElementById('deposit-amount').value);
+            
+            if (!amount || amount < 1) {
+                showNotification("Error", "Please enter a valid amount (minimum $1.00)");
+                return;
+            }
+
+            const submitBtn = document.querySelector('#deposit-form button');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+            try {
+                // For demo purposes, we'll simulate a deposit
+                // In production, you would integrate with Paystack or Binance API
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Create transaction record
+                const transaction = {
+                    type: 'deposit',
+                    amount: amount,
+                    description: `Deposit via ${document.querySelector('.payment-method.active')?.querySelector('h4').textContent || 'MPESA'}`,
+                    date: new Date()
+                };
+                
+                // Add to user's transactions (in real app, this would be via API)
+                userData.transactions.unshift(transaction);
+                userData.balance += amount;
+                
+                showNotification("Success", `Deposit of $${amount.toFixed(2)} processed successfully!`);
+                
+                // Update UI
+                renderAccountInfo();
+                renderTransactions();
+                
+                // Reset form
+                document.getElementById('deposit-amount').value = '';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-plus"></i> Process Deposit';
+                
+            } catch (error) {
+                console.error('Deposit error:', error);
+                showNotification("Error", "Deposit failed. Please try again.");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-plus"></i> Process Deposit';
+            }
+        }
+
+        // Handle withdrawal
+        async function handleWithdraw() {
+            const amount = parseFloat(document.getElementById('withdraw-amount').value);
+            const method = document.getElementById('withdraw-method').value;
+            const paymentDetails = document.getElementById('payment-details').value;
+            
+            if (!amount || amount < 5) {
+                showNotification("Error", "Minimum withdrawal amount is $5.00");
+                return;
+            }
+
+            if (!paymentDetails) {
+                showNotification("Error", "Please provide your payment details");
+                return;
+            }
+
+            if (userData.balance < amount) {
+                showNotification("Error", "Insufficient balance for this withdrawal");
+                return;
+            }
+
+            // Check referral condition
+            try {
+                const response = await fetch(`${API_BASE_URL}/account/withdraw/check-referral`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ userId: userData.userInfo.userId })
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    showNotification("Error", data.error || "Referral condition not met");
+                    return;
+                }
+            } catch (error) {
+                console.error('Referral check error:', error);
+                showNotification("Error", "Failed to verify referral condition");
+                return;
+            }
+
+            const submitBtn = document.querySelector('#withdraw-form button');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Requesting...';
+
+            try {
+                // Create withdrawal request
+                const response = await fetch(`${API_BASE_URL}/account/withdraw`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        amount: amount,
+                        method: method,
+                        paymentDetails: paymentDetails
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Withdrawal request failed');
+                }
+                
+                // Update user data
+                userData.balance -= amount;
+                userData.transactions.unshift({
+                    type: 'withdrawal',
+                    amount: amount,
+                    description: `Withdrawal via ${method.toUpperCase()}`,
+                    date: new Date(),
+                    status: 'pending'
+                });
+                
+                showNotification("Success", `Withdrawal request of $${amount.toFixed(2)} submitted successfully!`);
+                
+                // Update UI
+                renderAccountInfo();
+                renderTransactions();
+                
+                // Reset form
+                document.getElementById('withdraw-amount').value = '';
+                document.getElementById('payment-details').value = '';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-minus"></i> Request Withdrawal';
+                
+            } catch (error) {
+                console.error('Withdrawal error:', error);
+                showNotification("Error", error.message || "Withdrawal request failed. Please try again.");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-minus"></i> Request Withdrawal';
+            }
+        }
+
         // Initialize on page load
         init();
+    </script>
+    <script>
+        console.clear();
+
+        console.log(
+            "%cFLIPMARKET 🚀",
+            `
+            font-size: 40px;
+            font-weight: bold;
+            color: #9f54ff;
+            text-shadow: 2px 2px 8px rgba(159,84,255,0.6);
+            `
+        );
+
+        console.log(
+            "%cBuilt by FlipMarket\nUnauthorized copying is prohibited.",
+            `
+            font-size: 14px;
+            color: #aaa;
+            `
+        );
     </script>
 </body>
 </html>
