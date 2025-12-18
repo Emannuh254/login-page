@@ -937,5 +937,449 @@
         <p>&copy; 2025 FlipMarket. All rights reserved.</p>
     </footer>
 
+    <script>
+        // bots.js - Complete implementation for bots.html
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const loginBanner = document.getElementById('loginBanner');
+            const mainContent = document.getElementById('mainContent');
+            const botContainer = document.getElementById('botContainer');
+            const dashboard = document.getElementById('dashboard');
+            const paymentModal = document.getElementById('paymentModal');
+            const modalOverlay = document.getElementById('modalOverlay');
+            const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+            const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
+            const paymentLoading = document.getElementById('paymentLoading');
+            const loginRedirectNotification = document.getElementById('loginRedirectNotification');
+            const loginRedirectOverlay = document.getElementById('loginRedirectOverlay');
+            const continueToLogin = document.getElementById('continueToLogin');
+            const cancelRedirect = document.getElementById('cancelRedirect');
+            const notification = document.getElementById('notification');
+            const notificationTitle = document.getElementById('notificationTitle');
+            const notificationMessage = document.getElementById('notificationMessage');
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            const navbar = document.getElementById('navbar');
+            const overlay = document.getElementById('overlay');
+            const userInfo = document.getElementById('userInfo');
+            const userAvatar = document.getElementById('userAvatar');
+            const userName = document.getElementById('userName');
+            const userEmail = document.getElementById('userEmail');
+            const logoutLink = document.getElementById('logout');
+            const loginLink = document.getElementById('loginLink');
+
+            // State management
+            let currentUser = null;
+            let availableBots = [];
+            let userBots = [];
+            let isProcessing = false;
+
+            // Initialize the application
+            async function init() {
+                await checkAuthStatus();
+                await loadBots();
+                await loadUserBots();
+                setupEventListeners();
+                updateUI();
+            }
+
+            // Check authentication status
+            async function checkAuthStatus() {
+                try {
+                    const response = await fetch('/auth/me', {
+                        credentials: 'include'
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        currentUser = data.user;
+                        updateAuthUI(true);
+                    } else {
+                        currentUser = null;
+                        updateAuthUI(false);
+                    }
+                } catch (error) {
+                    console.error('Auth check failed:', error);
+                    currentUser = null;
+                    updateAuthUI(false);
+                }
+            }
+
+            // Update UI based on authentication status
+            function updateAuthUI(isLoggedIn) {
+                if (isLoggedIn && currentUser) {
+                    // User is logged in
+                    loginBanner.classList.remove('show');
+                    mainContent.classList.remove('with-banner');
+                    
+                    // Show user info in navbar
+                    userInfo.style.display = 'block';
+                    userAvatar.textContent = currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U';
+                    userName.textContent = currentUser.name || 'User';
+                    userEmail.textContent = currentUser.email || 'user@example.com';
+                    logoutLink.style.display = 'block';
+                    loginLink.style.display = 'none';
+                    
+                    // Show dashboard
+                    if (dashboard) {
+                        dashboard.style.display = 'block';
+                        updateDashboard();
+                    }
+                } else {
+                    // User is not logged in
+                    loginBanner.classList.add('show');
+                    mainContent.classList.add('with-banner');
+                    
+                    // Hide user info and show login link
+                    userInfo.style.display = 'none';
+                    logoutLink.style.display = 'none';
+                    loginLink.style.display = 'block';
+                    
+                    // Hide dashboard
+                    if (dashboard) {
+                        dashboard.style.display = 'none';
+                    }
+                }
+            }
+
+            // Load available bots from API (public endpoint)
+            async function loadBots() {
+                try {
+                    const response = await fetch('/bots/types', {
+                        credentials: 'include'
+                    });
+                    
+                    if (response.ok) {
+                        availableBots = await response.json();
+                        renderBots();
+                    } else {
+                        showNotification('Error', 'Failed to load bots. Please try again later.');
+                    }
+                } catch (error) {
+                    console.error('Failed to load bots:', error);
+                    showNotification('Error', 'Failed to load bots. Please try again later.');
+                }
+            }
+
+            // Load user's bots from API (private endpoint)
+            async function loadUserBots() {
+                if (!currentUser) return;
+                
+                try {
+                    const response = await fetch('/bots/my-bots', {
+                        credentials: 'include'
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        userBots = data.bots || [];
+                        updateDashboard();
+                    } else {
+                        showNotification('Error', 'Failed to load your bots.');
+                    }
+                } catch (error) {
+                    console.error('Failed to load user bots:', error);
+                    showNotification('Error', 'Failed to load your bots.');
+                }
+            }
+
+            // Render bot cards
+            function renderBots() {
+                botContainer.innerHTML = '';
+                
+                availableBots.forEach(bot => {
+                    const botCard = createBotCard(bot);
+                    botContainer.appendChild(botCard);
+                });
+            }
+
+            // Create bot card element
+            function createBotCard(bot) {
+                const card = document.createElement('div');
+                card.className = 'bot-card';
+                
+                // Check if user owns this bot
+                const userBot = userBots.find(ub => ub.bot_type_id === bot.id);
+                const isActive = userBot && userBot.is_active;
+                
+                if (isActive) {
+                    card.classList.add('active');
+                }
+                
+                card.innerHTML = `
+                    <div class="mining-indicator ${isActive ? 'active' : ''}"></div>
+                    <div class="bot-badge">${bot.name}</div>
+                    <div class="bot-image-container">
+                        <img src="${bot.image_url}" alt="${bot.name}" class="bot-image">
+                    </div>
+                    <h3 class="bot-title">${bot.name}</h3>
+                    <div class="bot-details">
+                        <div class="bot-detail">
+                            <span class="bot-detail-label">Daily Earning:</span>
+                            <span class="bot-detail-value">$${bot.daily_earning.toFixed(2)}</span>
+                        </div>
+                        <div class="bot-detail">
+                            <span class="bot-detail-label">Total Earning:</span>
+                            <span class="bot-detail-value">$${bot.total_earning.toFixed(2)}</span>
+                        </div>
+                        <div class="bot-detail">
+                            <span class="bot-detail-label">Price:</span>
+                            <span class="bot-detail-value">$${bot.price.toFixed(2)}</span>
+                        </div>
+                    </div>
+                    ${isActive ? `
+                        <div class="earnings-progress">
+                            <div class="earnings-bar" style="width: ${calculateProgress(userBot)}%"></div>
+                        </div>
+                        <div class="bot-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Claimed</div>
+                                <div class="stat-value">$${userBot.total_claimed.toFixed(2)}</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Available</div>
+                                <div class="stat-value">$${calculateAvailable(userBot).toFixed(2)}</div>
+                            </div>
+                        </div>
+                        <div class="bot-actions">
+                            <button class="claim-btn" ${!isActive || isProcessing ? 'disabled' : ''} data-bot-id="${userBot.id}">
+                                <i class="fas fa-coins"></i> Claim
+                            </button>
+                        </div>
+                    ` : `
+                        <div class="bot-actions">
+                            <button class="buy-btn" ${isProcessing ? 'disabled' : ''} data-bot-id="${bot.id}">
+                                <i class="fas fa-shopping-cart"></i> Buy
+                            </button>
+                        </div>
+                    `}
+                `;
+                
+                return card;
+            }
+
+            // Calculate progress percentage
+            function calculateProgress(userBot) {
+                if (!userBot) return 0;
+                const maxEarnings = userBot.bot_types.total_earning;
+                const claimed = userBot.total_claimed;
+                return (claimed / maxEarnings) * 100;
+            }
+
+            // Calculate available earnings
+            function calculateAvailable(userBot) {
+                if (!userBot) return 0;
+                const maxEarnings = userBot.bot_types.total_earning;
+                const claimed = userBot.total_claimed;
+                return maxEarnings - claimed;
+            }
+
+            // Update dashboard
+            function updateDashboard() {
+                if (!dashboard) return;
+                
+                const balance = currentUser?.profile?.balance || 0;
+                const totalClaimed = currentUser?.profile?.total_claimed || 0;
+                const activeBots = userBots.filter(bot => bot.is_active).length;
+                const dailyRate = userBots
+                    .filter(bot => bot.is_active)
+                    .reduce((sum, bot) => sum + (bot.bot_types?.daily_earning || 0), 0) || 0;
+                
+                document.getElementById('balance').textContent = `$${balance.toFixed(2)}`;
+                document.getElementById('bot-count').textContent = activeBots;
+                document.getElementById('total-claimed').textContent = `$${totalClaimed.toFixed(2)}`;
+                document.getElementById('daily-rate').textContent = `$${dailyRate.toFixed(2)}/day`;
+            }
+
+            // Setup event listeners
+            function setupEventListeners() {
+                // Hamburger menu
+                hamburgerBtn.addEventListener('click', () => {
+                    navbar.classList.toggle('active');
+                    overlay.classList.toggle('active');
+                    hamburgerBtn.setAttribute('aria-expanded', navbar.classList.contains('active'));
+                });
+
+                overlay.addEventListener('click', () => {
+                    navbar.classList.remove('active');
+                    overlay.classList.remove('active');
+                    hamburgerBtn.setAttribute('aria-expanded', 'false');
+                });
+
+                // Purchase buttons
+                botContainer.addEventListener('click', async (e) => {
+                    if (e.target.closest('.buy-btn') && !isProcessing) {
+                        const botId = e.target.closest('.buy-btn').dataset.botId;
+                        await handlePurchase(botId);
+                    }
+                    
+                    if (e.target.closest('.claim-btn') && !isProcessing) {
+                        const botId = e.target.closest('.claim-btn').dataset.botId;
+                        await handleClaim(botId);
+                    }
+                });
+
+                // Payment modal
+                confirmPaymentBtn.addEventListener('click', handleConfirmPayment);
+                cancelPaymentBtn.addEventListener('click', () => {
+                    paymentModal.classList.remove('active');
+                    modalOverlay.classList.remove('active');
+                    paymentLoading.style.display = 'none';
+                });
+
+                // Login redirect
+                continueToLogin.addEventListener('click', () => {
+                    window.location.href = '../index.html';
+                });
+
+                cancelRedirect.addEventListener('click', () => {
+                    loginRedirectNotification.classList.remove('active');
+                    loginRedirectOverlay.classList.remove('active');
+                });
+
+                // Logout
+                logoutLink.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    try {
+                        await fetch('/auth/logout', {
+                            method: 'POST',
+                            credentials: 'include'
+                        });
+                        await checkAuthStatus();
+                        loadUserBots();
+                        renderBots();
+                    } catch (error) {
+                        console.error('Logout failed:', error);
+                    }
+                });
+            }
+
+            // Handle bot purchase
+            async function handlePurchase(botId) {
+                if (!currentUser) {
+                    showLoginRedirect();
+                    return;
+                }
+
+                isProcessing = true;
+                try {
+                    const response = await fetch('/bots/purchase', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ botTypeId: botId }),
+                        credentials: 'include'
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        showNotification('Success', data.message);
+                        await loadUserBots();
+                        renderBots();
+                    } else {
+                        showNotification('Error', data.error || 'Purchase failed');
+                    }
+                } catch (error) {
+                    console.error('Purchase failed:', error);
+                    showNotification('Error', 'Purchase failed. Please try again.');
+                } finally {
+                    isProcessing = false;
+                }
+            }
+
+            // Handle earnings claim
+            async function handleClaim(botId) {
+                if (!currentUser) {
+                    showLoginRedirect();
+                    return;
+                }
+
+                isProcessing = true;
+                try {
+                    const response = await fetch('/bots/claim', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ userBotId: botId }),
+                        credentials: 'include'
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        showNotification('Success', `Successfully claimed $${data.claimedAmount.toFixed(2)}!`);
+                        await loadUserBots();
+                        renderBots();
+                    } else {
+                        showNotification('Error', data.error || 'Claim failed');
+                    }
+                } catch (error) {
+                    console.error('Claim failed:', error);
+                    showNotification('Error', 'Claim failed. Please try again.');
+                } finally {
+                    isProcessing = false;
+                }
+            }
+
+            // Show login redirect notification
+            function showLoginRedirect() {
+                loginRedirectNotification.classList.add('active');
+                loginRedirectOverlay.classList.add('active');
+                
+                let countdown = 5;
+                const countdownElement = document.getElementById('redirectCountdown');
+                
+                const interval = setInterval(() => {
+                    countdown--;
+                    countdownElement.textContent = countdown;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(interval);
+                        window.location.href = '../index.html';
+                    }
+                }, 1000);
+            }
+
+            // Handle payment confirmation
+            async function handleConfirmPayment() {
+                paymentLoading.style.display = 'block';
+                confirmPaymentBtn.disabled = true;
+                
+                // Simulate payment processing
+                setTimeout(async () => {
+                    paymentLoading.style.display = 'none';
+                    confirmPaymentBtn.disabled = false;
+                    
+                    // Close modal
+                    paymentModal.classList.remove('active');
+                    modalOverlay.classList.remove('active');
+                    
+                    // Show success notification
+                    showNotification('Success', 'Payment confirmed! Your bot has been activated.');
+                    
+                    // Refresh user data
+                    await loadUserBots();
+                    renderBots();
+                }, 2000);
+            }
+
+            // Show notification
+            function showNotification(title, message) {
+                notificationTitle.textContent = title;
+                notificationMessage.textContent = message;
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }
+
+            // Initialize the app
+            init();
+        });
+    </script>
 </body>
 </html>

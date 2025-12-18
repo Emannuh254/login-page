@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const API_URL = "https://flip-backend-5.onrender.com/"; // Replace with your backend URL
+  const API_URL = "https://flipmarket-backend.onrender.com"; // Replace with your backend URL
   const token = localStorage.getItem("authToken");
 
   if (!token) {
     // No token found — redirect to login
-    window.location.href = "https://emannuh254.github.io/login-page/index.html";
+    window.location.href = "https://flipmarkert.gt.tc";
     return;
   }
 
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Token invalid or expired
         localStorage.removeItem("authToken");
         localStorage.removeItem("user");
-        window.location.href = "https://emannuh254.github.io/login-page/index.html";
+        window.location.href = "https://flipmarkert.gt.tc";
         return;
       }
       return res.json();
@@ -160,6 +160,6 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     localStorage.removeItem("authToken");
     localStorage.removeItem("user");
-    window.location.href = "https://emannuh254.github.io/login-page/index.html";
+    window.location.href = "https://flipmarkert.gt.tc";
   });
 });
